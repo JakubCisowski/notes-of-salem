@@ -33,4 +33,10 @@ h2 {
 
 .body-container {
   margin: 40px;
+  text-align: center;
+}
+
+.button-new {
+  margin-top: 2rem;
+  font-size: 2rem;
 }

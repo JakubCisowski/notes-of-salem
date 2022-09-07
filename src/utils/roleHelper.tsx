@@ -1,46 +1,46 @@
 import { Faction, Role, TownAlignment } from './enums';
 
 export function roleToFaction(role: Role): Faction {
-  let faction = Faction.unknown;
+  let faction = Faction.Unknown;
 
   switch (role) {
-    case Role.unknown:
-    case Role.cleaned:
-    case Role.notNeeded:
-      faction = Faction.unknown;
+    case Role.Unknown:
+    case Role.Cleaned:
+    case Role.NotNeeded:
+      faction = Faction.Unknown;
       break;
-    case Role.jailor:
-    case Role.lookout:
-    case Role.spy:
-    case Role.investigator:
-    case Role.sheriff:
-    case Role.bodyguard:
-    case Role.doctor:
-    case Role.veteran:
-    case Role.vigilante:
-    case Role.escort:
-    case Role.transporter:
-    case Role.medium:
-    case Role.retributionist:
-    case Role.mayor:
-      faction = Faction.town;
+    case Role.Jailor:
+    case Role.Lookout:
+    case Role.Spy:
+    case Role.Investigator:
+    case Role.Sheriff:
+    case Role.Bodyguard:
+    case Role.Doctor:
+    case Role.Veteran:
+    case Role.Vigilante:
+    case Role.Escort:
+    case Role.Transporter:
+    case Role.Medium:
+    case Role.Retributionist:
+    case Role.Mayor:
+      faction = Faction.Town;
       break;
-    case Role.godfather:
-    case Role.mafioso:
-    case Role.consigliere:
-    case Role.consort:
-    case Role.janitor:
-    case Role.forger:
-    case Role.framer:
-    case Role.disguiser:
-    case Role.blackmailer:
-    case Role.hypnotist:
-    case Role.ambusher:
-      faction = Faction.mafia;
+    case Role.Godfather:
+    case Role.Mafioso:
+    case Role.Consigliere:
+    case Role.Consort:
+    case Role.Janitor:
+    case Role.Forger:
+    case Role.Framer:
+    case Role.Disguiser:
+    case Role.Blackmailer:
+    case Role.Hypnotist:
+    case Role.Ambusher:
+      faction = Faction.Mafia;
       break;
-    case Role.executioner:
-    case Role.witch:
-      faction = Faction.neutral;
+    case Role.Executioner:
+    case Role.Witch:
+      faction = Faction.Neutral;
       break;
   }
 
@@ -48,39 +48,39 @@ export function roleToFaction(role: Role): Faction {
 }
 
 export function roleToTownAlignment(role: Role): TownAlignment {
-  let townAlignment = TownAlignment.unknown;
+  let townAlignment = TownAlignment.Unknown;
 
   switch (role) {
-    case Role.unknown:
-    case Role.cleaned:
-      townAlignment = TownAlignment.unknown;
+    case Role.Unknown:
+    case Role.Cleaned:
+      townAlignment = TownAlignment.Unknown;
       break;
-    case Role.jailor:
+    case Role.Jailor:
       townAlignment = TownAlignment.J;
       break;
-    case Role.lookout:
-    case Role.spy:
-    case Role.investigator:
-    case Role.sheriff:
+    case Role.Lookout:
+    case Role.Spy:
+    case Role.Investigator:
+    case Role.Sheriff:
       townAlignment = TownAlignment.TI;
       break;
-    case Role.bodyguard:
-    case Role.doctor:
+    case Role.Bodyguard:
+    case Role.Doctor:
       townAlignment = TownAlignment.TP;
       break;
-    case Role.veteran:
-    case Role.vigilante:
+    case Role.Veteran:
+    case Role.Vigilante:
       townAlignment = TownAlignment.TK;
       break;
-    case Role.escort:
-    case Role.transporter:
-    case Role.medium:
-    case Role.retributionist:
-    case Role.mayor:
+    case Role.Escort:
+    case Role.Transporter:
+    case Role.Medium:
+    case Role.Retributionist:
+    case Role.Mayor:
       townAlignment = TownAlignment.TS;
       break;
     default:
-      townAlignment = TownAlignment.notTown;
+      townAlignment = TownAlignment.NotTown;
       break;
   }
 
@@ -93,13 +93,13 @@ export function isRoleUnique(role: Role): boolean {
   let isUnique = false;
 
   switch (role) {
-    case Role.jailor:
-    case Role.veteran:
-    case Role.retributionist:
-    case Role.mayor:
-    case Role.godfather:
-    case Role.executioner:
-    case Role.witch:
+    case Role.Jailor:
+    case Role.Veteran:
+    case Role.Retributionist:
+    case Role.Mayor:
+    case Role.Godfather:
+    case Role.Executioner:
+    case Role.Witch:
       isUnique = true;
       break;
     default:
@@ -121,10 +121,59 @@ export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
       slots = 1;
     case TownAlignment.TI:
       slots = 2;
-    case TownAlignment.notTown:
-    case TownAlignment.unknown:
+    case TownAlignment.NotTown:
+    case TownAlignment.Unknown:
       slots = -1;
       break;
   }
   return slots;
+}
+
+export function roleToColor(role: Role): string {
+  let colorString = 'black';
+
+  switch (role) {
+    case Role.Unknown:
+    case Role.Cleaned:
+    case Role.NotNeeded:
+      colorString = 'black';
+      break;
+    case Role.Jailor:
+    case Role.Lookout:
+    case Role.Spy:
+    case Role.Investigator:
+    case Role.Sheriff:
+    case Role.Bodyguard:
+    case Role.Doctor:
+    case Role.Veteran:
+    case Role.Vigilante:
+    case Role.Escort:
+    case Role.Transporter:
+    case Role.Medium:
+    case Role.Retributionist:
+    case Role.Mayor:
+      colorString = 'green';
+      break;
+    case Role.Godfather:
+    case Role.Mafioso:
+    case Role.Consigliere:
+    case Role.Consort:
+    case Role.Janitor:
+    case Role.Forger:
+    case Role.Framer:
+    case Role.Disguiser:
+    case Role.Blackmailer:
+    case Role.Hypnotist:
+    case Role.Ambusher:
+      colorString = 'red';
+      break;
+    case Role.Executioner:
+      colorString = 'gray';
+      break;
+    case Role.Witch:
+      colorString = 'purple';
+      break;
+  }
+
+  return colorString;
 }

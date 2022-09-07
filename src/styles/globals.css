@@ -32,11 +32,52 @@ h2 {
 }
 
 .body-container {
-  margin: 40px;
+  margin: 20px;
   text-align: center;
 }
 
 .button-new {
   margin-top: 2rem;
   font-size: 2rem;
+}
+
+.button-action {
+  margin-top: 2rem;
+  font-size: 2rem;
+}
+
+.button-role {
+  font-size: 1.35rem;
+  font-weight: bold;
+}
+
+.select-number {
+  font-size: 1.35rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.startform-container {
+  position: fixed;
+  border: 1px solid black;
+  width: 850px;
+  height: 800px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+}
+
+.grid-container-start {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(9, 35px);
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  justify-content: center;
+}
+
+.grid-item {
+  background: lightgray;
 }

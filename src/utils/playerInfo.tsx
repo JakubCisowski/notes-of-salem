@@ -1,9 +1,9 @@
 import { Faction, Role, TownAlignment } from './enums';
 import { roleToFaction, roleToTownAlignment } from './roleHelper';
 
-type PlayersInfo = PlayerInfo[];
+export type PlayersInfo = PlayerInfo[];
 
-type PlayerInfo = {
+export type PlayerInfo = {
   number: number; // Player number (1-15)
   faction: Faction; // Player faction (unknown, town, mafia, neutral)
   townAlignment: TownAlignment; // Player town alignment (unknown, notTown, J, TI, TP, TK, TS)
@@ -22,16 +22,16 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
 
   for (let currentNumber = 1; currentNumber <= 15; currentNumber++) {
     let number = currentNumber;
-    let faction = Faction.unknown;
-    let townAlignment = TownAlignment.unknown;
-    let role = Role.unknown;
+    let faction = Faction.Unknown;
+    let townAlignment = TownAlignment.Unknown;
+    let role = Role.Unknown;
     let note = '';
     let isConfirmed = false;
     let isConfirmationLocked = false;
     let isSuspicious = false;
     let isPossiblySuspicious = false;
     let isSuspicionLocked;
-    roleToFaction(userRole) == Faction.mafia
+    roleToFaction(userRole) == Faction.Mafia
       ? (isSuspicionLocked = true)
       : (isSuspicionLocked = false);
     let isDead = false;
@@ -74,7 +74,7 @@ export function setExecutionerTarget(
   )!;
 
   targetPlayerInfo.note = 'MY TARGET (cant be Jailor/Mayor)';
-  targetPlayerInfo.faction = Faction.town;
+  targetPlayerInfo.faction = Faction.Town;
   targetPlayerInfo.isSuspicionLocked = true;
 
   return playersInfo; // Does it need to return anything?
@@ -91,9 +91,9 @@ export function setUserMafiaNumbers(
       (player) => player.number == mafiaNumber
     )!;
 
-    targetPlayerInfo.faction = Faction.mafia;
-    targetPlayerInfo.townAlignment = TownAlignment.notTown;
-    targetPlayerInfo.role = Role.notNeeded;
+    targetPlayerInfo.faction = Faction.Mafia;
+    targetPlayerInfo.townAlignment = TownAlignment.NotTown;
+    targetPlayerInfo.role = Role.NotNeeded;
     targetPlayerInfo.note = 'MY MAFIA MEMBER';
     targetPlayerInfo.isConfirmationLocked = true;
     // .isSuspicionLocked already set to true in generateInitialPlayersInfo()

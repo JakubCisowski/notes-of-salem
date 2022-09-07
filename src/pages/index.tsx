@@ -1,17 +1,18 @@
 import type { NextPage } from 'next';
 import { useState } from 'react';
-import { StartForm } from '../components/startForm';
+import { Notepad } from '../components/Notepad';
+import { StartForm } from '../components/StartForm';
 import { PlayersInfo } from '../utils/playerInfo';
 
 const Home: NextPage = () => {
-  const [playerInfo, setPlayerInfo] = useState<PlayersInfo>([]);
+  const [playersInfo, setPlayersInfo] = useState<PlayersInfo>([]);
   const [isNotepadShown, setIsNotepadShown] = useState(false); // to not initially show the notes
   const [isStartFormShown, setIsStartFormShown] = useState(false);
   const [isClaimsFormShown, setIsClaimsFormShown] = useState(false);
+  const [isDeadFormShown, setIsDeadFormShown] = useState(false);
 
   function handleNewGameOnClick() {
     setIsStartFormShown(true);
-    return null;
   }
 
   return (
@@ -25,8 +26,14 @@ const Home: NextPage = () => {
         <StartForm
           setIsStartFormShown={setIsStartFormShown}
           setIsNotepadShown={setIsNotepadShown}
-          setPlayerInfo={setPlayerInfo}
+          setPlayersInfo={setPlayersInfo}
         />
+      )}
+
+      {isNotepadShown && (
+        <>
+          <Notepad playersInfo={playersInfo} setPlayersInfo={setPlayersInfo} />
+        </>
       )}
     </>
   );

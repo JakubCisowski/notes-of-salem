@@ -47,7 +47,3 @@ export enum TownAlignment {
   TK,
   TS,
 }
-
-// Probably needed:
-// - show how many spots are there for specific faction/alignment (tracking)
-// - show which roles are unique for automated RT suspicion

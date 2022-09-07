@@ -177,3 +177,23 @@ export function roleToColor(role: Role): string {
 
   return colorString;
 }
+
+export function factionAbbreviation(faction: Faction): string {
+  let factionAbbreviation = '';
+  switch (faction) {
+    case Faction.Unknown:
+      factionAbbreviation = '';
+      break;
+    case Faction.Town:
+      factionAbbreviation = 'T';
+      break;
+    case Faction.Mafia:
+      factionAbbreviation = 'M';
+      break;
+    case Faction.Neutral:
+      factionAbbreviation = 'N';
+      break;
+  }
+
+  return factionAbbreviation;
+}

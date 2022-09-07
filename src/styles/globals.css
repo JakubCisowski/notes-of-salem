@@ -34,6 +34,7 @@ h2 {
 .body-container {
   margin: 20px;
   text-align: center;
+  width: 90%;
 }
 
 .button-new {
@@ -80,4 +81,99 @@ h2 {
 
 .grid-item {
   background: lightgray;
+}
+
+.notepad-container {
+  border: 2px solid black;
+  padding: 10px;
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.notepad-alive-container {
+  border: 2px solid green;
+}
+.notepad-dead-container {
+  border: 2px solid red;
+}
+
+.notepad-player-card-container {
+  display: flex;
+  border: 1px solid violet;
+  margin: 2px 0;
+}
+
+.header-flexbox {
+  display: flex;
+  border: 1px solid purple;
+}
+.header-number {
+  width: 5%;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.header-confirmed {
+  font-size: 1.1rem;
+  width: 35%;
+  font-weight: bold;
+}
+.header-suspicious {
+  font-size: 1.1rem;
+  width: 30%;
+  font-weight: bold;
+}
+
+.notepad-card-section-number {
+  border: 1px solid black;
+  font-size: 1.3rem;
+  font-weight: bold;
+  width: 5%;
+}
+.notepad-card-section-button {
+  border: 1px solid black;
+  background-color: lightgray;
+  display: inline;
+  font-size: 1.1rem;
+  width: 15%;
+}
+.notepad-card-section-confirmed {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 5%;
+}
+.notepad-card-section-faction {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 5%;
+}
+.notepad-card-section-alignment {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 5%;
+}
+.notepad-card-section-role {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 15%;
+}
+.notepad-card-section-suspicious {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 5%;
+}
+.notepad-card-section-possibly-suspicious {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 5%;
+}
+.notepad-card-section-note {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 25%;
+}
+.notepad-card-section-dead-button {
+  border: 1px solid black;
+  background-color: lightgray;
+  font-size: 1.1rem;
+  width: 15%;
 }

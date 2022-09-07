@@ -13,11 +13,11 @@ import { roleToColor, roleToFaction } from '../utils/roleHelper';
 export const StartForm = ({
   setIsStartFormShown,
   setIsNotepadShown,
-  setPlayerInfo,
+  setPlayersInfo: setPlayerInfo,
 }: {
   setIsStartFormShown: (value: boolean) => void;
   setIsNotepadShown: (value: boolean) => void;
-  setPlayerInfo: (value: PlayersInfo) => void;
+  setPlayersInfo: (value: PlayersInfo) => void;
 }) => {
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [selectedUserNumber, setSelectedUserNumber] = useState<number>(-1);

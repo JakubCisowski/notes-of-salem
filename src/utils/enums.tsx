@@ -1,7 +1,8 @@
 export enum Role {
   Unknown,
   Cleaned,
-  NotNeeded,
+  ProbablyDisguised,
+  YourOtherMafia,
   Jailor,
   Lookout,
   Spy,

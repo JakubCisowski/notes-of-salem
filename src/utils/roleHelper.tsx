@@ -6,7 +6,8 @@ export function roleToFaction(role: Role): Faction {
   switch (role) {
     case Role.Unknown:
     case Role.Cleaned:
-    case Role.NotNeeded:
+    case Role.YourOtherMafia:
+    case Role.ProbablyDisguised:
       faction = Faction.Unknown;
       break;
     case Role.Jailor:
@@ -53,6 +54,7 @@ export function roleToTownAlignment(role: Role): TownAlignment {
   switch (role) {
     case Role.Unknown:
     case Role.Cleaned:
+    case Role.ProbablyDisguised:
       townAlignment = TownAlignment.Unknown;
       break;
     case Role.Jailor:
@@ -119,8 +121,10 @@ export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
     case TownAlignment.TP:
     case TownAlignment.TS:
       slots = 1;
+      break;
     case TownAlignment.TI:
       slots = 2;
+      break;
     case TownAlignment.NotTown:
     case TownAlignment.Unknown:
       slots = -1;
@@ -135,7 +139,8 @@ export function roleToColor(role: Role): string {
   switch (role) {
     case Role.Unknown:
     case Role.Cleaned:
-    case Role.NotNeeded:
+    case Role.YourOtherMafia:
+    case Role.ProbablyDisguised:
       colorString = 'black';
       break;
     case Role.Jailor:
@@ -178,22 +183,62 @@ export function roleToColor(role: Role): string {
   return colorString;
 }
 
-export function factionAbbreviation(faction: Faction): string {
-  let factionAbbreviation = '';
+export function factionDisplayString(faction: Faction): string {
+  let displayString = '';
   switch (faction) {
     case Faction.Unknown:
-      factionAbbreviation = '';
+      displayString = '';
       break;
     case Faction.Town:
-      factionAbbreviation = 'T';
+      displayString = 'T';
       break;
     case Faction.Mafia:
-      factionAbbreviation = 'M';
+      displayString = 'M';
       break;
     case Faction.Neutral:
-      factionAbbreviation = 'N';
+      displayString = 'N';
       break;
   }
 
-  return factionAbbreviation;
+  return displayString;
+}
+
+export function alignmentDisplayString(townAlignment: TownAlignment): string {
+  let displayString = '';
+
+  switch (townAlignment) {
+    case TownAlignment.J:
+    case TownAlignment.TK:
+    case TownAlignment.TP:
+    case TownAlignment.TS:
+    case TownAlignment.TI:
+      displayString = TownAlignment[townAlignment]!;
+      break;
+    case TownAlignment.NotTown:
+    case TownAlignment.Unknown:
+      displayString = '';
+      break;
+  }
+  return displayString;
+}
+
+export function roleDisplayString(role: Role): string {
+  let displayString = '';
+
+  switch (role) {
+    case Role.Unknown:
+      displayString = '?';
+      break;
+    case Role.YourOtherMafia:
+      displayString = '(mafia)';
+      break;
+    case Role.ProbablyDisguised:
+      displayString = '(disguised)';
+      break;
+    default:
+      displayString = Role[role]!;
+      break;
+  }
+
+  return displayString;
 }

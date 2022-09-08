@@ -9,7 +9,7 @@ export type PlayerInfo = {
   townAlignment: TownAlignment; // Player town alignment (unknown, notTown, J, TI, TP, TK, TS)
   role: Role; // Player role (unknown, cleaned, notNeeded, jailor, mafioso..) - notNeeded is reserved for players that are not needed to be tracked (e.g. other members of user's mafia)
   note: string; // User note about the player
-  isConfirmed: boolean; // If the player is confirmed or not
+  isConfirmedTown: boolean; // If the player is confirmed townie or not
   isConfirmationLocked: boolean; // If this player is either user or user mafia, confirmation checkbox is locked because unnecessary
   isSuspicious: boolean; // If the player is suspicious of being evil or not
   isPossiblySuspicious: boolean; // Special field for automated RT suspicion, or multiple unique roles claim
@@ -26,7 +26,7 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
     let townAlignment = TownAlignment.Unknown;
     let role = Role.Unknown;
     let note = '';
-    let isConfirmed = false;
+    let isConfirmedTown = false;
     let isConfirmationLocked = false;
     let isSuspicious = false;
     let isPossiblySuspicious = false;
@@ -41,7 +41,9 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
       townAlignment = roleToTownAlignment(userRole);
       role = userRole;
       note = '---';
-      isConfirmed = true;
+      roleToFaction(userRole) == Faction.Town
+        ? (isConfirmedTown = true)
+        : (isConfirmedTown = false);
       isConfirmationLocked = true;
     }
 
@@ -51,7 +53,7 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
       townAlignment: townAlignment,
       role: role,
       note: note,
-      isConfirmed: isConfirmed,
+      isConfirmedTown: isConfirmedTown,
       isConfirmationLocked: isConfirmationLocked,
       isSuspicious: isSuspicious,
       isPossiblySuspicious: isPossiblySuspicious,
@@ -75,6 +77,7 @@ export function setExecutionerTarget(
 
   targetPlayerInfo.note = 'MY TARGET (cant be Jailor/Mayor)';
   targetPlayerInfo.faction = Faction.Town;
+  targetPlayerInfo.isConfirmedTown = true;
   targetPlayerInfo.isSuspicionLocked = true;
 
   return playersInfo; // Does it need to return anything?
@@ -93,7 +96,7 @@ export function setUserMafiaNumbers(
 
     targetPlayerInfo.faction = Faction.Mafia;
     targetPlayerInfo.townAlignment = TownAlignment.NotTown;
-    targetPlayerInfo.role = Role.NotNeeded;
+    targetPlayerInfo.role = Role.YourOtherMafia;
     targetPlayerInfo.note = 'MY MAFIA MEMBER';
     targetPlayerInfo.isConfirmationLocked = true;
     // .isSuspicionLocked already set to true in generateInitialPlayersInfo()

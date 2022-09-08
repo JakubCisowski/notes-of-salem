@@ -2,7 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: Comic Sans MS, -apple-system, BlinkMacSystemFont, Segoe UI,
+  font-family: Arial, Comic Sans MS, -apple-system, BlinkMacSystemFont, Segoe UI,
     Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
 }
@@ -91,43 +91,55 @@ h2 {
 }
 
 .notepad-alive-container {
-  border: 2px solid green;
+  /* border: 2px solid green; */
 }
 .notepad-dead-container {
   border: 2px solid red;
 }
 
-.notepad-player-card-container {
-  display: flex;
-  border: 1px solid violet;
-  margin: 2px 0;
-}
-
 .header-flexbox {
   display: flex;
-  border: 1px solid purple;
+  /* border: 1px solid purple; */
 }
 .header-number {
   width: 5%;
   font-size: 1.3rem;
   font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 .header-confirmed {
   font-size: 1.1rem;
   width: 35%;
   font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 .header-suspicious {
   font-size: 1.1rem;
   width: 30%;
   font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
+.notepad-player-card-container {
+  display: flex;
+  margin: 5px 0;
+  align-items: center;
+}
 .notepad-card-section-number {
   border: 1px solid black;
   font-size: 1.3rem;
   font-weight: bold;
   width: 5%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-button {
   border: 1px solid black;
@@ -135,45 +147,91 @@ h2 {
   display: inline;
   font-size: 1.1rem;
   width: 15%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-confirmed {
   border: 1px solid black;
   font-size: 1.1rem;
   width: 5%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-faction {
   border: 1px solid black;
   font-size: 1.1rem;
   width: 5%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-alignment {
   border: 1px solid black;
   font-size: 1.1rem;
   width: 5%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-role {
   border: 1px solid black;
-  font-size: 1.1rem;
-  width: 15%;
+  font-size: 1.3rem;
+  width: 18%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-suspicious {
   border: 1px solid black;
   font-size: 1.1rem;
   width: 5%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-possibly-suspicious {
   border: 1px solid black;
   font-size: 1.1rem;
   width: 5%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-note {
   border: 1px solid black;
   font-size: 1.1rem;
-  width: 25%;
+  width: 22%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .notepad-card-section-dead-button {
   border: 1px solid black;
   background-color: lightgray;
   font-size: 1.1rem;
   width: 15%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.checkbox {
+  width: 50px;
+  height: 26px;
+  margin: 0px;
+}
+
+input::selection {
+  background: #f7a494;
 }

@@ -43,7 +43,7 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
       faction = roleToFaction(userRole);
       townAlignment = roleToTownAlignment(userRole);
       role = userRole;
-      note = '---';
+      note = '(ME)';
       roleToFaction(userRole) == Faction.Town
         ? (isConfirmedTown = true)
         : (isConfirmedTown = false);
@@ -85,7 +85,7 @@ export function setExecutionerTarget(
     (player) => player.number == targetNumber
   )!;
 
-  targetPlayerInfo.note = 'MY TARGET (cant be Jailor/Mayor)';
+  targetPlayerInfo.note = '(TARGET -> not Jailor/Mayor)';
   targetPlayerInfo.faction = Faction.Town;
   targetPlayerInfo.isConfirmedTown = true;
   targetPlayerInfo.displayColor = COLORS.CONFIRMED_TOWN;
@@ -108,7 +108,6 @@ export function setUserMafiaNumbers(
     targetPlayerInfo.faction = Faction.Mafia;
     targetPlayerInfo.townAlignment = TownAlignment.NotTown;
     targetPlayerInfo.role = Role.YourOtherMafia;
-    targetPlayerInfo.note = 'MY MAFIA MEMBER';
     targetPlayerInfo.displayColor = COLORS.MAFIA;
     targetPlayerInfo.isConfirmationLocked = true;
     // .isSuspicionLocked already set to true in generateInitialPlayersInfo()

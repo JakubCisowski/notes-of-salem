@@ -79,6 +79,8 @@ function PlayerCard({
     player.displayColor
   );
 
+  const [playerNote, setPlayerNote] = React.useState<string>(player.note);
+
   function onConfirmedCheckboxChange(e: any) {
     setIsConfirmed(e.target.checked);
     player.isConfirmedTown = e.target.checked;
@@ -103,6 +105,11 @@ function PlayerCard({
     setPlayerColor(calculateDisplayColor());
     //setPlayersInfo(playersInfo); // should we use this anywyas?
     console.log(playersInfo);
+  }
+
+  function onNoteChange(e: any) {
+    player.note = e.target.value;
+    setPlayerNote(e.target.value);
   }
 
   function calculateDisplayColor() {
@@ -180,8 +187,17 @@ function PlayerCard({
           )}
         </div>
         <div className="notepad-card-section-possibly-suspicious">{}</div>
-        <div className="notepad-card-section-note">note</div>
-        <div className="notepad-card-section-dead-button">DEAD</div>
+        <div className="notepad-card-section-note">
+          <input
+            className="input-note"
+            type="text"
+            value={player.note}
+            onChange={onNoteChange}
+          ></input>
+        </div>
+        <div className="notepad-card-section-dead-button">
+          DEAD (<span style={{ fontWeight: 'bold' }}>{player.number}</span>)
+        </div>
       </div>
     </>
   );

@@ -75,6 +75,10 @@ function PlayerCard({
   function onConfirmedCheckboxChange(e: any) {
     setIsConfirmed(e.target.checked);
     player.isConfirmedTown = e.target.checked;
+    if (e.target.checked == true) {
+      player.isSuspicious = false;
+      setIsSuspicious(false);
+    }
     //setPlayersInfo(playersInfo); // should we use this anywyas?
     console.log(playersInfo);
   }
@@ -82,6 +86,10 @@ function PlayerCard({
   function onSuspiciousCheckboxChange(e: any) {
     setIsSuspicious(e.target.checked);
     player.isSuspicious = e.target.checked;
+    if (e.target.checked == true) {
+      player.isConfirmedTown = false;
+      setIsConfirmed(false);
+    }
     //setPlayersInfo(playersInfo); // should we use this anywyas?
     console.log(playersInfo);
   }
@@ -143,6 +151,105 @@ function PlayerCard({
     </>
   );
 }
+
+// function PlayerCard({
+//   playerNumber,
+//   playersInfo,
+//   setPlayersInfo,
+// }: {
+//   playerNumber: number;
+//   playersInfo: PlayersInfo;
+//   setPlayersInfo: (value: PlayersInfo) => void;
+// }) {
+//   // Modifying player DOES modify playersInfo.
+//   // But shouldn't we use setPlayersInfo to modify playersInfo - rendering issues possible?
+//   // For example some components wont rerender when player is modified (not setPlayersInfo).
+//   let player = playersInfo.find((player) => player.number == playerNumber)!;
+
+//   // These states only exist for this compononent to rerender, they are not used anywhere else.
+//   // todo: How to avoid that?
+//   const [isConfirmed, setIsConfirmed] = React.useState<boolean>(
+//     player.isConfirmedTown
+//   );
+//   const [isSuspicious, setIsSuspicious] = React.useState<boolean>(
+//     player.isSuspicious
+//   );
+
+//   useEffect(() => {
+//     player.isConfirmedTown = isConfirmed;
+//     player.isSuspicious = isSuspicious;
+//     console.log(playersInfo);
+//   }, [isConfirmed, isSuspicious]);
+
+//   function onConfirmedCheckboxChange(e: any) {
+//     setIsConfirmed(e.target.checked);
+//     e.target.checked == true ? setIsSuspicious(false) : null;
+//     //setPlayersInfo(playersInfo); // should we use this anywyas?
+//   }
+
+//   function onSuspiciousCheckboxChange(e: any) {
+//     setIsSuspicious(e.target.checked);
+//     e.target.checked == true ? setIsConfirmed(true) : null;
+//     //setPlayersInfo(playersInfo); // should we use this anywyas?
+//   }
+
+//   return (
+//     <>
+//       <div className="notepad-player-card-container">
+//         <div className="notepad-card-section-number">{player.number}</div>
+//         <div className="notepad-card-section-button">SET ROLE</div>
+//         <div className="notepad-card-section-confirmed">
+//           {player.isConfirmationLocked ? (
+//             <input
+//               type="checkbox"
+//               checked={isConfirmed}
+//               onChange={onConfirmedCheckboxChange}
+//               disabled
+//               className="checkbox"
+//             ></input>
+//           ) : (
+//             <input
+//               type="checkbox"
+//               checked={isConfirmed}
+//               onChange={onConfirmedCheckboxChange}
+//               className="checkbox"
+//             ></input>
+//           )}
+//         </div>
+//         <div className="notepad-card-section-faction">
+//           {factionDisplayString(player.faction)}
+//         </div>
+//         <div className="notepad-card-section-alignment">
+//           {alignmentDisplayString(player.townAlignment)}
+//         </div>
+//         <div className="notepad-card-section-role">
+//           {roleDisplayString(player.role)}
+//         </div>
+//         <div className="notepad-card-section-suspicious">
+//           {player.isSuspicionLocked ? (
+//             <input
+//               type="checkbox"
+//               checked={isSuspicious}
+//               onChange={onSuspiciousCheckboxChange}
+//               disabled
+//               className="checkbox"
+//             ></input>
+//           ) : (
+//             <input
+//               type="checkbox"
+//               checked={isSuspicious}
+//               onChange={onSuspiciousCheckboxChange}
+//               className="checkbox"
+//             ></input>
+//           )}
+//         </div>
+//         <div className="notepad-card-section-possibly-suspicious">{}</div>
+//         <div className="notepad-card-section-note">note</div>
+//         <div className="notepad-card-section-dead-button">DEAD</div>
+//       </div>
+//     </>
+//   );
+// }
 
 function Header() {
   return (

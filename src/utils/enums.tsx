@@ -29,6 +29,7 @@ export enum Role {
   Hypnotist,
   Ambusher,
   Executioner,
+  Jester,
   Witch,
 }
 
@@ -36,7 +37,7 @@ export enum Faction {
   Unknown,
   Town,
   Mafia,
-  Neutral,
+  NeutralEvil,
 }
 
 export enum TownAlignment {

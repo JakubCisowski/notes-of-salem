@@ -1,3 +1,4 @@
+import { COLORS } from './colors';
 import { Faction, Role, TownAlignment } from './enums';
 
 export function roleToFaction(role: Role): Faction {
@@ -40,8 +41,9 @@ export function roleToFaction(role: Role): Faction {
       faction = Faction.Mafia;
       break;
     case Role.Executioner:
+    case Role.Jester:
     case Role.Witch:
-      faction = Faction.Neutral;
+      faction = Faction.NeutralEvil;
       break;
   }
 
@@ -101,6 +103,7 @@ export function isRoleUnique(role: Role): boolean {
     case Role.Mayor:
     case Role.Godfather:
     case Role.Executioner:
+    case Role.Jester:
     case Role.Witch:
       isUnique = true;
       break;
@@ -134,14 +137,14 @@ export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
 }
 
 export function roleToColor(role: Role): string {
-  let colorString = 'black';
+  let colorString = COLORS.BLACK;
 
   switch (role) {
     case Role.Unknown:
     case Role.Cleaned:
     case Role.YourOtherMafia:
     case Role.ProbablyDisguised:
-      colorString = 'black';
+      colorString = COLORS.BLACK;
       break;
     case Role.Jailor:
     case Role.Lookout:
@@ -157,7 +160,7 @@ export function roleToColor(role: Role): string {
     case Role.Medium:
     case Role.Retributionist:
     case Role.Mayor:
-      colorString = 'green';
+      colorString = COLORS.CONFIRMED_TOWN;
       break;
     case Role.Godfather:
     case Role.Mafioso:
@@ -170,13 +173,16 @@ export function roleToColor(role: Role): string {
     case Role.Blackmailer:
     case Role.Hypnotist:
     case Role.Ambusher:
-      colorString = 'red';
+      colorString = COLORS.MAFIA;
       break;
     case Role.Executioner:
-      colorString = 'gray';
+      colorString = COLORS.EXE;
+      break;
+    case Role.Jester:
+      colorString = COLORS.JESTER;
       break;
     case Role.Witch:
-      colorString = 'purple';
+      colorString = COLORS.WITCH;
       break;
   }
 
@@ -195,7 +201,7 @@ export function factionDisplayString(faction: Faction): string {
     case Faction.Mafia:
       displayString = 'M';
       break;
-    case Faction.Neutral:
+    case Faction.NeutralEvil:
       displayString = 'N';
       break;
   }

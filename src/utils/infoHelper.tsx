@@ -8,7 +8,7 @@ export function roleToFaction(role: Role): Faction {
     case Role.Unknown:
     case Role.Cleaned:
     case Role.YourOtherMafia:
-    case Role.ProbablyDisguised:
+    case Role.ProbablyForged:
       faction = Faction.Unknown;
       break;
     case Role.Jailor:
@@ -56,7 +56,7 @@ export function roleToTownAlignment(role: Role): TownAlignment {
   switch (role) {
     case Role.Unknown:
     case Role.Cleaned:
-    case Role.ProbablyDisguised:
+    case Role.ProbablyForged:
       townAlignment = TownAlignment.Unknown;
       break;
     case Role.Jailor:
@@ -91,60 +91,16 @@ export function roleToTownAlignment(role: Role): TownAlignment {
   return townAlignment;
 }
 
-export function isRoleUnique(role: Role): boolean {
-  // Is checking every role necessary? Probably not, because it's only for automated RT suspicion.
-  // Executioner and witch are unique here, because app analyzes ranked games only (for now).
-  let isUnique = false;
-
-  switch (role) {
-    case Role.Jailor:
-    case Role.Veteran:
-    case Role.Retributionist:
-    case Role.Mayor:
-    case Role.Godfather:
-    case Role.Executioner:
-    case Role.Jester:
-    case Role.Witch:
-      isUnique = true;
-      break;
-    default:
-      isUnique = false;
-      break;
-  }
-
-  return isUnique;
-}
-
-export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
-  let slots = -1;
-
-  switch (townAlignment) {
-    case TownAlignment.J:
-    case TownAlignment.TK:
-    case TownAlignment.TP:
-    case TownAlignment.TS:
-      slots = 1;
-      break;
-    case TownAlignment.TI:
-      slots = 2;
-      break;
-    case TownAlignment.NotTown:
-    case TownAlignment.Unknown:
-      slots = -1;
-      break;
-  }
-  return slots;
-}
-
 export function roleToColor(role: Role): string {
   let colorString = COLORS.BLACK;
 
   switch (role) {
     case Role.Unknown:
-    case Role.Cleaned:
-    case Role.YourOtherMafia:
-    case Role.ProbablyDisguised:
       colorString = COLORS.BLACK;
+      break;
+    case Role.Cleaned:
+    case Role.ProbablyForged:
+      colorString = COLORS.CLEANED_OR_FORGED;
       break;
     case Role.Jailor:
     case Role.Lookout:
@@ -163,6 +119,7 @@ export function roleToColor(role: Role): string {
       colorString = COLORS.CONFIRMED_TOWN;
       break;
     case Role.Godfather:
+    case Role.YourOtherMafia:
     case Role.Mafioso:
     case Role.Consigliere:
     case Role.Consort:
@@ -189,7 +146,135 @@ export function roleToColor(role: Role): string {
   return colorString;
 }
 
-export function factionDisplayString(faction: Faction): string {
+export function isRoleUnique(role: Role): boolean {
+  // Is checking every role necessary? Probably not, because it's only for automated RT suspicion.
+  // Executioner and witch are unique here, because app analyzes ranked games only (for now).
+  let isUnique = false;
+
+  switch (role) {
+    case Role.Jailor:
+    case Role.Veteran:
+    case Role.Retributionist:
+    case Role.Mayor:
+    case Role.Godfather:
+    case Role.Executioner:
+    case Role.Jester:
+    case Role.Witch:
+      isUnique = true;
+      break;
+    default:
+      isUnique = false;
+      break;
+  }
+
+  return isUnique;
+}
+
+export function getRoleDisplayString(role: Role): string {
+  let displayString = '';
+
+  switch (role) {
+    case Role.Unknown:
+      displayString = '?';
+      break;
+    case Role.YourOtherMafia:
+      displayString = '(Mafia)';
+      break;
+    case Role.ProbablyForged:
+      displayString = '(Forged)';
+      break;
+    case Role.Cleaned:
+      displayString = '(Cleaned)';
+      break;
+    default:
+      displayString = Role[role]!;
+      break;
+  }
+
+  return displayString;
+}
+
+export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
+  let slots = -1;
+
+  switch (townAlignment) {
+    case TownAlignment.J:
+    case TownAlignment.TK:
+    case TownAlignment.TP:
+    case TownAlignment.TS:
+      slots = 1;
+      break;
+    case TownAlignment.TI:
+      slots = 2;
+      break;
+    case TownAlignment.NotTown:
+    case TownAlignment.Unknown:
+      slots = -1;
+      break;
+  }
+  return slots;
+}
+
+export function townAlignmentToFaction(townAlignment: TownAlignment): Faction {
+  let faction = Faction.Unknown;
+
+  switch (townAlignment) {
+    case TownAlignment.J:
+    case TownAlignment.TK:
+    case TownAlignment.TP:
+    case TownAlignment.TS:
+    case TownAlignment.TI:
+      faction = Faction.Town;
+      break;
+    case TownAlignment.NotTown:
+    case TownAlignment.Unknown:
+      faction = Faction.Unknown;
+      break;
+  }
+  return faction;
+}
+
+export function townAlignmentToColor(townAlignment: TownAlignment): string {
+  let colorString = COLORS.BLACK;
+
+  switch (townAlignment) {
+    case TownAlignment.J:
+    case TownAlignment.TK:
+    case TownAlignment.TP:
+    case TownAlignment.TS:
+    case TownAlignment.TI:
+    case TownAlignment.Unknown:
+      colorString = COLORS.UNKNOWN;
+      break;
+    case TownAlignment.NotTown:
+      colorString = COLORS.SUSPICIOUS;
+      break;
+  }
+  return colorString;
+}
+
+export function getTownAlignmentDisplayString(
+  townAlignment: TownAlignment
+): string {
+  let displayString = '';
+
+  switch (townAlignment) {
+    case TownAlignment.J:
+    case TownAlignment.TK:
+    case TownAlignment.TP:
+    case TownAlignment.TS:
+    case TownAlignment.TI:
+      displayString = TownAlignment[townAlignment]!;
+      break;
+    case TownAlignment.NotTown:
+    case TownAlignment.Unknown:
+      displayString = '';
+      break;
+  }
+  return displayString;
+}
+
+export function getFactionDisplayString(faction: Faction): string {
   let displayString = '';
   switch (faction) {
     case Faction.Unknown:
@@ -209,42 +294,38 @@ export function factionDisplayString(faction: Faction): string {
   return displayString;
 }
 
-export function alignmentDisplayString(townAlignment: TownAlignment): string {
-  let displayString = '';
+export function factionToTownAlignment(faction: Faction): TownAlignment {
+  let alignment = TownAlignment.Unknown;
 
-  switch (townAlignment) {
-    case TownAlignment.J:
-    case TownAlignment.TK:
-    case TownAlignment.TP:
-    case TownAlignment.TS:
-    case TownAlignment.TI:
-      displayString = TownAlignment[townAlignment]!;
+  switch (faction) {
+    case Faction.Unknown:
+    case Faction.Town:
+      alignment = TownAlignment.Unknown;
       break;
-    case TownAlignment.NotTown:
-    case TownAlignment.Unknown:
-      displayString = '';
+    case Faction.Mafia:
+    case Faction.NeutralEvil:
+      alignment = TownAlignment.NotTown;
       break;
   }
-  return displayString;
+
+  return alignment;
 }
 
-export function roleDisplayString(role: Role): string {
-  let displayString = '';
+export function factionToColor(faction: Faction): string {
+  let color = COLORS.BLACK;
 
-  switch (role) {
-    case Role.Unknown:
-      displayString = '?';
+  switch (faction) {
+    case Faction.Unknown:
+    case Faction.Town:
+      color = COLORS.UNKNOWN;
       break;
-    case Role.YourOtherMafia:
-      displayString = '(mafia)';
+    case Faction.Mafia:
+      color = COLORS.MAFIA;
       break;
-    case Role.ProbablyDisguised:
-      displayString = '(disguised)';
-      break;
-    default:
-      displayString = Role[role]!;
+    case Faction.NeutralEvil:
+      color = COLORS.SUSPICIOUS; // ? or maybe something else? suspicious is too light if we know its NE
       break;
   }
 
-  return displayString;
+  return color;
 }

@@ -9,7 +9,6 @@ const Home: NextPage = () => {
   const [isNotepadShown, setIsNotepadShown] = useState(false); // to not initially show the notes
   const [isStartFormShown, setIsStartFormShown] = useState(false);
   const [isClaimsFormShown, setIsClaimsFormShown] = useState(false);
-  const [isDeadFormShown, setIsDeadFormShown] = useState(false);
 
   function handleNewGameOnClick() {
     setIsStartFormShown(true);

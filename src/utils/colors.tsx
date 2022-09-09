@@ -7,4 +7,5 @@ export const COLORS = {
   EXE: '#757575',
   JESTER: '#eb7ae7',
   MAFIA: '#ff4a4a',
+  CLEANED_OR_FORGED: '#888888',
 };

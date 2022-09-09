@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Faction, Role } from '../utils/enums';
+import { roleToColor, roleToFaction } from '../utils/infoHelper';
 import {
   generateInitialPlayersInfo,
   PlayersInfo,
   setExecutionerTarget,
   setUserMafiaNumbers,
 } from '../utils/playerInfo';
-import { roleToColor, roleToFaction } from '../utils/roleHelper';
 
 export const StartForm = ({
   setIsStartFormShown,
@@ -279,10 +279,7 @@ function RoleButtonsGrid({
           <RoleButton role={Role.Mafioso} setSelectedRole={setSelectedRole} />
         </div>
         <div className="grid-item" style={{ gridArea: '2/5/3/6' }}>
-          <RoleButton
-            role={Role.Executioner}
-            setSelectedRole={setSelectedRole}
-          />
+          <RoleButton role={Role.Witch} setSelectedRole={setSelectedRole} />
         </div>
         <div className="grid-item" style={{ gridArea: '3/1/4/2' }}>
           <RoleButton role={Role.Lookout} setSelectedRole={setSelectedRole} />
@@ -300,7 +297,10 @@ function RoleButtonsGrid({
           <RoleButton role={Role.Consort} setSelectedRole={setSelectedRole} />
         </div>
         <div className="grid-item" style={{ gridArea: '3/5/4/6' }}>
-          <RoleButton role={Role.Witch} setSelectedRole={setSelectedRole} />
+          <RoleButton
+            role={Role.Executioner}
+            setSelectedRole={setSelectedRole}
+          />
         </div>
         <div className="grid-item" style={{ gridArea: '4/1/5/2' }}>
           <RoleButton

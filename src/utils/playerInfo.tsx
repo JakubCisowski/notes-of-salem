@@ -1,6 +1,14 @@
 import { COLORS } from './colors';
 import { Faction, Role, TownAlignment } from './enums';
-import { roleToColor, roleToFaction, roleToTownAlignment } from './roleHelper';
+import {
+  factionToColor,
+  factionToTownAlignment,
+  roleToColor,
+  roleToFaction,
+  roleToTownAlignment,
+  townAlignmentToColor,
+  townAlignmentToFaction,
+} from './infoHelper';
 
 export type PlayersInfo = PlayerInfo[];
 
@@ -115,3 +123,91 @@ export function setUserMafiaNumbers(
 
   return playersInfo; // Does it need to return anything?
 }
+
+export function markPlayerAsDead(
+  playersInfo: PlayersInfo,
+  setPlayersInfo: (value: PlayersInfo) => void,
+  deadPlayerNumber: number,
+  deadPlayerRole: Role
+) {
+  if (deadPlayerNumber < 1 || deadPlayerNumber > 15) return;
+
+  let targetPlayerInfo = playersInfo.find(
+    (player) => player.number == deadPlayerNumber
+  )!;
+  targetPlayerInfo.isDead = true;
+
+  // todo: lock suspicious and confirmed town checkboxes on some targets
+
+  let confirmed = false;
+  roleToFaction(deadPlayerRole) == Faction.Town
+    ? (confirmed = true)
+    : (confirmed = false);
+
+  markPlayerClaim(
+    playersInfo,
+    setPlayersInfo,
+    deadPlayerNumber,
+    deadPlayerRole,
+    undefined,
+    undefined,
+    confirmed
+  );
+
+  // setPlayersInfo(playersInfo);
+  // Does it need to return anything?
+}
+
+export function markPlayerClaim(
+  playersInfo: PlayersInfo,
+  setPlayersInfo: (value: PlayersInfo) => void,
+  playerNumber: number,
+  playerRole: Role | undefined,
+  playerTownAlignment: TownAlignment | undefined,
+  playerFaction: Faction | undefined,
+  isConfirmedTown: boolean
+) {
+  if (playerNumber < 1 || playerNumber > 15) return;
+  // todo: make sure is confirmed town is correct...
+
+  let targetPlayerInfo = playersInfo.find(
+    (player) => player.number == playerNumber
+  )!;
+
+  targetPlayerInfo.isConfirmedTown = isConfirmedTown;
+
+  if (playerRole != undefined) {
+    targetPlayerInfo.role = playerRole;
+    targetPlayerInfo.townAlignment = roleToTownAlignment(playerRole);
+    targetPlayerInfo.faction = roleToFaction(playerRole);
+    targetPlayerInfo.displayColor = roleToColor(playerRole);
+  } else if (playerTownAlignment != undefined) {
+    targetPlayerInfo.role = Role.Unknown;
+    targetPlayerInfo.townAlignment = playerTownAlignment;
+    targetPlayerInfo.faction = townAlignmentToFaction(playerTownAlignment);
+    targetPlayerInfo.displayColor = townAlignmentToColor(playerTownAlignment);
+  } else if (playerFaction != undefined) {
+    targetPlayerInfo.role = Role.Unknown;
+    targetPlayerInfo.townAlignment = factionToTownAlignment(playerFaction);
+    targetPlayerInfo.faction = playerFaction;
+    targetPlayerInfo.displayColor = factionToColor(playerFaction);
+  }
+
+  // Confirmed town should override all other colors.
+  // Suspicious color should stay that way if still not confirmed or MAFIA/NEUTRAL.
+  if (isConfirmedTown) {
+    targetPlayerInfo.displayColor = COLORS.CONFIRMED_TOWN;
+    targetPlayerInfo.isSuspicious = false;
+  } else if (
+    targetPlayerInfo.isSuspicious &&
+    targetPlayerInfo.faction != Faction.Mafia &&
+    targetPlayerInfo.faction != Faction.NeutralEvil
+  ) {
+    targetPlayerInfo.displayColor = COLORS.SUSPICIOUS;
+  }
+
+  setPlayersInfo(playersInfo);
+  // Does it need to return anything?
+}
+
+export function checkPlayerPossiblySuspicious() {}

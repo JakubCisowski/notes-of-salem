@@ -79,6 +79,16 @@ h2 {
   justify-content: center;
 }
 
+.grid-container-dead {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(10, 35px);
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  justify-content: center;
+}
+
 .grid-item {
   background: lightgray;
 }
@@ -94,7 +104,7 @@ h2 {
   /* border: 2px solid green; */
 }
 .notepad-dead-container {
-  border: 2px solid red;
+  /* border: 2px solid red; */
 }
 
 .header-flexbox {
@@ -240,4 +250,5 @@ h2 {
   font-size: 0.9rem;
   background-color: #fcf3d9;
   font-family: Comic Sans MS;
+  text-align: center;
 }

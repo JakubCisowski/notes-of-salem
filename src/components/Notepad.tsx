@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { COLORS } from '../utils/colors';
 import { Faction } from '../utils/enums';
-import { PlayersInfo } from '../utils/playerInfo';
 import {
-  alignmentDisplayString,
-  factionDisplayString,
-  roleDisplayString,
+  getFactionDisplayString,
+  getRoleDisplayString,
+  getTownAlignmentDisplayString,
   roleToColor,
-} from '../utils/roleHelper';
+} from '../utils/infoHelper';
+import { PlayersInfo } from '../utils/playerInfo';
+import { DeadForm } from './DeadForm';
 
 export function Notepad({
   playersInfo,
@@ -16,6 +17,8 @@ export function Notepad({
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
 }) {
+  const [notepadUpadter, setNotepadUpdater] = useState(0); // This is a hack to force a re-render of the notepad.
+
   const alivePlayerCards: any[] = [];
   const deadPlayerCards: any[] = [];
 
@@ -25,6 +28,7 @@ export function Notepad({
         playerNumber={playerInfo.number}
         playersInfo={playersInfo}
         setPlayersInfo={setPlayersInfo}
+        setNotepadUpdater={setNotepadUpdater}
       />
     );
     if (!playerInfo.isDead) {
@@ -56,10 +60,12 @@ function PlayerCard({
   playerNumber,
   playersInfo,
   setPlayersInfo,
+  setNotepadUpdater,
 }: {
   playerNumber: number;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
+  setNotepadUpdater: (value: number) => void;
 }) {
   // Modifying player DOES modify playersInfo.
   // But shouldn't we use setPlayersInfo to modify playersInfo - rendering issues possible?
@@ -80,6 +86,8 @@ function PlayerCard({
   );
 
   const [playerNote, setPlayerNote] = React.useState<string>(player.note);
+
+  const [isDeadFormShown, setIsDeadFormShown] = useState(false);
 
   function onConfirmedCheckboxChange(e: any) {
     setIsConfirmed(e.target.checked);
@@ -124,8 +132,21 @@ function PlayerCard({
     }
   }
 
+  function onDeadButtonClick() {
+    setIsDeadFormShown(true);
+  }
+
   return (
     <>
+      {isDeadFormShown && (
+        <DeadForm
+          setIsDeadFormShown={setIsDeadFormShown}
+          playersInfo={playersInfo}
+          setPlayersInfo={setPlayersInfo}
+          playerNumber={playerNumber}
+          setNotepadUpdater={setNotepadUpdater}
+        />
+      )}
       <div className="notepad-player-card-container">
         <div
           className="notepad-card-section-number"
@@ -155,19 +176,19 @@ function PlayerCard({
           className="notepad-card-section-faction"
           style={{ backgroundColor: player.displayColor }}
         >
-          {factionDisplayString(player.faction)}
+          {getFactionDisplayString(player.faction)}
         </div>
         <div
           className="notepad-card-section-alignment"
           style={{ backgroundColor: player.displayColor }}
         >
-          {alignmentDisplayString(player.townAlignment)}
+          {getTownAlignmentDisplayString(player.townAlignment)}
         </div>
         <div
           className="notepad-card-section-role"
           style={{ backgroundColor: player.displayColor }}
         >
-          {roleDisplayString(player.role)}
+          {getRoleDisplayString(player.role)}
         </div>
         <div className="notepad-card-section-suspicious">
           {player.isSuspicionLocked ? (
@@ -195,9 +216,18 @@ function PlayerCard({
             onChange={onNoteChange}
           ></input>
         </div>
-        <div className="notepad-card-section-dead-button">
-          DEAD (<span style={{ fontWeight: 'bold' }}>{player.number}</span>)
-        </div>
+        {player.isDead ? (
+          <div className="notepad-card-section-dead-button">
+            (<span style={{ fontWeight: 'bold' }}>{player.number}</span>)
+          </div>
+        ) : (
+          <div
+            className="notepad-card-section-dead-button"
+            onClick={onDeadButtonClick}
+          >
+            DEAD (<span style={{ fontWeight: 'bold' }}>{player.number}</span>)
+          </div>
+        )}
       </div>
     </>
   );

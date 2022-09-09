@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { COLORS } from '../utils/colors';
+import { COLOR } from '../utils/color';
 import { Faction } from '../utils/enums';
 import {
   getFactionDisplayString,
@@ -9,6 +9,7 @@ import {
 } from '../utils/infoHelper';
 import { PlayersInfo } from '../utils/playerInfo';
 import { DeadForm } from './DeadForm';
+import { EditForm } from './EditForm';
 
 export function Notepad({
   playersInfo,
@@ -88,6 +89,7 @@ function PlayerCard({
   const [playerNote, setPlayerNote] = React.useState<string>(player.note);
 
   const [isDeadFormShown, setIsDeadFormShown] = useState(false);
+  const [isEditFormShown, setIsEditFormShown] = useState(false);
 
   function onConfirmedCheckboxChange(e: any) {
     setIsConfirmed(e.target.checked);
@@ -124,16 +126,20 @@ function PlayerCard({
     if (player.faction != Faction.Unknown && player.faction != Faction.Town) {
       return roleToColor(player.role);
     } else if (player.isConfirmedTown) {
-      return COLORS.CONFIRMED_TOWN;
+      return COLOR.CONFIRMED_TOWN;
     } else if (player.isSuspicious || player.isPossiblySuspicious) {
-      return COLORS.SUSPICIOUS;
+      return COLOR.SUSPICIOUS;
     } else {
-      return COLORS.UNKNOWN;
+      return COLOR.UNKNOWN;
     }
   }
 
   function onDeadButtonClick() {
     setIsDeadFormShown(true);
+  }
+
+  function onSetRoleButtonClick() {
+    setIsEditFormShown(true);
   }
 
   return (
@@ -147,6 +153,15 @@ function PlayerCard({
           setNotepadUpdater={setNotepadUpdater}
         />
       )}
+      {isEditFormShown && (
+        <EditForm
+          setIsEditFormShown={setIsEditFormShown}
+          playersInfo={playersInfo}
+          setPlayersInfo={setPlayersInfo}
+          playerNumber={playerNumber}
+          setNotepadUpdater={setNotepadUpdater}
+        />
+      )}
       <div className="notepad-player-card-container">
         <div
           className="notepad-card-section-number"
@@ -154,7 +169,22 @@ function PlayerCard({
         >
           {player.number}
         </div>
-        <div className="notepad-card-section-button">SET ROLE</div>
+        {player.isDead ? (
+          <div
+            className="notepad-card-section-button"
+            onClick={onDeadButtonClick}
+          >
+            SET ROLE
+          </div>
+        ) : (
+          <div
+            className="notepad-card-section-button"
+            onClick={onSetRoleButtonClick}
+          >
+            SET ROLE
+          </div>
+        )}
+
         <div className="notepad-card-section-confirmed">
           {player.isConfirmationLocked ? (
             <input

@@ -1,4 +1,4 @@
-import { COLORS } from './colors';
+import { COLOR } from './color';
 import { Faction, Role, TownAlignment } from './enums';
 
 export function roleToFaction(role: Role): Faction {
@@ -92,15 +92,15 @@ export function roleToTownAlignment(role: Role): TownAlignment {
 }
 
 export function roleToColor(role: Role): string {
-  let colorString = COLORS.BLACK;
+  let colorString = COLOR.BLACK;
 
   switch (role) {
     case Role.Unknown:
-      colorString = COLORS.BLACK;
+      colorString = COLOR.BLACK;
       break;
     case Role.Cleaned:
     case Role.ProbablyForged:
-      colorString = COLORS.CLEANED_OR_FORGED;
+      colorString = COLOR.CLEANED_OR_FORGED;
       break;
     case Role.Jailor:
     case Role.Lookout:
@@ -116,7 +116,7 @@ export function roleToColor(role: Role): string {
     case Role.Medium:
     case Role.Retributionist:
     case Role.Mayor:
-      colorString = COLORS.CONFIRMED_TOWN;
+      colorString = COLOR.CONFIRMED_TOWN;
       break;
     case Role.Godfather:
     case Role.YourOtherMafia:
@@ -130,16 +130,16 @@ export function roleToColor(role: Role): string {
     case Role.Blackmailer:
     case Role.Hypnotist:
     case Role.Ambusher:
-      colorString = COLORS.MAFIA;
+      colorString = COLOR.MAFIA;
       break;
     case Role.Executioner:
-      colorString = COLORS.EXE;
+      colorString = COLOR.EXE;
       break;
     case Role.Jester:
-      colorString = COLORS.JESTER;
+      colorString = COLOR.JESTER;
       break;
     case Role.Witch:
-      colorString = COLORS.WITCH;
+      colorString = COLOR.WITCH;
       break;
   }
 
@@ -227,6 +227,8 @@ export function townAlignmentToFaction(townAlignment: TownAlignment): Faction {
       faction = Faction.Town;
       break;
     case TownAlignment.NotTown:
+      faction = Faction.NotTown; // This might cause bugs, maybe should be Unknown.
+      break;
     case TownAlignment.Unknown:
       faction = Faction.Unknown;
       break;
@@ -235,7 +237,7 @@ export function townAlignmentToFaction(townAlignment: TownAlignment): Faction {
 }
 
 export function townAlignmentToColor(townAlignment: TownAlignment): string {
-  let colorString = COLORS.BLACK;
+  let colorString = COLOR.BLACK;
 
   switch (townAlignment) {
     case TownAlignment.J:
@@ -244,10 +246,10 @@ export function townAlignmentToColor(townAlignment: TownAlignment): string {
     case TownAlignment.TS:
     case TownAlignment.TI:
     case TownAlignment.Unknown:
-      colorString = COLORS.UNKNOWN;
+      colorString = COLOR.UNKNOWN;
       break;
     case TownAlignment.NotTown:
-      colorString = COLORS.SUSPICIOUS;
+      colorString = COLOR.SUSPICIOUS;
       break;
   }
   return colorString;
@@ -287,7 +289,10 @@ export function getFactionDisplayString(faction: Faction): string {
       displayString = 'M';
       break;
     case Faction.NeutralEvil:
-      displayString = 'N';
+      displayString = 'NE';
+      break;
+    case Faction.NotTown:
+      displayString = 'EVIL';
       break;
   }
 
@@ -304,6 +309,7 @@ export function factionToTownAlignment(faction: Faction): TownAlignment {
       break;
     case Faction.Mafia:
     case Faction.NeutralEvil:
+    case Faction.NotTown:
       alignment = TownAlignment.NotTown;
       break;
   }
@@ -312,18 +318,19 @@ export function factionToTownAlignment(faction: Faction): TownAlignment {
 }
 
 export function factionToColor(faction: Faction): string {
-  let color = COLORS.BLACK;
+  let color = COLOR.BLACK;
 
   switch (faction) {
     case Faction.Unknown:
     case Faction.Town:
-      color = COLORS.UNKNOWN;
+      color = COLOR.UNKNOWN;
       break;
     case Faction.Mafia:
-      color = COLORS.MAFIA;
+      color = COLOR.MAFIA;
       break;
     case Faction.NeutralEvil:
-      color = COLORS.SUSPICIOUS; // ? or maybe something else? suspicious is too light if we know its NE
+    case Faction.NotTown:
+      color = COLOR.SUSPICIOUS; // ? or maybe something else? suspicious is too light if we know its NE
       break;
   }
 

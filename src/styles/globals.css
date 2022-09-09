@@ -89,6 +89,16 @@ h2 {
   justify-content: center;
 }
 
+.grid-container-edit {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(14, 35px);
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  justify-content: center;
+}
+
 .grid-item {
   background: lightgray;
 }

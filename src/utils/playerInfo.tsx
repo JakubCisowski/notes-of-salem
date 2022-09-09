@@ -1,4 +1,4 @@
-import { COLORS } from './colors';
+import { COLOR } from './color';
 import { Faction, Role, TownAlignment } from './enums';
 import {
   factionToColor,
@@ -29,7 +29,7 @@ export type PlayerInfo = {
   isDead: boolean; // If the player is dead or not
 };
 
-export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
+export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
   let playersInfo = [] as PlayersInfo;
 
   for (let currentNumber = 1; currentNumber <= 15; currentNumber++) {
@@ -41,7 +41,7 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
     let isConfirmedTown = false;
     let isConfirmationLocked = false;
     let isSuspicious = false;
-    let displayColor = COLORS.UNKNOWN;
+    let displayColor = COLOR.UNKNOWN;
     let isPossiblySuspicious = false;
     let isSuspicionLocked;
     roleToFaction(userRole) == Faction.Mafia
@@ -62,7 +62,7 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
       if (faction != Faction.Town) {
         displayColor = roleToColor(role);
       } else if (isConfirmedTown) {
-        displayColor = COLORS.CONFIRMED_TOWN;
+        displayColor = COLOR.CONFIRMED_TOWN;
       }
     }
 
@@ -85,7 +85,7 @@ export function generateInitialPlayersInfo(userNumber: number, userRole: Role) {
   return playersInfo;
 }
 
-export function setExecutionerTarget(
+export function setupExecutionerTarget(
   playersInfo: PlayersInfo,
   targetNumber: number
 ) {
@@ -98,13 +98,13 @@ export function setExecutionerTarget(
   targetPlayerInfo.note = '(TARGET -> not Jailor/Mayor)';
   targetPlayerInfo.faction = Faction.Town;
   targetPlayerInfo.isConfirmedTown = true;
-  targetPlayerInfo.displayColor = COLORS.CONFIRMED_TOWN;
+  targetPlayerInfo.displayColor = COLOR.CONFIRMED_TOWN;
   targetPlayerInfo.isSuspicionLocked = true;
 
   return playersInfo; // Does it need to return anything?
 }
 
-export function setUserMafiaNumbers(
+export function setupUserMafiaNumbers(
   playersInfo: PlayersInfo,
   mafiaNumbers: number[]
 ) {
@@ -118,7 +118,7 @@ export function setUserMafiaNumbers(
     targetPlayerInfo.faction = Faction.Mafia;
     targetPlayerInfo.townAlignment = TownAlignment.NotTown;
     targetPlayerInfo.role = Role.YourOtherMafia;
-    targetPlayerInfo.displayColor = COLORS.MAFIA;
+    targetPlayerInfo.displayColor = COLOR.MAFIA;
     targetPlayerInfo.isConfirmationLocked = true;
     // .isSuspicionLocked already set to true in generateInitialPlayersInfo()
   }
@@ -139,7 +139,7 @@ export function markPlayerAsDead(
   )!;
   deadPlayer.isDead = true;
 
-  adjustPlayerInfo(
+  editPlayerInfo(
     playersInfo,
     setPlayersInfo,
     deadPlayerNumber,
@@ -149,7 +149,7 @@ export function markPlayerAsDead(
   );
 }
 
-export function adjustPlayerInfo(
+export function editPlayerInfo(
   playersInfo: PlayersInfo,
   setPlayersInfo: (value: PlayersInfo) => void,
   playerNumber: number,
@@ -177,17 +177,22 @@ export function adjustPlayerInfo(
     player.townAlignment = factionToTownAlignment(playerFaction);
     player.faction = playerFaction;
     player.displayColor = factionToColor(playerFaction);
+  } else {
+    player.role = Role.Unknown;
+    player.townAlignment = TownAlignment.Unknown;
+    player.faction = Faction.Unknown;
+    player.displayColor = COLOR.UNKNOWN;
   }
 
   // IS CONFIRMED TOWN
-  player.isConfirmedTown = isPlayerConfirmedAfterInfoChange(
+  player.isConfirmedTown = isPlayerConfirmedOnInfoEdit(
     player.isConfirmedTown,
     player.faction,
     player.isDead
   );
 
   // IS SUSPICIOUS
-  player.isSuspicious = isPlayerSuspiciousAfterInfoChange(
+  player.isSuspicious = isPlayerSuspiciousOnInfoEdit(
     player.isSuspicious,
     player.faction,
     player.isDead
@@ -195,9 +200,9 @@ export function adjustPlayerInfo(
 
   // COLOR (AFTER TAKING CONFIRMATION/SUSPICION INTO ACCOUNT)
   if (player.isConfirmedTown) {
-    player.displayColor = COLORS.CONFIRMED_TOWN;
+    player.displayColor = COLOR.CONFIRMED_TOWN;
   } else if (player.isSuspicious) {
-    player.displayColor = COLORS.SUSPICIOUS;
+    player.displayColor = COLOR.SUSPICIOUS;
   }
 
   // DEAD PLAYER
@@ -214,7 +219,7 @@ export function adjustPlayerInfo(
   setPlayersInfo(playersInfo);
 }
 
-function isPlayerConfirmedAfterInfoChange(
+function isPlayerConfirmedOnInfoEdit(
   wasPreviouslyConfirmedTown: boolean,
   newFaction: Faction,
   isDead: boolean
@@ -245,7 +250,7 @@ function isPlayerConfirmedAfterInfoChange(
   return isPlayerNowConfirmed;
 }
 
-function isPlayerSuspiciousAfterInfoChange(
+function isPlayerSuspiciousOnInfoEdit(
   wasPreviouslySuspicious: boolean,
   newFaction: Faction,
   isDead: boolean

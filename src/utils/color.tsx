@@ -1,4 +1,4 @@
-export const COLORS = {
+export const COLOR = {
   BLACK: '#000000',
   UNKNOWN: '#ccffcc',
   CONFIRMED_TOWN: '#00cc66',

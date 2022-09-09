@@ -33,14 +33,7 @@ export enum Role {
   Witch,
 }
 
-export enum Faction {
-  Unknown,
-  Town,
-  Mafia,
-  NeutralEvil,
-}
-
-export enum TownAlignment {
+export enum TownAlignment { // Stritcly for tracking RT's
   Unknown,
   NotTown,
   J,
@@ -48,4 +41,12 @@ export enum TownAlignment {
   TP,
   TK,
   TS,
+}
+
+export enum Faction {
+  Unknown,
+  NotTown, // When we don't know if Mafia or Neutral Evil
+  Mafia,
+  NeutralEvil,
+  Town,
 }

@@ -4,10 +4,10 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Faction, Role } from '../utils/enums';
 import { roleToColor, roleToFaction } from '../utils/infoHelper';
 import {
-  generateInitialPlayersInfo,
+  generateDefaultPlayersInfo,
   PlayersInfo,
-  setExecutionerTarget,
-  setUserMafiaNumbers,
+  setupExecutionerTarget,
+  setupUserMafiaNumbers,
 } from '../utils/playerInfo';
 
 export const StartForm = ({
@@ -30,14 +30,14 @@ export const StartForm = ({
   function handleConfirmOnClick() {
     if (isSelectionValid()) {
       setIsStartFormShown(false);
-      let newPlayerInfo = generateInitialPlayersInfo(
+      let newPlayerInfo = generateDefaultPlayersInfo(
         selectedUserNumber,
         selectedRole!
       );
       if (selectedRole == Role.Executioner) {
-        setExecutionerTarget(newPlayerInfo, selectedExeTargetNumber);
+        setupExecutionerTarget(newPlayerInfo, selectedExeTargetNumber);
       } else if (roleToFaction(selectedRole!) == Faction.Mafia) {
-        setUserMafiaNumbers(newPlayerInfo, [
+        setupUserMafiaNumbers(newPlayerInfo, [
           selectedMafia1Number,
           selectedMafia2Number,
           selectedMafia3Number,

@@ -22,7 +22,7 @@ export const DeadForm = ({
     if (selectedRole === undefined) return;
     setIsDeadFormShown(false);
     markPlayerAsDead(playersInfo, setPlayersInfo, playerNumber, selectedRole!);
-    setNotepadUpdater((prevState: number) => prevState + 1); //
+    setNotepadUpdater((prevState: number) => prevState + 1);
   }
 
   function handleCancelOnClick() {

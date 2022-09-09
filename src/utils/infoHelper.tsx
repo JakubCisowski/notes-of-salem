@@ -116,7 +116,7 @@ export function roleToColor(role: Role): string {
     case Role.Medium:
     case Role.Retributionist:
     case Role.Mayor:
-      colorString = COLOR.CONFIRMED_TOWN;
+      colorString = COLOR.UNKNOWN;
       break;
     case Role.Godfather:
     case Role.YourOtherMafia:

@@ -38,8 +38,8 @@ h2 {
 }
 
 .button-new {
-  margin-top: 2rem;
-  font-size: 2rem;
+  margin-top: 1rem;
+  font-size: 2.2rem;
 }
 
 .button-action {
@@ -107,7 +107,14 @@ h2 {
   border: 2px solid black;
   padding: 10px;
   max-width: 1000px;
-  margin: 20px auto;
+  margin: 20px auto 5px auto;
+}
+
+.sidenotes-container {
+  border: 2px solid black;
+  padding: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .notepad-alive-container {
@@ -122,16 +129,16 @@ h2 {
   /* border: 1px solid purple; */
 }
 .header-number {
-  width: 5%;
+  width: 10%;
   font-size: 1.3rem;
   font-weight: bold;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: left;
 }
 .header-confirmed {
   font-size: 1.1rem;
-  width: 35%;
+  width: 25%;
   font-weight: bold;
   display: flex;
   align-items: flex-end;
@@ -139,11 +146,19 @@ h2 {
 }
 .header-suspicious {
   font-size: 1.1rem;
-  width: 30%;
+  width: 45%;
   font-weight: bold;
   display: flex;
   align-items: flex-end;
   justify-content: center;
+}
+
+.horizontal-line {
+  height: 1px;
+  width: 50%;
+  text-align: center;
+  margin: 30px auto 0 auto;
+  border-top: 2px solid gray;
 }
 
 .notepad-player-card-container {
@@ -261,4 +276,13 @@ h2 {
   background-color: #fcf3d9;
   font-family: Comic Sans MS;
   text-align: center;
+}
+
+.notepad-game-note {
+  font-size: 1.1rem;
+  width: 100%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

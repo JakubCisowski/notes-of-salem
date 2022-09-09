@@ -6,6 +6,7 @@ import { PlayersInfo } from '../utils/playerInfo';
 
 const Home: NextPage = () => {
   const [playersInfo, setPlayersInfo] = useState<PlayersInfo>([]);
+  const [gameNote, setGameNote] = useState('');
   const [isNotepadShown, setIsNotepadShown] = useState(false); // to not initially show the notes
   const [isStartFormShown, setIsStartFormShown] = useState(false);
   const [isClaimsFormShown, setIsClaimsFormShown] = useState(false);
@@ -26,12 +27,18 @@ const Home: NextPage = () => {
           setIsStartFormShown={setIsStartFormShown}
           setIsNotepadShown={setIsNotepadShown}
           setPlayersInfo={setPlayersInfo}
+          setGameNote={setGameNote}
         />
       )}
 
       {isNotepadShown && (
         <>
-          <Notepad playersInfo={playersInfo} setPlayersInfo={setPlayersInfo} />
+          <Notepad
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            gameNote={gameNote}
+            setGameNote={setGameNote}
+          />
         </>
       )}
     </>

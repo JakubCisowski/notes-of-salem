@@ -14,9 +14,13 @@ import { EditForm } from './EditForm';
 export function Notepad({
   playersInfo,
   setPlayersInfo,
+  gameNote,
+  setGameNote,
 }: {
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
+  gameNote: string;
+  setGameNote: any;
 }) {
   const [notepadUpadter, setNotepadUpdater] = useState(0); // This is a hack to force a re-render of the notepad.
 
@@ -42,16 +46,18 @@ export function Notepad({
   return (
     <>
       <div className="notepad-container">
-        <h1>Alive</h1>
-        <Header />
+        <HeaderAlive />
         <div className="notepad-alive-container">{alivePlayerCards}</div>
         {deadPlayerCards.length > 0 && (
           <>
-            <h1>Dead</h1>
-            <Header />
+            <hr className="horizontal-line"></hr>
+            <HeaderDead />
             <div className="notepad-dead-container">{deadPlayerCards}</div>
           </>
         )}
+      </div>
+      <div className="sidenotes-container">
+        <Sidenotes gameNote={gameNote} setGameNote={setGameNote} />
       </div>
     </>
   );
@@ -263,11 +269,11 @@ function PlayerCard({
   );
 }
 
-function Header() {
+function HeaderAlive() {
   return (
     <>
       <div className="header-flexbox">
-        <div className="header-number">#</div>
+        <div className="header-number">ALIVE</div>
         <div className="header-confirmed">
           <p style={{ margin: 0 }}>
             CONFIRMED
@@ -276,6 +282,42 @@ function Header() {
           </p>
         </div>
         <div className="header-suspicious">SUSPICIOUS?</div>
+      </div>
+    </>
+  );
+}
+
+function HeaderDead() {
+  return (
+    <>
+      <div className="header-flexbox">
+        <div className="header-number">DEAD</div>
+      </div>
+    </>
+  );
+}
+
+function Sidenotes({
+  gameNote,
+  setGameNote,
+}: {
+  gameNote: string;
+  setGameNote: any;
+}) {
+  function onNoteChange(e: any) {
+    gameNote = e.target.value;
+    setGameNote(e.target.value);
+  }
+
+  return (
+    <>
+      <div className="game-note">
+        <input
+          className="input-note"
+          type="text"
+          value={gameNote}
+          onChange={onNoteChange}
+        ></input>
       </div>
     </>
   );

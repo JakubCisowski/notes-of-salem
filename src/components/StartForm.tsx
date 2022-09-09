@@ -14,10 +14,12 @@ export const StartForm = ({
   setIsStartFormShown,
   setIsNotepadShown,
   setPlayersInfo: setPlayerInfo,
+  setGameNote,
 }: {
   setIsStartFormShown: (value: boolean) => void;
   setIsNotepadShown: (value: boolean) => void;
   setPlayersInfo: (value: PlayersInfo) => void;
+  setGameNote: any;
 }) => {
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [selectedUserNumber, setSelectedUserNumber] = useState<number>(-1);
@@ -46,6 +48,7 @@ export const StartForm = ({
       console.log(newPlayerInfo);
       setPlayerInfo(newPlayerInfo);
       setIsNotepadShown(true);
+      setGameNote('');
     }
   }
 

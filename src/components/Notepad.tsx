@@ -7,7 +7,7 @@ import {
   getTownAlignmentDisplayString,
   roleToColor,
 } from '../utils/infoHelper';
-import { PlayersInfo } from '../utils/playerInfo';
+import { checkAutoSuspicion, PlayersInfo } from '../utils/playerInfo';
 import { DeadForm } from './DeadForm';
 import { EditForm } from './EditForm';
 
@@ -78,7 +78,7 @@ function PlayerCard({
   playerNumber: number;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
-  setNotepadUpdater: (value: number) => void;
+  setNotepadUpdater: any;
   setMajority: any;
 }) {
   // Modifying player DOES modify playersInfo.
@@ -114,6 +114,9 @@ function PlayerCard({
     player.displayColor = calculateDisplayColor();
     setPlayerColor(calculateDisplayColor());
     //setPlayersInfo(playersInfo); // should we use this anywyas?
+
+    checkAutoSuspicion(playersInfo, setPlayersInfo);
+    setNotepadUpdater((prevState: number) => prevState + 1);
     console.log(playersInfo);
   }
 
@@ -123,10 +126,12 @@ function PlayerCard({
     if (e.target.checked == true) {
       player.isConfirmedTown = false;
       setIsConfirmed(false);
+      checkAutoSuspicion(playersInfo, setPlayersInfo);
     }
     player.displayColor = calculateDisplayColor();
     setPlayerColor(calculateDisplayColor());
     //setPlayersInfo(playersInfo); // should we use this anywyas?
+    setNotepadUpdater((prevState: number) => prevState + 1);
     console.log(playersInfo);
   }
 
@@ -140,7 +145,7 @@ function PlayerCard({
       return roleToColor(player.role);
     } else if (player.isConfirmedTown) {
       return COLOR.CONFIRMED_TOWN;
-    } else if (player.isSuspicious || player.isPossiblySuspicious) {
+    } else if (player.isSuspicious) {
       return COLOR.SUSPICIOUS;
     } else {
       return COLOR.UNKNOWN;
@@ -252,7 +257,25 @@ function PlayerCard({
             ></input>
           )}
         </div>
-        <div className="notepad-card-section-possibly-suspicious">{}</div>
+        <div className="notepad-card-section-autosuspicion">
+          {player.autoSuspicionSeverity == 0 && ''}
+          {player.autoSuspicionSeverity == 1 && (
+            <div className="serverity-moderate">
+              ?
+              <div className="hover-content">
+                {player.autoSuspicionNotes.join('\n')}
+              </div>
+            </div>
+          )}
+          {player.autoSuspicionSeverity == 2 && (
+            <div className="serverity-high">
+              !!!
+              <div className="hover-content">
+                {player.autoSuspicionNotes.join('\n')}
+              </div>
+            </div>
+          )}
+        </div>
         <div className="notepad-card-section-note">
           <input
             className="input-note"

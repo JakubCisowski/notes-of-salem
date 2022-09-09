@@ -50,3 +50,9 @@ export enum Faction {
   NeutralEvil,
   Town,
 }
+
+export enum SuspicionSeverity {
+  None,
+  Moderate,
+  High,
+}

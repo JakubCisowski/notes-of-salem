@@ -1,8 +1,10 @@
 import { COLOR } from './color';
-import { Faction, Role, TownAlignment } from './enums';
+import { Faction, Role, SuspicionSeverity, TownAlignment } from './enums';
 import {
   factionToColor,
   factionToTownAlignment,
+  getTownAlignmentSlots,
+  isRoleUnique,
   roleToColor,
   roleToFaction,
   roleToTownAlignment,
@@ -24,7 +26,8 @@ export type PlayerInfo = {
   isConfirmedTown: boolean; // If the player is confirmed townie or not
   isConfirmationLocked: boolean; // If this player is either user or user mafia, confirmation checkbox is locked because unnecessary
   isSuspicious: boolean; // If the player is suspicious of being evil or not
-  isPossiblySuspicious: boolean; // Special field for automated RT suspicion, or multiple unique roles claim
+  autoSuspicionSeverity: SuspicionSeverity; // Special field for automated RT suspicion, or multiple unique roles claim, etc.
+  autoSuspicionNotes: string[]; // Automates suspicion notes
   isSuspicionLocked: boolean; // If user is mafia, there is no need to track suspicious players, so all players' suspicion checkboxes are locked
   isDead: boolean; // If the player is dead or not
 };
@@ -42,7 +45,8 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
     let isConfirmationLocked = false;
     let isSuspicious = false;
     let displayColor = COLOR.UNKNOWN;
-    let isPossiblySuspicious = false;
+    let autoSuspicionSeverity = SuspicionSeverity.None;
+    let autoSuspicionNotes = [];
     let isSuspicionLocked;
     roleToFaction(userRole) == Faction.Mafia
       ? (isSuspicionLocked = true)
@@ -76,7 +80,8 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       isConfirmedTown: isConfirmedTown,
       isConfirmationLocked: isConfirmationLocked,
       isSuspicious: isSuspicious,
-      isPossiblySuspicious: isPossiblySuspicious,
+      autoSuspicionSeverity: autoSuspicionSeverity,
+      autoSuspicionNotes: [],
       isSuspicionLocked: isSuspicionLocked,
       isDead: isDead,
     });
@@ -211,8 +216,9 @@ export function editPlayerInfo(
   // DEAD PLAYER
   if (player.isDead) {
     player.isSuspicionLocked = true;
+
     // todo: this will be in another function, when I deal with automated possible suspicion
-    player.isPossiblySuspicious = false;
+    //player.autoSuspicionSeverity = false;
 
     // If they player is dead, we can't confirm them as townie anymore.
     // We can only change his role afterwards, the confirmation is automatically set upon death or role change.
@@ -221,6 +227,9 @@ export function editPlayerInfo(
 
   // CALCULATE MAJORITY
   calculateNewMajority(playersInfo, setMajority);
+
+  // CHECK PLAYERS FOR AUTO SUSPICION
+  checkAutoSuspicion(playersInfo, setPlayersInfo);
 
   setPlayersInfo(playersInfo);
 }
@@ -306,4 +315,256 @@ function calculateNewMajority(playersInfo: PlayersInfo, setMajority: any) {
   setMajority(newMajority);
 }
 
-export function checkPlayerPossiblySuspicious() {}
+export function checkAutoSuspicion(
+  playersInfo: PlayersInfo,
+  setPlayersInfo: (value: PlayersInfo) => void
+) {
+  const RT_SLOTS = 3;
+  let confirmedRandomTownAmount = howManyConfirmedRT(playersInfo);
+  let unconfirmedRandomTownClaimsAmount =
+    howManyUnconfirmedClaimRT(playersInfo);
+
+  // MODERATE SUSPICION
+  // M1) there is place for alive rt (after counting dead/confirmed), and is one of the people that claim to be RT and number of people who claim RT is too high
+  // M2) claims unique role with at least one other not confirmed player
+
+  // HIGH SUSPICION
+  // H1) there is no place for RT (after counting dead/confirmed) and claims RT
+  // H2) claims unique role with at least one other confirmed player
+
+  // AUTO SUSPICION TRUST USER CONFIRMATION
+  // SO WE DONT CHECK IT FOR CONFIRMED AND DEAD PLAYERS
+  // AND ONLY FOR TOWN/UNKNOWN FACTION PLAYERS
+  playersInfo.forEach((player) => {
+    if (
+      !player.isConfirmedTown &&
+      !player.isDead &&
+      (player.faction == Faction.Unknown || player.faction == Faction.Town)
+    ) {
+      let moderateSuspiciousLeads = 0;
+      let highSuspiciousLeads = 0;
+      let newAutoSuspicionNotes: string[] = [];
+      let doesPlayerClaimRandomTown = doesPlayerClaimRT(
+        player.number,
+        playersInfo
+      );
+      let isPlayerRoleUnique = isRoleUnique(player.role);
+      let unconfirmedPlayersClaimThisRoleAmount =
+        howManyUnconfirmedPlayersClaimThisRole(player.role, playersInfo);
+      let confirmedPlayersClaimThisRoleAmount =
+        howManyConfirmedPlayersClaimThisRole(player.role, playersInfo);
+
+      // M1)
+      if (
+        confirmedRandomTownAmount < RT_SLOTS &&
+        doesPlayerClaimRandomTown &&
+        unconfirmedRandomTownClaimsAmount > RT_SLOTS - confirmedRandomTownAmount
+      ) {
+        moderateSuspiciousLeads++;
+        newAutoSuspicionNotes.push(
+          '- One of too many unconfirmed players who claim RT.'
+        );
+      }
+
+      // M2)
+      if (isPlayerRoleUnique && unconfirmedPlayersClaimThisRoleAmount > 1) {
+        moderateSuspiciousLeads++;
+        newAutoSuspicionNotes.push(
+          '- Claims unique role (' +
+            Role[player.role] +
+            ') with other unconfirmed player.'
+        );
+      }
+
+      // H1)
+      if (confirmedRandomTownAmount >= RT_SLOTS && doesPlayerClaimRandomTown) {
+        highSuspiciousLeads++;
+        newAutoSuspicionNotes.push('- Claims RT but there is no place for RT.');
+      }
+
+      // H2)
+      if (isPlayerRoleUnique && confirmedPlayersClaimThisRoleAmount >= 1) {
+        highSuspiciousLeads++;
+        newAutoSuspicionNotes.push(
+          '- Claims unique role (' +
+            Role[player.role] +
+            ') but other confirmed player occupies it.'
+        );
+      }
+
+      if (highSuspiciousLeads > 0 || moderateSuspiciousLeads > 1) {
+        player.autoSuspicionSeverity = SuspicionSeverity.High;
+      } else if (moderateSuspiciousLeads > 0) {
+        player.autoSuspicionSeverity = SuspicionSeverity.Moderate;
+      } else {
+        player.autoSuspicionSeverity = SuspicionSeverity.None;
+      }
+
+      player.autoSuspicionNotes = newAutoSuspicionNotes;
+    } else {
+      player.autoSuspicionSeverity = SuspicionSeverity.None;
+      player.autoSuspicionNotes = [];
+    }
+  });
+
+  setPlayersInfo(playersInfo);
+  console.log(playersInfo);
+}
+
+function howManyConfirmedAreFromAlignment(
+  playersInfo: PlayersInfo,
+  alignment: TownAlignment
+) {
+  let confirmedCount = playersInfo.filter(
+    (player) =>
+      (player.isConfirmedTown || player.isDead) &&
+      player.townAlignment == alignment
+  ).length;
+
+  return confirmedCount;
+}
+
+function howManyUnconfirmedClaimAlignment(
+  playersInfo: PlayersInfo,
+  alignment: TownAlignment
+) {
+  let unconfirmedCount = playersInfo.filter(
+    (player) =>
+      !(player.isConfirmedTown || player.isDead) &&
+      player.townAlignment == alignment
+  ).length;
+
+  return unconfirmedCount;
+}
+
+function howManyConfirmedRT(playersInfo: PlayersInfo) {
+  let confirmedRTCount = 0;
+
+  let eligibleAlignmentsForRT = [
+    TownAlignment.TI,
+    TownAlignment.TP,
+    TownAlignment.TK,
+    TownAlignment.TS,
+  ];
+
+  for (let alignment of eligibleAlignmentsForRT) {
+    let alignmentConfirmed = howManyConfirmedAreFromAlignment(
+      playersInfo,
+      alignment
+    );
+    let alignmentSlots = getTownAlignmentSlots(alignment);
+    if (alignmentConfirmed > alignmentSlots)
+      confirmedRTCount += alignmentConfirmed - alignmentSlots;
+  }
+
+  return confirmedRTCount;
+}
+
+function howManyUnconfirmedClaimRT(playersInfo: PlayersInfo) {
+  let unConfirmedRTClaimCount = 0;
+
+  let eligibleAlignmentsForRT = [
+    TownAlignment.TI,
+    TownAlignment.TP,
+    TownAlignment.TK,
+    TownAlignment.TS,
+  ];
+
+  /*
+  todo: Rewrite these examples in english.
+
+  x 3 confirmed doctorow
+  y 2 uncofirmed tp claimow
+  z sloty: 1
+
+  ile confirmed RT claimow = 2 (jesli x>z to x-z, jesli x<=z to 0)
+  ile unconfirmed RT = 2 (jesli x >= z to y)
+
+  x 1 confirmed spy
+  y 5 uncofirmed TI claimow
+  z sloty: 2
+
+  ile confirmed RT claimow = 0     (jesli x>z to x-z, jesli x<=z toz 0)
+  ile unconfirmed RT = 5!!! (jesli x+y > z TO [jesli x >= z to y, jesli x < z to y] )
+
+  x 0(!) confirmed spy
+  y 2 uncofirmed TI claimow
+  z sloty: 2
+
+  ile confirmed RT claimow = 0     (jesli x>z to x-z, jesli x<=z toz 0)
+  ile unconfirmed RT = 0 (jesli x+y <= z to 0, wtedy ci unforimed nie claimuja RT bo wszystko sie zgadza)
+
+
+
+  When amount of uncofirmed claims exceed amount of slots, every one of 
+  */
+
+  for (let alignment of eligibleAlignmentsForRT) {
+    let alignmentConfirmed = howManyConfirmedAreFromAlignment(
+      playersInfo,
+      alignment
+    );
+    let alignmentUnconfirmed = howManyUnconfirmedClaimAlignment(
+      playersInfo,
+      alignment
+    );
+    let alignmentSlots = getTownAlignmentSlots(alignment);
+
+    if (alignmentConfirmed + alignmentUnconfirmed > alignmentSlots)
+      unConfirmedRTClaimCount += alignmentUnconfirmed;
+  }
+
+  return unConfirmedRTClaimCount;
+}
+
+function doesPlayerClaimRT(playerNumber: number, playersInfo: PlayersInfo) {
+  let eligibleAlignmentsForRT = [
+    TownAlignment.TI,
+    TownAlignment.TP,
+    TownAlignment.TK,
+    TownAlignment.TS,
+  ];
+
+  let player = playersInfo.find((player) => player.number == playerNumber);
+
+  if (!eligibleAlignmentsForRT.includes(player!.townAlignment)) return false;
+
+  let alignment = player!.townAlignment;
+
+  let alignmentConfirmed = howManyConfirmedAreFromAlignment(
+    playersInfo,
+    alignment
+  );
+  let alignmentUnconfirmed = howManyUnconfirmedClaimAlignment(
+    playersInfo,
+    alignment
+  );
+  let alignmentSlots = getTownAlignmentSlots(alignment);
+
+  if (alignmentConfirmed + alignmentUnconfirmed > alignmentSlots) return true;
+
+  return false;
+}
+
+function howManyConfirmedPlayersClaimThisRole(
+  role: Role,
+  playersInfo: PlayersInfo
+) {
+  let roleCount = playersInfo.filter(
+    (player) => (player.isConfirmedTown || player.isDead) && player.role == role
+  ).length;
+
+  return roleCount;
+}
+
+function howManyUnconfirmedPlayersClaimThisRole(
+  role: Role,
+  playersInfo: PlayersInfo
+) {
+  let roleCount = playersInfo.filter(
+    (player) =>
+      !(player.isConfirmedTown || player.isDead) && player.role == role
+  ).length;
+
+  return roleCount;
+}

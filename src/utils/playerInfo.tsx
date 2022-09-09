@@ -10,6 +10,8 @@ import {
   townAlignmentToFaction,
 } from './infoHelper';
 
+// todo: export to separate file
+
 export type PlayersInfo = PlayerInfo[];
 
 export type PlayerInfo = {
@@ -132,82 +134,138 @@ export function markPlayerAsDead(
 ) {
   if (deadPlayerNumber < 1 || deadPlayerNumber > 15) return;
 
-  let targetPlayerInfo = playersInfo.find(
+  let deadPlayer = playersInfo.find(
     (player) => player.number == deadPlayerNumber
   )!;
-  targetPlayerInfo.isDead = true;
+  deadPlayer.isDead = true;
 
-  // todo: lock suspicious and confirmed town checkboxes on some targets
-
-  let confirmed = false;
-  roleToFaction(deadPlayerRole) == Faction.Town
-    ? (confirmed = true)
-    : (confirmed = false);
-
-  markPlayerClaim(
+  adjustPlayerInfo(
     playersInfo,
     setPlayersInfo,
     deadPlayerNumber,
     deadPlayerRole,
     undefined,
-    undefined,
-    confirmed
+    undefined
   );
-
-  // setPlayersInfo(playersInfo);
-  // Does it need to return anything?
 }
 
-export function markPlayerClaim(
+export function adjustPlayerInfo(
   playersInfo: PlayersInfo,
   setPlayersInfo: (value: PlayersInfo) => void,
   playerNumber: number,
   playerRole: Role | undefined,
   playerTownAlignment: TownAlignment | undefined,
-  playerFaction: Faction | undefined,
-  isConfirmedTown: boolean
+  playerFaction: Faction | undefined
 ) {
   if (playerNumber < 1 || playerNumber > 15) return;
-  // todo: make sure is confirmed town is correct...
 
-  let targetPlayerInfo = playersInfo.find(
-    (player) => player.number == playerNumber
-  )!;
+  let player = playersInfo.find((player) => player.number == playerNumber)!;
 
-  targetPlayerInfo.isConfirmedTown = isConfirmedTown;
-
+  // ROLE, TOWN ALIGNMENT, FACTION, COLOR (INITIAL)
   if (playerRole != undefined) {
-    targetPlayerInfo.role = playerRole;
-    targetPlayerInfo.townAlignment = roleToTownAlignment(playerRole);
-    targetPlayerInfo.faction = roleToFaction(playerRole);
-    targetPlayerInfo.displayColor = roleToColor(playerRole);
+    player.role = playerRole;
+    player.townAlignment = roleToTownAlignment(playerRole);
+    player.faction = roleToFaction(playerRole);
+    player.displayColor = roleToColor(playerRole);
   } else if (playerTownAlignment != undefined) {
-    targetPlayerInfo.role = Role.Unknown;
-    targetPlayerInfo.townAlignment = playerTownAlignment;
-    targetPlayerInfo.faction = townAlignmentToFaction(playerTownAlignment);
-    targetPlayerInfo.displayColor = townAlignmentToColor(playerTownAlignment);
+    player.role = Role.Unknown;
+    player.townAlignment = playerTownAlignment;
+    player.faction = townAlignmentToFaction(playerTownAlignment);
+    player.displayColor = townAlignmentToColor(playerTownAlignment);
   } else if (playerFaction != undefined) {
-    targetPlayerInfo.role = Role.Unknown;
-    targetPlayerInfo.townAlignment = factionToTownAlignment(playerFaction);
-    targetPlayerInfo.faction = playerFaction;
-    targetPlayerInfo.displayColor = factionToColor(playerFaction);
+    player.role = Role.Unknown;
+    player.townAlignment = factionToTownAlignment(playerFaction);
+    player.faction = playerFaction;
+    player.displayColor = factionToColor(playerFaction);
   }
 
-  // Confirmed town should override all other colors.
-  // Suspicious color should stay that way if still not confirmed or MAFIA/NEUTRAL.
-  if (isConfirmedTown) {
-    targetPlayerInfo.displayColor = COLORS.CONFIRMED_TOWN;
-    targetPlayerInfo.isSuspicious = false;
-  } else if (
-    targetPlayerInfo.isSuspicious &&
-    targetPlayerInfo.faction != Faction.Mafia &&
-    targetPlayerInfo.faction != Faction.NeutralEvil
-  ) {
-    targetPlayerInfo.displayColor = COLORS.SUSPICIOUS;
+  // IS CONFIRMED TOWN
+  player.isConfirmedTown = isPlayerConfirmedAfterInfoChange(
+    player.isConfirmedTown,
+    player.faction,
+    player.isDead
+  );
+
+  // IS SUSPICIOUS
+  player.isSuspicious = isPlayerSuspiciousAfterInfoChange(
+    player.isSuspicious,
+    player.faction,
+    player.isDead
+  );
+
+  // COLOR (AFTER TAKING CONFIRMATION/SUSPICION INTO ACCOUNT)
+  if (player.isConfirmedTown) {
+    player.displayColor = COLORS.CONFIRMED_TOWN;
+  } else if (player.isSuspicious) {
+    player.displayColor = COLORS.SUSPICIOUS;
+  }
+
+  // DEAD PLAYER
+  if (player.isDead) {
+    player.isSuspicionLocked = true;
+    // todo: this will be in another function, when I deal with automated possible suspicion
+    player.isPossiblySuspicious = false;
+
+    // If they player is dead, we can't confirm them as townie anymore.
+    // We can only change his role afterwards, the confirmation is automatically set upon death or role change.
+    player.isConfirmationLocked = true;
   }
 
   setPlayersInfo(playersInfo);
-  // Does it need to return anything?
+}
+
+function isPlayerConfirmedAfterInfoChange(
+  wasPreviouslyConfirmedTown: boolean,
+  newFaction: Faction,
+  isDead: boolean
+) {
+  // What are the options?
+  // 1. Was confirmedTown, dies (town)         -> isConfirmedTown = true
+  // 2. Was confirmedTown, dies (not town)     -> isConfirmedTown = false
+  // 3. Was not confirmedTown, dies (town)     -> isConfirmedTown = true
+  // 4. Was not confirmedTown, dies (not town) -> isConfirmedTown = false
+  // 5. Was confirmedTown, we switch role to (town) -> isConfirmedTown = true
+  // 6. Was confirmedTown, we switch role to (not town) -> isConfirmedTown = false
+  // 7. Was not confirmedTown, we switch role to (town) -> isConfirmedTown = false (that's the special case)
+  // 8. Was not confirmedTown, we switch role to (not town) -> isConfirmedTown = false
+  // 9. If dead -  Was not confirmedTown, we switch role to (town) -> isConfirmedTown = true
+  // 8. If dead -  Was not confirmedTown, we switch role to (not town) -> isConfirmedTown = false
+
+  let isPlayerNowConfirmed = false;
+  let isNowTown = newFaction == Faction.Town;
+
+  // Only if the player isn't dead and wasn't previously confirmed,
+  // we can't automatically confirm him as townie if his role is Town now.
+  if (!wasPreviouslyConfirmedTown && isNowTown && !isDead) {
+    isPlayerNowConfirmed = false;
+  } else {
+    isPlayerNowConfirmed = isNowTown;
+  }
+
+  return isPlayerNowConfirmed;
+}
+
+function isPlayerSuspiciousAfterInfoChange(
+  wasPreviouslySuspicious: boolean,
+  newFaction: Faction,
+  isDead: boolean
+) {
+  let isNowTown = newFaction == Faction.Town;
+  // What are the options?
+  // 1. If the player is dead, they are no longer suspicious because we know if they are evil or not.
+  // If we don't know (because his role was cleaned/forged - we should's set his role to cleaned/forged, not mark suspicion).
+  if (isDead) {
+    return false;
+  }
+  // 2. Was suspicious, we switch role to (town) -> suspicious = true
+  // 3. Was suspicious, we switch role to (not town) -> suspicious = false (because we KNOW he is not town)
+  // 4. Was not suspicious, we switch role to (town) -> suspicious = false
+  // 5. Was not suspicious, we switch role to (not town) -> suspicious = false (because we KNOW he is not town)
+  else if (wasPreviouslySuspicious && isNowTown) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 export function checkPlayerPossiblySuspicious() {}

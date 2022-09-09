@@ -104,14 +104,14 @@ h2 {
 }
 
 .notepad-container {
-  border: 2px solid black;
+  /* border: 2px solid black; */
   padding: 10px;
   max-width: 1000px;
   margin: 20px auto 5px auto;
 }
 
 .sidenotes-container {
-  border: 2px solid black;
+  /* border: 2px solid black; */
   padding: 10px;
   max-width: 1000px;
   margin: 0 auto;

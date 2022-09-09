@@ -32,6 +32,10 @@ export const EditForm = ({
     setNotepadUpdater((prevState: number) => prevState + 1);
   }
 
+  function handleCancelOnClick() {
+    setIsEditFormShown(false); // Close this form
+  }
+
   return (
     <>
       <div className="startform-container">
@@ -47,6 +51,10 @@ export const EditForm = ({
 
         <button className="button-action" onClick={handleClearOnClick}>
           CLEAR
+        </button>
+
+        <button className="button-action" onClick={handleCancelOnClick}>
+          CANCEL
         </button>
       </div>
     </>

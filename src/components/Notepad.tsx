@@ -16,11 +16,15 @@ export function Notepad({
   setPlayersInfo,
   gameNote,
   setGameNote,
+  majority,
+  setMajority,
 }: {
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   gameNote: string;
   setGameNote: any;
+  majority: { town: number; notTown: number };
+  setMajority: any;
 }) {
   const [notepadUpadter, setNotepadUpdater] = useState(0); // This is a hack to force a re-render of the notepad.
 
@@ -34,6 +38,7 @@ export function Notepad({
         playersInfo={playersInfo}
         setPlayersInfo={setPlayersInfo}
         setNotepadUpdater={setNotepadUpdater}
+        setMajority={setMajority}
       />
     );
     if (!playerInfo.isDead) {
@@ -46,7 +51,7 @@ export function Notepad({
   return (
     <>
       <div className="notepad-container">
-        <HeaderAlive />
+        <HeaderAlive majority={majority} />
         <div className="notepad-alive-container">{alivePlayerCards}</div>
         {deadPlayerCards.length > 0 && (
           <>
@@ -68,11 +73,13 @@ function PlayerCard({
   playersInfo,
   setPlayersInfo,
   setNotepadUpdater,
+  setMajority,
 }: {
   playerNumber: number;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   setNotepadUpdater: (value: number) => void;
+  setMajority: any;
 }) {
   // Modifying player DOES modify playersInfo.
   // But shouldn't we use setPlayersInfo to modify playersInfo - rendering issues possible?
@@ -157,6 +164,7 @@ function PlayerCard({
           setPlayersInfo={setPlayersInfo}
           playerNumber={playerNumber}
           setNotepadUpdater={setNotepadUpdater}
+          setMajority={setMajority}
         />
       )}
       {isEditFormShown && (
@@ -166,6 +174,7 @@ function PlayerCard({
           setPlayersInfo={setPlayersInfo}
           playerNumber={playerNumber}
           setNotepadUpdater={setNotepadUpdater}
+          setMajority={setMajority}
         />
       )}
       <div className="notepad-player-card-container">
@@ -269,7 +278,11 @@ function PlayerCard({
   );
 }
 
-function HeaderAlive() {
+function HeaderAlive({
+  majority,
+}: {
+  majority: { town: number; notTown: number };
+}) {
   return (
     <>
       <div className="header-flexbox">
@@ -282,6 +295,15 @@ function HeaderAlive() {
           </p>
         </div>
         <div className="header-suspicious">SUSPICIOUS?</div>
+        <div className="header-majority">
+          <p style={{ margin: 0 }}>
+            <span style={{ color: COLOR.CONFIRMED_TOWN }}>
+              {majority.town}{' '}
+            </span>
+            town <span style={{ fontSize: '1.2rem' }}>vs</span>
+            <span style={{ color: COLOR.MAFIA }}> {majority.notTown}</span> evil
+          </p>
+        </div>
       </div>
     </>
   );

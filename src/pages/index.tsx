@@ -7,6 +7,7 @@ import { PlayersInfo } from '../utils/playerInfo';
 const Home: NextPage = () => {
   const [playersInfo, setPlayersInfo] = useState<PlayersInfo>([]);
   const [gameNote, setGameNote] = useState('');
+  const [gameMajority, setGameMajority] = useState({ town: 9, notTown: 6 });
   const [isNotepadShown, setIsNotepadShown] = useState(false); // to not initially show the notes
   const [isStartFormShown, setIsStartFormShown] = useState(false);
   const [isClaimsFormShown, setIsClaimsFormShown] = useState(false);
@@ -38,6 +39,8 @@ const Home: NextPage = () => {
             setPlayersInfo={setPlayersInfo}
             gameNote={gameNote}
             setGameNote={setGameNote}
+            majority={gameMajority}
+            setMajority={setGameMajority}
           />
         </>
       )}

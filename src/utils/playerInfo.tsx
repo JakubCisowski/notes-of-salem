@@ -130,7 +130,8 @@ export function markPlayerAsDead(
   playersInfo: PlayersInfo,
   setPlayersInfo: (value: PlayersInfo) => void,
   deadPlayerNumber: number,
-  deadPlayerRole: Role
+  deadPlayerRole: Role,
+  setMajority: any
 ) {
   if (deadPlayerNumber < 1 || deadPlayerNumber > 15) return;
 
@@ -145,7 +146,8 @@ export function markPlayerAsDead(
     deadPlayerNumber,
     deadPlayerRole,
     undefined,
-    undefined
+    undefined,
+    setMajority
   );
 }
 
@@ -155,7 +157,8 @@ export function editPlayerInfo(
   playerNumber: number,
   playerRole: Role | undefined,
   playerTownAlignment: TownAlignment | undefined,
-  playerFaction: Faction | undefined
+  playerFaction: Faction | undefined,
+  setMajority: any
 ) {
   if (playerNumber < 1 || playerNumber > 15) return;
 
@@ -216,6 +219,9 @@ export function editPlayerInfo(
     player.isConfirmationLocked = true;
   }
 
+  // CALCULATE MAJORITY
+  calculateNewMajority(playersInfo, setMajority);
+
   setPlayersInfo(playersInfo);
 }
 
@@ -271,6 +277,33 @@ function isPlayerSuspiciousOnInfoEdit(
   } else {
     return false;
   }
+}
+
+function calculateNewMajority(playersInfo: PlayersInfo, setMajority: any) {
+  let deadTownCount = 0;
+
+  let deadPlayers = playersInfo.filter((player) => player.isDead);
+
+  deadPlayers.forEach((deadPlayer) => {
+    // It counts forged/cleaned dead players as dead town.
+    if (
+      deadPlayer.faction == Faction.Town ||
+      deadPlayer.role == Role.ProbablyForged ||
+      deadPlayer.role == Role.Cleaned
+    ) {
+      deadTownCount++;
+    }
+  });
+
+  let playersAlive = 15 - deadPlayers.length;
+  let townAlive = 9 - deadTownCount;
+
+  let newMajority = {
+    town: townAlive,
+    notTown: playersAlive - townAlive,
+  };
+
+  setMajority(newMajority);
 }
 
 export function checkPlayerPossiblySuspicious() {}

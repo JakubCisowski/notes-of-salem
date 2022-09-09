@@ -9,19 +9,27 @@ export const DeadForm = ({
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
+  setMajority,
 }: {
   setIsDeadFormShown: (value: boolean) => void;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
+  setMajority: any;
 }) => {
   const [selectedRole, setSelectedRole] = useState<Role>();
 
   function handleConfirmOnClick() {
     if (selectedRole === undefined) return;
     setIsDeadFormShown(false);
-    markPlayerAsDead(playersInfo, setPlayersInfo, playerNumber, selectedRole!);
+    markPlayerAsDead(
+      playersInfo,
+      setPlayersInfo,
+      playerNumber,
+      selectedRole!,
+      setMajority
+    );
     setNotepadUpdater((prevState: number) => prevState + 1);
   }
 

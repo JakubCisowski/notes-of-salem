@@ -107,7 +107,7 @@ h2 {
   /* border: 2px solid black; */
   padding: 10px;
   max-width: 1000px;
-  margin: 20px auto 5px auto;
+  margin: 0 auto 5px auto;
 }
 
 .sidenotes-container {
@@ -146,11 +146,20 @@ h2 {
 }
 .header-suspicious {
   font-size: 1.1rem;
-  width: 45%;
+  width: 30%;
   font-weight: bold;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: right;
+}
+
+.header-majority {
+  font-size: 2rem;
+  width: 35%;
+  font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+  justify-content: right;
 }
 
 .horizontal-line {

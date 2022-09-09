@@ -12,12 +12,14 @@ export const EditForm = ({
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
+  setMajority,
 }: {
   setIsEditFormShown: (value: boolean) => void;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
+  setMajority: any;
 }) => {
   function handleClearOnClick() {
     setIsEditFormShown(false);
@@ -27,7 +29,8 @@ export const EditForm = ({
       playerNumber,
       undefined,
       undefined,
-      undefined
+      undefined,
+      setMajority
     );
     setNotepadUpdater((prevState: number) => prevState + 1);
   }
@@ -47,6 +50,7 @@ export const EditForm = ({
           setPlayersInfo={setPlayersInfo}
           playerNumber={playerNumber}
           setNotepadUpdater={setNotepadUpdater}
+          setMajority={setMajority}
         />
 
         <button className="button-action" onClick={handleClearOnClick}>
@@ -68,6 +72,7 @@ export function RoleButton({
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
+  setMajority,
 }: {
   role: Role;
   setIsEditFormShown: (value: boolean) => void;
@@ -75,6 +80,7 @@ export function RoleButton({
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
+  setMajority: any;
 }) {
   let roleName = Role[role];
   let roleColor = roleToColor(role);
@@ -89,7 +95,8 @@ export function RoleButton({
       playerNumber,
       role,
       undefined,
-      undefined
+      undefined,
+      setMajority
     );
     setNotepadUpdater((prevState: number) => prevState + 1);
   }
@@ -119,6 +126,7 @@ export function AlignmentButton({
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
+  setMajority,
 }: {
   alignment: TownAlignment;
   setIsEditFormShown: (value: boolean) => void;
@@ -126,6 +134,7 @@ export function AlignmentButton({
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
+  setMajority: any;
 }) {
   let alignmentName = TownAlignment[alignment];
   let alignmentColor = townAlignmentToColor(alignment);
@@ -140,7 +149,8 @@ export function AlignmentButton({
       playerNumber,
       undefined,
       alignment,
-      undefined
+      undefined,
+      setMajority
     );
     setNotepadUpdater((prevState: number) => prevState + 1);
   }
@@ -170,6 +180,7 @@ export function FactionButton({
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
+  setMajority,
 }: {
   faction: Faction;
   setIsEditFormShown: (value: boolean) => void;
@@ -177,6 +188,7 @@ export function FactionButton({
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
+  setMajority: any;
 }) {
   let factionName = Faction[faction];
   let factionColor = factionToColor(faction);
@@ -191,7 +203,8 @@ export function FactionButton({
       playerNumber,
       undefined,
       undefined,
-      faction
+      faction,
+      setMajority
     );
     setNotepadUpdater((prevState: number) => prevState + 1);
   }
@@ -220,12 +233,14 @@ function ButtonsGrid({
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
+  setMajority,
 }: {
   setIsEditFormShown: (value: boolean) => void;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
+  setMajority: any;
 }) {
   return (
     <>
@@ -248,6 +263,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/3/3/4' }}>
@@ -258,6 +274,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/4/3/5' }}>
@@ -268,6 +285,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/5/3/6' }}>
@@ -278,6 +296,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/1/4/2' }}>
@@ -288,6 +307,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/2/4/3' }}>
@@ -298,6 +318,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/3/4/4' }}>
@@ -308,6 +329,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/4/4/5' }}>
@@ -318,6 +340,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/5/4/6' }}>
@@ -328,6 +351,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/1/5/2' }}>
@@ -338,6 +362,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/2/5/3' }}>
@@ -348,6 +373,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/3/5/4' }}>
@@ -358,6 +384,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/4/5/5' }}>
@@ -368,6 +395,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/1/6/2' }}>
@@ -378,6 +406,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/2/6/3' }}>
@@ -388,6 +417,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/3/6/4' }}>
@@ -398,6 +428,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/4/6/5' }}>
@@ -408,6 +439,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '6/1/7/2' }}>
@@ -418,6 +450,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '6/2/7/3' }}>
@@ -428,6 +461,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '6/3/7/4' }}>
@@ -438,6 +472,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '6/4/7/5' }}>
@@ -448,6 +483,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '7/1/8/2' }}>
@@ -458,6 +494,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '7/2/8/3' }}>
@@ -468,6 +505,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '7/3/8/5' }}>
@@ -478,6 +516,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '8/1/9/2' }}>
@@ -488,6 +527,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '8/2/9/3' }}>
@@ -498,6 +538,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '9/1/10/3' }}>
@@ -508,6 +549,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '11/1/12/2' }}>
@@ -518,6 +560,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '11/2/12/3' }}>
@@ -528,6 +571,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '11/3/12/5' }}>
@@ -538,6 +582,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '11/5/12/6' }}>
@@ -548,6 +593,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '12/1/13/2' }}>
@@ -558,6 +604,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '12/2/13/3' }}>
@@ -568,6 +615,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '14/1/15/3' }}>
@@ -578,6 +626,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '14/3/15/6' }}>
@@ -588,6 +637,7 @@ function ButtonsGrid({
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
             setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
       </div>

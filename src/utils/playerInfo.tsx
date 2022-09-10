@@ -242,9 +242,6 @@ export function editPlayerInfo(
   if (player.isDead) {
     player.isSuspicionLocked = true;
 
-    // todo: this will be in another function, when I deal with automated possible suspicion
-    //player.autoSuspicionSeverity = false;
-
     // If they player is dead, we can't confirm them as townie anymore.
     // We can only change his role afterwards, the confirmation is automatically set upon death or role change.
     player.isConfirmationLocked = true;
@@ -329,7 +326,7 @@ export function checkRoleAutoChange(
   );
 
   // MAFIOSO -> GODFATHER (if GODFATHER dead)
-  // ? it's not really clear what to do, for example if there is 2 mafia alive [consig] and [not set]
+  // ? It's not really clear what to do, for example if there is 2 mafia alive [consig] and [not set]
   // ? and gf dies, its obvious that [not set] becomes gf, but it's too much work to implement it
   if (
     aliveGodfathers.length == 0 &&
@@ -348,6 +345,7 @@ export function checkRoleAutoChange(
   }
 
   // LAST MAFIA -> MAFIOSO (if 3x MAFIA dead)
+  // ? I don't know if he should become mafioso or godfather, will not implement it for now.
 }
 
 function isPlayerConfirmedOnInfoEdit(

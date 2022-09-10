@@ -212,6 +212,7 @@ function PlayerCard({
           <div
             className="notepad-card-section-button"
             onClick={onDeadButtonClick}
+            style={{ cursor: 'pointer' }}
           >
             SET ROLE
           </div>
@@ -220,6 +221,7 @@ function PlayerCard({
           <div
             className="notepad-card-section-button"
             onClick={onSetRoleButtonClick}
+            style={{ cursor: 'pointer' }}
           >
             SET ROLE
           </div>

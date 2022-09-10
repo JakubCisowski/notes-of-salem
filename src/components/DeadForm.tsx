@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { COLOR } from '../utils/color';
 import { Role } from '../utils/enums';
 import { getRoleDisplayString, roleToTextColor } from '../utils/infoHelper';
@@ -19,21 +18,6 @@ export const DeadForm = ({
   setNotepadUpdater: any;
   setMajority: any;
 }) => {
-  const [selectedRole, setSelectedRole] = useState<Role>();
-
-  function handleConfirmOnClick() {
-    if (selectedRole === undefined) return;
-    setIsDeadFormShown(false);
-    markPlayerAsDead(
-      playersInfo,
-      setPlayersInfo,
-      playerNumber,
-      selectedRole!,
-      setMajority
-    );
-    setNotepadUpdater((prevState: number) => prevState + 1);
-  }
-
   function handleCancelOnClick() {
     setIsDeadFormShown(false); // Close this form
   }
@@ -41,23 +25,27 @@ export const DeadForm = ({
   return (
     <>
       <div className="deadform-container">
-        <h1 className="form-text"> What was ({playerNumber}) role? </h1>
+        <h1 className="form-text">💀 What was ({playerNumber}) role? 💀</h1>
 
         <RoleButtonsGrid
-          selectedRole={selectedRole}
-          setSelectedRole={setSelectedRole}
+          setIsDeadFormShown={setIsDeadFormShown}
+          playersInfo={playersInfo}
+          setPlayersInfo={setPlayersInfo}
+          playerNumber={playerNumber}
+          setNotepadUpdater={setNotepadUpdater}
+          setMajority={setMajority}
         />
 
         <br></br>
 
-        <button
+        {/* <button
           className="button-action button-action-left"
           onClick={handleConfirmOnClick}
         >
           CONFIRM ✅
-        </button>
+        </button> */}
         <button
-          className="button-action button-action-right"
+          className="button-action button-action-center"
           onClick={handleCancelOnClick}
         >
           CANCEL ❌
@@ -69,58 +57,67 @@ export const DeadForm = ({
 
 export function RoleButton({
   role,
-  selectedRole,
-  setSelectedRole,
+  setIsDeadFormShown,
+  playersInfo,
+  setPlayersInfo,
+  playerNumber,
+  setNotepadUpdater,
+  setMajority,
 }: {
   role: Role;
-  selectedRole: Role | undefined;
-  setSelectedRole: (value: Role) => void;
+  setIsDeadFormShown: (value: boolean) => void;
+  playersInfo: PlayersInfo;
+  setPlayersInfo: (value: PlayersInfo) => void;
+  playerNumber: number;
+  setNotepadUpdater: any;
+  setMajority: any;
 }) {
   const roleName = getRoleDisplayString(role);
   const roleColor = roleToTextColor(role);
 
   function handleOnClick() {
-    setSelectedRole(role);
+    setIsDeadFormShown(false);
+    markPlayerAsDead(
+      playersInfo,
+      setPlayersInfo,
+      playerNumber,
+      role,
+      setMajority
+    );
+    setNotepadUpdater((prevState: number) => prevState + 1);
   }
 
   return (
     <>
-      {selectedRole == role && (
-        <div
-          className="button-role"
-          style={{
-            color: roleColor,
-            backgroundColor: COLOR.BACKGROUND_BUTTON_SELECTED,
-            border: '3px solid black',
-          }}
-          onClick={handleOnClick}
-        >
-          {roleName}
-        </div>
-      )}
-      {selectedRole != role && (
-        <div
-          className="button-role"
-          style={{
-            color: roleColor,
-            backgroundColor: COLOR.BACKGROUND_BUTTON,
-            border: '1px solid black',
-          }}
-          onClick={handleOnClick}
-        >
-          {roleName}
-        </div>
-      )}
+      <div
+        className="button-role"
+        style={{
+          color: roleColor,
+          backgroundColor: COLOR.BACKGROUND_BUTTON,
+          border: '1px solid black',
+        }}
+        onClick={handleOnClick}
+      >
+        {roleName}
+      </div>
     </>
   );
 }
 
 function RoleButtonsGrid({
-  selectedRole,
-  setSelectedRole,
+  setIsDeadFormShown,
+  playersInfo,
+  setPlayersInfo,
+  playerNumber,
+  setNotepadUpdater,
+  setMajority,
 }: {
-  selectedRole: Role | undefined;
-  setSelectedRole: (value: Role) => void;
+  setIsDeadFormShown: (value: boolean) => void;
+  playersInfo: PlayersInfo;
+  setPlayersInfo: (value: PlayersInfo) => void;
+  playerNumber: number;
+  setNotepadUpdater: any;
+  setMajority: any;
 }) {
   return (
     <>
@@ -128,212 +125,332 @@ function RoleButtonsGrid({
       <div className="grid-container-start">
         <div className="grid-item" style={{ gridArea: '1/1/2/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Jailor}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '1/3/2/4' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Godfather}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '1/4/2/5' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Mafioso}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '1/5/2/6' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Witch}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/1/3/2' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Lookout}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/2/3/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Spy}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/3/3/4' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Consigliere}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/4/3/5' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Consort}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '2/5/3/6' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Executioner}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/1/4/2' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Investigator}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/2/4/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Sheriff}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/3/4/4' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Janitor}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/4/4/5' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Forger}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '3/5/4/6' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Jester}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/1/5/2' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Bodyguard}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/2/6/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Doctor}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/3/5/4' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Framer}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '4/4/5/5' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Disguiser}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/1/6/2' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Veteran}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/2/6/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Vigilante}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/3/6/4' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Blackmailer}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '5/4/6/5' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Hypnotist}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '6/1/7/2' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Escort}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '6/2/7/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Transporter}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '6/3/7/5' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Ambusher}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '7/1/8/2' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Medium}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '7/2/8/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Retributionist}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '8/1/9/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Mayor}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '9/1/10/3' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.Cleaned}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
         <div className="grid-item" style={{ gridArea: '9/3/10/5' }}>
           <RoleButton
-            selectedRole={selectedRole}
             role={Role.ProbablyForged}
-            setSelectedRole={setSelectedRole}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
           />
         </div>
       </div>

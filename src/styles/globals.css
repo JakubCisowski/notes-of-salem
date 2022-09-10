@@ -65,6 +65,11 @@ h2 {
   bottom: 10px;
 }
 
+.button-action-center {
+  left: 300px;
+  bottom: 10px;
+}
+
 .button-role {
   font-size: 1.35rem;
   font-weight: bold;

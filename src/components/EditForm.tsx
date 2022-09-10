@@ -618,18 +618,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '14/1/15/3' }}>
-          <FactionButton
-            faction={Faction.Town}
-            setIsEditFormShown={setIsEditFormShown}
-            playersInfo={playersInfo}
-            setPlayersInfo={setPlayersInfo}
-            playerNumber={playerNumber}
-            setNotepadUpdater={setNotepadUpdater}
-            setMajority={setMajority}
-          />
-        </div>
-        <div className="grid-item" style={{ gridArea: '14/3/15/6' }}>
+        <div className="grid-item" style={{ gridArea: '12/3/13/6' }}>
           <FactionButton
             faction={Faction.NotTown}
             setIsEditFormShown={setIsEditFormShown}

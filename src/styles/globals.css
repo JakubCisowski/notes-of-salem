@@ -93,7 +93,7 @@ h2 {
   margin-top: 20px;
   display: grid;
   grid-template-columns: repeat(5, 150px);
-  grid-template-rows: repeat(14, 35px);
+  grid-template-rows: repeat(12, 35px);
   grid-row-gap: 10px;
   grid-column-gap: 10px;
   justify-content: center;
@@ -306,6 +306,7 @@ h2 {
   bottom: 0;
   left: 0;
   z-index: 10000;
+  background-color: white;
 }
 
 .checkbox {

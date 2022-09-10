@@ -280,10 +280,8 @@ export function getFactionDisplayString(faction: Faction): string {
   let displayString = '';
   switch (faction) {
     case Faction.Unknown:
-      displayString = '';
-      break;
     case Faction.Town:
-      displayString = 'T';
+      displayString = '';
       break;
     case Faction.Mafia:
       displayString = 'M';

@@ -262,7 +262,7 @@ export function editPlayerInfo(
   setPlayersInfo(playersInfo);
 }
 
-function checkRoleAutoChange(
+export function checkRoleAutoChange(
   playersInfo: PlayersInfo,
   setPlayersInfo: (value: PlayersInfo) => void,
   setMajority: any
@@ -270,6 +270,7 @@ function checkRoleAutoChange(
   let exeTarget = playersInfo.find((player) => player.isExecutionTarget);
   let exe = playersInfo.find((player) => player.role == Role.Executioner);
 
+  // EXE -> JESTER
   if (
     exeTarget != undefined &&
     exeTarget.isDead &&
@@ -286,6 +287,40 @@ function checkRoleAutoChange(
       setMajority
     );
   }
+
+  let tkClaimingNoRoleAlivePlayers = playersInfo.filter(
+    (player) =>
+      player.townAlignment == TownAlignment.TK &&
+      player.role == Role.Unknown &&
+      !player.isDead
+  );
+
+  let confirmedOrDeadVeterans = playersInfo.filter(
+    (player) =>
+      player.role == Role.Veteran && (player.isDead || player.isConfirmedTown)
+  );
+
+  // TK -> VIGI (if VETERAN confirmed/dead)
+  if (
+    confirmedOrDeadVeterans.length > 0 &&
+    tkClaimingNoRoleAlivePlayers.length > 0
+  ) {
+    for (let tkClaimPlayer of tkClaimingNoRoleAlivePlayers) {
+      editPlayerInfo(
+        playersInfo,
+        setPlayersInfo,
+        tkClaimPlayer.number,
+        Role.Vigilante,
+        undefined,
+        undefined,
+        setMajority
+      );
+    }
+  }
+
+  // MAFIOSO -> GODFATHER (if GODFATHER dead)
+
+  // LAST MAFIA -> MAFIOSO (if 3x MAFIA dead)
 }
 
 function isPlayerConfirmedOnInfoEdit(

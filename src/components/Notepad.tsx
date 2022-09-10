@@ -9,7 +9,11 @@ import {
   roleToBackgroundColor,
   townAlignmentToBackgroundColor,
 } from '../utils/infoHelper';
-import { checkAutoSuspicion, PlayersInfo } from '../utils/playerInfo';
+import {
+  checkAutoSuspicion,
+  checkRoleAutoChange,
+  PlayersInfo,
+} from '../utils/playerInfo';
 import { DeadForm } from './DeadForm';
 import { EditForm } from './EditForm';
 
@@ -118,6 +122,7 @@ function PlayerCard({
     //setPlayersInfo(playersInfo); // should we use this anywyas?
 
     checkAutoSuspicion(playersInfo, setPlayersInfo);
+    checkRoleAutoChange(playersInfo, setPlayersInfo, setMajority);
     setNotepadUpdater((prevState: number) => prevState + 1);
     console.log(playersInfo);
   }
@@ -129,6 +134,7 @@ function PlayerCard({
       player.isConfirmedTown = false;
       setIsConfirmed(false);
       checkAutoSuspicion(playersInfo, setPlayersInfo);
+      checkRoleAutoChange(playersInfo, setPlayersInfo, setMajority);
     }
     player.displayColorBackground = calculateDisplayColor();
     setPlayerColor(calculateDisplayColor());

@@ -150,9 +150,9 @@ function PlayerCard({
 
   function calculateDisplayColor() {
     if (player.isConfirmedTown) {
-      return COLOR.CONFIRMED_TOWN_BACKGROUND;
+      return COLOR.BACKGROUND_CONFIRMED_TOWN;
     } else if (player.isSuspicious) {
-      return COLOR.SUSPICIOUS;
+      return COLOR.BACKGROUND_SUSPICIOUS;
     } else if (player.role != Role.Unknown) {
       return roleToBackgroundColor(player.role);
     } else if (player.townAlignment != TownAlignment.Unknown) {
@@ -160,7 +160,7 @@ function PlayerCard({
     } else if (player.faction != Faction.Unknown) {
       return factionToBackgroundColor(player.faction);
     } else {
-      return COLOR.UNKNOWN;
+      return COLOR.BACKGROUND_UNKNOWN;
     }
   }
 
@@ -354,11 +354,15 @@ function HeaderAlive({
         <div className="header-suspicious">SUSPICIOUS?</div>
         <div className="header-majority">
           <p style={{ margin: 0 }}>
-            <span style={{ color: COLOR.CONFIRMED_TOWN_TEXT }}>
+            <span style={{ color: COLOR.TEXT_CONFIRMED_TOWN }}>
               {majority.town}{' '}
             </span>
             town <span style={{ fontSize: '1.2rem' }}>vs</span>
-            <span style={{ color: COLOR.MAFIA }}> {majority.notTown}</span> evil
+            <span style={{ color: COLOR.BACKGROUND_MAFIA }}>
+              {' '}
+              {majority.notTown}
+            </span>{' '}
+            evil
           </p>
         </div>
       </div>

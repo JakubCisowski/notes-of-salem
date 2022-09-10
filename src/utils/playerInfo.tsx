@@ -46,7 +46,7 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
     let isConfirmedTown = false;
     let isConfirmationLocked = false;
     let isSuspicious = false;
-    let displayColor = COLOR.UNKNOWN;
+    let displayColor = COLOR.BACKGROUND_UNKNOWN;
     let autoSuspicionSeverity = SuspicionSeverity.None;
     let autoSuspicionNotes = [];
     let isSuspicionLocked;
@@ -71,7 +71,7 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       if (faction != Faction.Town) {
         displayColor = roleToBackgroundColor(role);
       } else if (isConfirmedTown) {
-        displayColor = COLOR.CONFIRMED_TOWN_BACKGROUND;
+        displayColor = COLOR.BACKGROUND_CONFIRMED_TOWN;
       }
 
       isUser = true;
@@ -113,7 +113,7 @@ export function setupExecutionerTarget(
   targetPlayerInfo.faction = Faction.Town;
   targetPlayerInfo.isConfirmedTown = true;
   targetPlayerInfo.isConfirmationLocked = true;
-  targetPlayerInfo.displayColorBackground = COLOR.CONFIRMED_TOWN_BACKGROUND;
+  targetPlayerInfo.displayColorBackground = COLOR.BACKGROUND_CONFIRMED_TOWN;
   targetPlayerInfo.isSuspicionLocked = true;
   targetPlayerInfo.isExecutionTarget = true;
 
@@ -201,7 +201,7 @@ export function editPlayerInfo(
     player.role = Role.Unknown;
     player.townAlignment = TownAlignment.Unknown;
     player.faction = Faction.Unknown;
-    player.displayColorBackground = COLOR.UNKNOWN;
+    player.displayColorBackground = COLOR.BACKGROUND_UNKNOWN;
   }
 
   // CONFIRMATION / SUSPICION LOCK
@@ -233,9 +233,9 @@ export function editPlayerInfo(
 
   // COLOR (AFTER TAKING CONFIRMATION/SUSPICION INTO ACCOUNT)
   if (player.isConfirmedTown) {
-    player.displayColorBackground = COLOR.CONFIRMED_TOWN_BACKGROUND;
+    player.displayColorBackground = COLOR.BACKGROUND_CONFIRMED_TOWN;
   } else if (player.isSuspicious) {
-    player.displayColorBackground = COLOR.SUSPICIOUS;
+    player.displayColorBackground = COLOR.BACKGROUND_SUSPICIOUS;
   }
 
   // DEAD PLAYER

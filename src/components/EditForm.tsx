@@ -111,7 +111,7 @@ export function RoleButton({
         className="button-role"
         style={{
           color: roleColor,
-          backgroundColor: COLOR.BUTTON_BACKGROUND,
+          backgroundColor: COLOR.BACKGROUND_BUTTON,
           border: '1px solid black',
         }}
         onClick={handleOnClick}
@@ -162,7 +162,7 @@ export function AlignmentButton({
         className="button-role"
         style={{
           color: alignmentColor,
-          backgroundColor: COLOR.BUTTON_BACKGROUND,
+          backgroundColor: COLOR.BACKGROUND_BUTTON,
           border: '1px solid black',
         }}
         onClick={handleOnClick}
@@ -213,7 +213,7 @@ export function FactionButton({
         className="button-role"
         style={{
           color: factionColor,
-          backgroundColor: COLOR.BUTTON_BACKGROUND,
+          backgroundColor: COLOR.BACKGROUND_BUTTON,
           border: '1px solid black',
         }}
         onClick={handleOnClick}

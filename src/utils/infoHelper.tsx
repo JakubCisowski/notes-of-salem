@@ -100,7 +100,7 @@ export function roleToBackgroundColor(role: Role): string {
       break;
     case Role.Cleaned:
     case Role.ProbablyForged:
-      colorString = COLOR.CLEANED_OR_FORGED;
+      colorString = COLOR.BACKGROUND_CLEANED_OR_FORGED;
       break;
     case Role.Jailor:
     case Role.Lookout:
@@ -116,7 +116,7 @@ export function roleToBackgroundColor(role: Role): string {
     case Role.Medium:
     case Role.Retributionist:
     case Role.Mayor:
-      colorString = COLOR.UNKNOWN;
+      colorString = COLOR.BACKGROUND_UNKNOWN;
       break;
     case Role.Godfather:
     case Role.YourOtherMafia:
@@ -130,16 +130,16 @@ export function roleToBackgroundColor(role: Role): string {
     case Role.Blackmailer:
     case Role.Hypnotist:
     case Role.Ambusher:
-      colorString = COLOR.MAFIA;
+      colorString = COLOR.BACKGROUND_MAFIA;
       break;
     case Role.Executioner:
-      colorString = COLOR.EXE;
+      colorString = COLOR.BACKGROUND_EXECUTIONER;
       break;
     case Role.Jester:
-      colorString = COLOR.JESTER;
+      colorString = COLOR.BACKGROUND_JESTER;
       break;
     case Role.Witch:
-      colorString = COLOR.WITCH;
+      colorString = COLOR.BACKGROUND_WITCH;
       break;
   }
 
@@ -171,7 +171,7 @@ export function roleToTextColor(role: Role): string {
     case Role.Medium:
     case Role.Retributionist:
     case Role.Mayor:
-      colorString = COLOR.CONFIRMED_TOWN_TEXT;
+      colorString = COLOR.TEXT_CONFIRMED_TOWN;
       break;
     case Role.Godfather:
     case Role.YourOtherMafia:
@@ -185,16 +185,16 @@ export function roleToTextColor(role: Role): string {
     case Role.Blackmailer:
     case Role.Hypnotist:
     case Role.Ambusher:
-      colorString = COLOR.MAFIA;
+      colorString = COLOR.BACKGROUND_MAFIA;
       break;
     case Role.Executioner:
       colorString = COLOR.BLACK;
       break;
     case Role.Jester:
-      colorString = COLOR.JESTER;
+      colorString = COLOR.BACKGROUND_JESTER;
       break;
     case Role.Witch:
-      colorString = COLOR.WITCH_TEXT;
+      colorString = COLOR.TEXT_WITCH;
       break;
   }
 
@@ -305,10 +305,10 @@ export function townAlignmentToBackgroundColor(
     case TownAlignment.TS:
     case TownAlignment.TI:
     case TownAlignment.Unknown:
-      colorString = COLOR.UNKNOWN;
+      colorString = COLOR.BACKGROUND_UNKNOWN;
       break;
     case TownAlignment.NotTown:
-      colorString = COLOR.SUSPICIOUS;
+      colorString = COLOR.BACKGROUND_SUSPICIOUS;
       break;
   }
   return colorString;
@@ -324,7 +324,7 @@ export function townAlignmentToTextColor(townAlignment: TownAlignment): string {
     case TownAlignment.TS:
     case TownAlignment.TI:
     case TownAlignment.Unknown:
-      colorString = COLOR.CONFIRMED_TOWN_TEXT;
+      colorString = COLOR.TEXT_CONFIRMED_TOWN;
       break;
     case TownAlignment.NotTown:
       colorString = COLOR.BLACK;
@@ -399,14 +399,14 @@ export function factionToBackgroundColor(faction: Faction): string {
   switch (faction) {
     case Faction.Unknown:
     case Faction.Town:
-      color = COLOR.UNKNOWN;
+      color = COLOR.BACKGROUND_UNKNOWN;
       break;
     case Faction.Mafia:
-      color = COLOR.MAFIA;
+      color = COLOR.BACKGROUND_MAFIA;
       break;
     case Faction.NeutralEvil:
     case Faction.NotTown:
-      color = COLOR.NOTTOWN_BACKGROUND; // ? or maybe something else? suspicious is too light if we know its NE
+      color = COLOR.BACKGROUND_EVIL; // ? or maybe something else? suspicious is too light if we know its NE
       break;
   }
 
@@ -419,10 +419,10 @@ export function factionToTextColor(faction: Faction): string {
   switch (faction) {
     case Faction.Unknown:
     case Faction.Town:
-      color = COLOR.UNKNOWN;
+      color = COLOR.BACKGROUND_UNKNOWN;
       break;
     case Faction.Mafia:
-      color = COLOR.MAFIA;
+      color = COLOR.BACKGROUND_MAFIA;
       break;
     case Faction.NeutralEvil:
     case Faction.NotTown:

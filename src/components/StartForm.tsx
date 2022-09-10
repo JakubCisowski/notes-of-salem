@@ -212,7 +212,7 @@ export function RoleButton({
           className="button-role"
           style={{
             color: roleColor,
-            backgroundColor: COLOR.BUTTON_BACKGROUND_SELECTED,
+            backgroundColor: COLOR.BACKGROUND_BUTTON_SELECTED,
             border: '3px solid black',
           }}
           onClick={handleOnClick}
@@ -225,7 +225,7 @@ export function RoleButton({
           className="button-role"
           style={{
             color: roleColor,
-            backgroundColor: COLOR.BUTTON_BACKGROUND,
+            backgroundColor: COLOR.BACKGROUND_BUTTON,
             border: '1px solid black',
           }}
           onClick={handleOnClick}

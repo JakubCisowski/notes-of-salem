@@ -344,8 +344,22 @@ export function checkRoleAutoChange(
     );
   }
 
+  let aliveMafiaPlayers = playersInfo.filter(
+    (player) => player.faction == Faction.Mafia && !player.isDead
+  );
+  let deadMafiaPlayers = playersInfo.filter(
+    (player) => player.faction == Faction.Mafia && player.isDead
+  );
+
   // LAST MAFIA -> MAFIOSO (if 3x MAFIA dead)
   // ? I don't know if he should become mafioso or godfather, will not implement it for now.
+  if (
+    aliveMafiaPlayers.length == 1 &&
+    aliveMafiaPlayers[0]!.role != Role.Mafioso &&
+    deadMafiaPlayers.length >= 3
+  ) {
+    aliveMafiaPlayers[0]!.role = Role.Mafioso;
+  }
 }
 
 function isPlayerConfirmedOnInfoEdit(

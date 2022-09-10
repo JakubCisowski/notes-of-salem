@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { COLOR } from '../utils/color';
 import { Faction, Role } from '../utils/enums';
 import { roleToFaction, roleToTextColor } from '../utils/infoHelper';
 import {
@@ -198,7 +199,7 @@ export function RoleButton({
         className="button-role"
         style={{
           color: roleColor,
-          backgroundColor: 'lightgray',
+          backgroundColor: COLOR.BUTTON_BACKGROUND,
           border: '1px solid black',
         }}
         onClick={handleOnClick}

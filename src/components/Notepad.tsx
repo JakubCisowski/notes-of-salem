@@ -199,14 +199,18 @@ function PlayerCard({
         >
           {player.number}
         </div>
-        {player.isDead ? (
+        {player.isUser && (
+          <div className="notepad-card-section-button">(me)</div>
+        )}
+        {player.isDead && !player.isUser && (
           <div
             className="notepad-card-section-button"
             onClick={onDeadButtonClick}
           >
             SET ROLE
           </div>
-        ) : (
+        )}
+        {!player.isDead && !player.isUser && (
           <div
             className="notepad-card-section-button"
             onClick={onSetRoleButtonClick}
@@ -214,7 +218,6 @@ function PlayerCard({
             SET ROLE
           </div>
         )}
-
         <div className="notepad-card-section-confirmed">
           {player.isConfirmationLocked ? (
             <input

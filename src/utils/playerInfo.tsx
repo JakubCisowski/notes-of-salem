@@ -30,6 +30,8 @@ export type PlayerInfo = {
   autoSuspicionNotes: string[]; // Automates suspicion notes
   isSuspicionLocked: boolean; // If user is mafia, there is no need to track suspicious players, so all players' suspicion checkboxes are locked
   isDead: boolean; // If the player is dead or not
+  isUser: boolean; // If the player is user or not
+  isExecutionTarget: boolean; // If the player is execution target or not
 };
 
 export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
@@ -52,6 +54,8 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       ? (isSuspicionLocked = true)
       : (isSuspicionLocked = false);
     let isDead = false;
+    let isUser = false;
+    let isExecutionTarget = false;
 
     if (currentNumber == userNumber) {
       faction = roleToFaction(userRole);
@@ -69,6 +73,8 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       } else if (isConfirmedTown) {
         displayColor = COLOR.CONFIRMED_TOWN_BACKGROUND;
       }
+
+      isUser = true;
     }
 
     playersInfo.push({
@@ -85,6 +91,8 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       autoSuspicionNotes: [],
       isSuspicionLocked: isSuspicionLocked,
       isDead: isDead,
+      isUser: isUser,
+      isExecutionTarget: isExecutionTarget,
     });
   }
 
@@ -107,6 +115,7 @@ export function setupExecutionerTarget(
   targetPlayerInfo.isConfirmationLocked = true;
   targetPlayerInfo.displayColorBackground = COLOR.CONFIRMED_TOWN_BACKGROUND;
   targetPlayerInfo.isSuspicionLocked = true;
+  targetPlayerInfo.isExecutionTarget = true;
 
   return playersInfo; // Does it need to return anything?
 }

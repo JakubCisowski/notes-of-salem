@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { COLOR } from '../utils/color';
 import { Role } from '../utils/enums';
 import { roleToTextColor } from '../utils/infoHelper';
 import { markPlayerAsDead, PlayersInfo } from '../utils/playerInfo';
@@ -79,7 +80,7 @@ export function RoleButton({
         className="button-role"
         style={{
           color: roleColor,
-          backgroundColor: 'lightgray',
+          backgroundColor: COLOR.BUTTON_BACKGROUND,
           border: '1px solid black',
         }}
         onClick={handleOnClick}

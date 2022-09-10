@@ -194,7 +194,7 @@ export function roleToTextColor(role: Role): string {
       colorString = COLOR.JESTER;
       break;
     case Role.Witch:
-      colorString = COLOR.WITCH;
+      colorString = COLOR.WITCH_TEXT;
       break;
   }
 

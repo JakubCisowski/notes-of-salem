@@ -1,3 +1,4 @@
+import { COLOR } from '../utils/color';
 import { Faction, Role, TownAlignment } from '../utils/enums';
 import {
   factionToTextColor,
@@ -105,7 +106,7 @@ export function RoleButton({
         className="button-role"
         style={{
           color: roleColor,
-          backgroundColor: 'lightgray',
+          backgroundColor: COLOR.BUTTON_BACKGROUND,
           border: '1px solid black',
         }}
         onClick={handleOnClick}
@@ -156,7 +157,7 @@ export function AlignmentButton({
         className="button-role"
         style={{
           color: alignmentColor,
-          backgroundColor: 'lightgray',
+          backgroundColor: COLOR.BUTTON_BACKGROUND,
           border: '1px solid black',
         }}
         onClick={handleOnClick}
@@ -207,7 +208,7 @@ export function FactionButton({
         className="button-role"
         style={{
           color: factionColor,
-          backgroundColor: 'lightgray',
+          backgroundColor: COLOR.BUTTON_BACKGROUND,
           border: '1px solid black',
         }}
         onClick={handleOnClick}

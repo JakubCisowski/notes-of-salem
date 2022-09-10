@@ -253,10 +253,39 @@ export function editPlayerInfo(
   // CALCULATE MAJORITY
   calculateNewMajority(playersInfo, setMajority);
 
+  // CHECK FOR ROLE AUTO CHANGE
+  checkRoleAutoChange(playersInfo, setPlayersInfo, setMajority);
+
   // CHECK PLAYERS FOR AUTO SUSPICION
   checkAutoSuspicion(playersInfo, setPlayersInfo);
 
   setPlayersInfo(playersInfo);
+}
+
+function checkRoleAutoChange(
+  playersInfo: PlayersInfo,
+  setPlayersInfo: (value: PlayersInfo) => void,
+  setMajority: any
+) {
+  let exeTarget = playersInfo.find((player) => player.isExecutionTarget);
+  let exe = playersInfo.find((player) => player.role == Role.Executioner);
+
+  if (
+    exeTarget != undefined &&
+    exeTarget.isDead &&
+    exe != undefined &&
+    !exe.isDead
+  ) {
+    editPlayerInfo(
+      playersInfo,
+      setPlayersInfo,
+      exe.number,
+      Role.Jester,
+      undefined,
+      undefined,
+      setMajority
+    );
+  }
 }
 
 function isPlayerConfirmedOnInfoEdit(

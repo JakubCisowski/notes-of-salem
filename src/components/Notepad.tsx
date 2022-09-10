@@ -206,7 +206,12 @@ function PlayerCard({
           {player.number}
         </div>
         {player.isUser && (
-          <div className="notepad-card-section-button">(me)</div>
+          <div
+            className="notepad-card-section-button"
+            style={{ backgroundColor: 'white' }}
+          >
+            (me)
+          </div>
         )}
         {player.isDead && !player.isUser && (
           <div
@@ -303,6 +308,7 @@ function PlayerCard({
             type="text"
             value={player.note}
             onChange={onNoteChange}
+            placeholder="Player notes..."
           ></input>
         </div>
         {player.isDead ? (
@@ -383,6 +389,7 @@ function Sidenotes({
           type="text"
           value={gameNote}
           onChange={onNoteChange}
+          placeholder="Game notes..."
         ></input>
       </div>
     </>

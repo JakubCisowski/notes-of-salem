@@ -124,13 +124,6 @@ h2 {
   margin: 0 auto;
 }
 
-.notepad-alive-container {
-  /* border: 2px solid green; */
-}
-.notepad-dead-container {
-  /* border: 2px solid red; */
-}
-
 .header-flexbox {
   display: flex;
   /* border: 1px solid purple; */

@@ -19,7 +19,7 @@ const Home: NextPage = () => {
   return (
     <>
       <button className="button-new" onClick={handleNewGameOnClick}>
-        New game
+        New game 📋
       </button>
 
       {/* Component with all info */}

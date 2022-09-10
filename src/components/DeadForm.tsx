@@ -50,10 +50,10 @@ export const DeadForm = ({
         <br></br>
 
         <button className="button-action" onClick={handleConfirmOnClick}>
-          CONFIRM
+          CONFIRM ✅
         </button>
         <button className="button-action" onClick={handleCancelOnClick}>
-          CANCEL
+          CANCEL ❌
         </button>
       </div>
     </>

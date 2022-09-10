@@ -55,11 +55,10 @@ export const EditForm = ({
         />
 
         <button className="button-action" onClick={handleClearOnClick}>
-          CLEAR
+          CLEAR ➖
         </button>
-
         <button className="button-action" onClick={handleCancelOnClick}>
-          CANCEL
+          CANCEL ❌
         </button>
       </div>
     </>

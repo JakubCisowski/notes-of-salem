@@ -134,7 +134,7 @@ export function setupUserMafiaNumbers(
     targetPlayerInfo.faction = Faction.Mafia;
     targetPlayerInfo.townAlignment = TownAlignment.NotTown;
     targetPlayerInfo.role = Role.YourOtherMafia;
-    targetPlayerInfo.displayColorBackground = COLOR.MAFIA;
+    targetPlayerInfo.displayColorBackground = COLOR.BACKGROUND_MAFIA;
     targetPlayerInfo.isConfirmationLocked = true;
     // .isSuspicionLocked already set to true in generateInitialPlayersInfo()
   }

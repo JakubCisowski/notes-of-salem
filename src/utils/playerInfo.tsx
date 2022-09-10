@@ -104,6 +104,7 @@ export function setupExecutionerTarget(
   targetPlayerInfo.note = '(TARGET -> not Jailor/Mayor)';
   targetPlayerInfo.faction = Faction.Town;
   targetPlayerInfo.isConfirmedTown = true;
+  targetPlayerInfo.isConfirmationLocked = true;
   targetPlayerInfo.displayColor = COLOR.CONFIRMED_TOWN;
   targetPlayerInfo.isSuspicionLocked = true;
 

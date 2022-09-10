@@ -24,12 +24,14 @@ const Home: NextPage = () => {
 
       {/* Component with all info */}
       {isStartFormShown && (
-        <StartForm
-          setIsStartFormShown={setIsStartFormShown}
-          setIsNotepadShown={setIsNotepadShown}
-          setPlayersInfo={setPlayersInfo}
-          setGameNote={setGameNote}
-        />
+        <div className="disable-outside-clicks">
+          <StartForm
+            setIsStartFormShown={setIsStartFormShown}
+            setIsNotepadShown={setIsNotepadShown}
+            setPlayersInfo={setPlayersInfo}
+            setGameNote={setGameNote}
+          />
+        </div>
       )}
 
       {isNotepadShown && (

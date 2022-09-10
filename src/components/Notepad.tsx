@@ -163,24 +163,28 @@ function PlayerCard({
   return (
     <>
       {isDeadFormShown && (
-        <DeadForm
-          setIsDeadFormShown={setIsDeadFormShown}
-          playersInfo={playersInfo}
-          setPlayersInfo={setPlayersInfo}
-          playerNumber={playerNumber}
-          setNotepadUpdater={setNotepadUpdater}
-          setMajority={setMajority}
-        />
+        <div className="disable-outside-clicks">
+          <DeadForm
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
       )}
       {isEditFormShown && (
-        <EditForm
-          setIsEditFormShown={setIsEditFormShown}
-          playersInfo={playersInfo}
-          setPlayersInfo={setPlayersInfo}
-          playerNumber={playerNumber}
-          setNotepadUpdater={setNotepadUpdater}
-          setMajority={setMajority}
-        />
+        <div className="disable-outside-clicks">
+          <EditForm
+            setIsEditFormShown={setIsEditFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
       )}
       <div className="notepad-player-card-container">
         <div

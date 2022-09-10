@@ -204,15 +204,17 @@ export function editPlayerInfo(
     player.displayColorBackground = COLOR.UNKNOWN;
   }
 
-  // CONFIRMATIN LOCK
+  // CONFIRMATION / SUSPICION LOCK
   if (
     player.faction == Faction.NotTown ||
     player.faction == Faction.NeutralEvil ||
     player.faction == Faction.Mafia
   ) {
     player.isConfirmationLocked = true;
+    player.isSuspicionLocked = true;
   } else if (!player.isUser && !player.isExecutionTarget) {
     player.isConfirmationLocked = false;
+    player.isSuspicionLocked = false;
   }
 
   // IS CONFIRMED TOWN

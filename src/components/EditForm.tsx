@@ -43,7 +43,7 @@ export const EditForm = ({
   return (
     <>
       <div className="editform-container">
-        <h1>What is ({playerNumber})&#39s role? </h1>
+        <h1>What is ({playerNumber}) role? </h1>
 
         <ButtonsGrid
           setIsEditFormShown={setIsEditFormShown}

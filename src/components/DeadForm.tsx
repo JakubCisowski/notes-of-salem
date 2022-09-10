@@ -41,7 +41,7 @@ export const DeadForm = ({
   return (
     <>
       <div className="deadform-container">
-        <h1 className="form-text"> What was ({playerNumber})&#39s role? </h1>
+        <h1 className="form-text"> What was ({playerNumber}) role? </h1>
 
         <RoleButtonsGrid
           selectedRole={selectedRole}

@@ -62,6 +62,7 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
         ? (isConfirmedTown = true)
         : (isConfirmedTown = false);
       isConfirmationLocked = true;
+      isSuspicionLocked = true;
 
       if (faction != Faction.Town) {
         displayColor = roleToColor(role);

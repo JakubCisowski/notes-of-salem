@@ -6,6 +6,6 @@
   "plugins": ["@typescript-eslint"],
   "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
   "rules": {
-    "prefer-const": ["off"]
+    "prefer-const": "off"
   }
 }

@@ -16,11 +16,13 @@ export const StartForm = ({
   setIsNotepadShown,
   setPlayersInfo: setPlayerInfo,
   setGameNote,
+  setGameMajority,
 }: {
   setIsStartFormShown: (value: boolean) => void;
   setIsNotepadShown: (value: boolean) => void;
   setPlayersInfo: (value: PlayersInfo) => void;
   setGameNote: any;
+  setGameMajority: (value: { town: number; notTown: number }) => void;
 }) => {
   const [selectedRole, setSelectedRole] = useState<Role>();
   const [selectedUserNumber, setSelectedUserNumber] = useState<number>(-1);
@@ -50,6 +52,7 @@ export const StartForm = ({
       setPlayerInfo(newPlayerInfo);
       setIsNotepadShown(true);
       setGameNote('');
+      setGameMajority({ town: 9, notTown: 6 });
     }
   }
 

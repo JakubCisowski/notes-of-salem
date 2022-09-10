@@ -61,7 +61,7 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       faction = roleToFaction(userRole);
       townAlignment = roleToTownAlignment(userRole);
       role = userRole;
-      note = '(ME)';
+      note = '(me)';
       roleToFaction(userRole) == Faction.Town
         ? (isConfirmedTown = true)
         : (isConfirmedTown = false);

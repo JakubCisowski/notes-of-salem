@@ -30,6 +30,7 @@ const Home: NextPage = () => {
             setIsNotepadShown={setIsNotepadShown}
             setPlayersInfo={setPlayersInfo}
             setGameNote={setGameNote}
+            setGameMajority={setGameMajority}
           />
         </div>
       )}

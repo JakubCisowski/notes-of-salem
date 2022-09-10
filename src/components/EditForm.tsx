@@ -1,8 +1,8 @@
 import { Faction, Role, TownAlignment } from '../utils/enums';
 import {
-  factionToColor,
-  roleToColor,
-  townAlignmentToColor,
+  factionToTextColor,
+  roleToTextColor,
+  townAlignmentToTextColor,
 } from '../utils/infoHelper';
 import { editPlayerInfo, PlayersInfo } from '../utils/playerInfo';
 
@@ -83,11 +83,9 @@ export function RoleButton({
   setMajority: any;
 }) {
   let roleName = Role[role];
-  let roleColor = roleToColor(role);
-  let borderColor = 'lightgray';
+  let roleColor = roleToTextColor(role);
 
   function handleOnClick() {
-    borderColor = 'black';
     setIsEditFormShown(false);
     editPlayerInfo(
       playersInfo,
@@ -107,9 +105,8 @@ export function RoleButton({
         className="button-role"
         style={{
           color: roleColor,
-          borderColor: borderColor,
-          borderStyle: 'solid',
-          borderWidth: '2px',
+          backgroundColor: 'lightgray',
+          border: '1px solid black',
         }}
         onClick={handleOnClick}
       >
@@ -137,11 +134,9 @@ export function AlignmentButton({
   setMajority: any;
 }) {
   let alignmentName = TownAlignment[alignment];
-  let alignmentColor = townAlignmentToColor(alignment);
-  let borderColor = 'lightgray';
+  let alignmentColor = townAlignmentToTextColor(alignment);
 
   function handleOnClick() {
-    borderColor = 'black';
     setIsEditFormShown(false);
     editPlayerInfo(
       playersInfo,
@@ -161,9 +156,8 @@ export function AlignmentButton({
         className="button-role"
         style={{
           color: alignmentColor,
-          borderColor: borderColor,
-          borderStyle: 'solid',
-          borderWidth: '2px',
+          backgroundColor: 'lightgray',
+          border: '1px solid black',
         }}
         onClick={handleOnClick}
       >
@@ -191,11 +185,9 @@ export function FactionButton({
   setMajority: any;
 }) {
   let factionName = Faction[faction];
-  let factionColor = factionToColor(faction);
-  let borderColor = 'lightgray';
+  let factionColor = factionToTextColor(faction);
 
   function handleOnClick() {
-    borderColor = 'black';
     setIsEditFormShown(false);
     editPlayerInfo(
       playersInfo,
@@ -215,9 +207,8 @@ export function FactionButton({
         className="button-role"
         style={{
           color: factionColor,
-          borderColor: borderColor,
-          borderStyle: 'solid',
-          borderWidth: '2px',
+          backgroundColor: 'lightgray',
+          border: '1px solid black',
         }}
         onClick={handleOnClick}
       >
@@ -246,15 +237,6 @@ function ButtonsGrid({
     <>
       {/* Grid area: row start / column start / row end (+1) / column end (+1)  */}
       <div className="grid-container-edit">
-        <div className="grid-item" style={{ gridArea: '1/1/2/3' }}>
-          TOWN
-        </div>
-        <div className="grid-item" style={{ gridArea: '1/3/2/5' }}>
-          MAFIA
-        </div>
-        <div className="grid-item" style={{ gridArea: '1/5/2/6' }}>
-          NEUTRAL
-        </div>
         <div className="grid-item" style={{ gridArea: '2/1/3/3' }}>
           <RoleButton
             role={Role.Jailor}
@@ -390,6 +372,18 @@ function ButtonsGrid({
         <div className="grid-item" style={{ gridArea: '4/4/5/5' }}>
           <RoleButton
             role={Role.Forger}
+            setIsEditFormShown={setIsEditFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
+
+        <div className="grid-item" style={{ gridArea: '4/5/5/6' }}>
+          <RoleButton
+            role={Role.Jester}
             setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}

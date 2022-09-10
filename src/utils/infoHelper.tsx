@@ -91,12 +91,12 @@ export function roleToTownAlignment(role: Role): TownAlignment {
   return townAlignment;
 }
 
-export function roleToColor(role: Role): string {
+export function roleToBackgroundColor(role: Role): string {
   let colorString = COLOR.BLACK;
 
   switch (role) {
     case Role.Unknown:
-      colorString = COLOR.BLACK;
+      colorString = 'white';
       break;
     case Role.Cleaned:
     case Role.ProbablyForged:
@@ -134,6 +134,61 @@ export function roleToColor(role: Role): string {
       break;
     case Role.Executioner:
       colorString = COLOR.EXE;
+      break;
+    case Role.Jester:
+      colorString = COLOR.JESTER;
+      break;
+    case Role.Witch:
+      colorString = COLOR.WITCH;
+      break;
+  }
+
+  return colorString;
+}
+
+export function roleToTextColor(role: Role): string {
+  let colorString = COLOR.BLACK;
+
+  switch (role) {
+    case Role.Unknown:
+      colorString = COLOR.BLACK;
+      break;
+    case Role.Cleaned:
+    case Role.ProbablyForged:
+      colorString = COLOR.BLACK;
+      break;
+    case Role.Jailor:
+    case Role.Lookout:
+    case Role.Spy:
+    case Role.Investigator:
+    case Role.Sheriff:
+    case Role.Bodyguard:
+    case Role.Doctor:
+    case Role.Veteran:
+    case Role.Vigilante:
+    case Role.Escort:
+    case Role.Transporter:
+    case Role.Medium:
+    case Role.Retributionist:
+    case Role.Mayor:
+      colorString = COLOR.CONFIRMED_TOWN_TEXT;
+      break;
+    case Role.Godfather:
+    case Role.YourOtherMafia:
+    case Role.Mafioso:
+    case Role.Consigliere:
+    case Role.Consort:
+    case Role.Janitor:
+    case Role.Forger:
+    case Role.Framer:
+    case Role.Disguiser:
+    case Role.Blackmailer:
+    case Role.Hypnotist:
+    case Role.Ambusher:
+      colorString = COLOR.MAFIA;
+      break;
+    case Role.Executioner:
+      colorString = COLOR.BLACK;
       break;
     case Role.Jester:
       colorString = COLOR.JESTER;
@@ -236,7 +291,9 @@ export function townAlignmentToFaction(townAlignment: TownAlignment): Faction {
   return faction;
 }
 
-export function townAlignmentToColor(townAlignment: TownAlignment): string {
+export function townAlignmentToBackgroundColor(
+  townAlignment: TownAlignment
+): string {
   let colorString = COLOR.BLACK;
 
   switch (townAlignment) {
@@ -250,6 +307,25 @@ export function townAlignmentToColor(townAlignment: TownAlignment): string {
       break;
     case TownAlignment.NotTown:
       colorString = COLOR.SUSPICIOUS;
+      break;
+  }
+  return colorString;
+}
+
+export function townAlignmentToTextColor(townAlignment: TownAlignment): string {
+  let colorString = COLOR.BLACK;
+
+  switch (townAlignment) {
+    case TownAlignment.J:
+    case TownAlignment.TK:
+    case TownAlignment.TP:
+    case TownAlignment.TS:
+    case TownAlignment.TI:
+    case TownAlignment.Unknown:
+      colorString = COLOR.CONFIRMED_TOWN_TEXT;
+      break;
+    case TownAlignment.NotTown:
+      colorString = COLOR.BLACK;
       break;
   }
   return colorString;
@@ -315,7 +391,7 @@ export function factionToTownAlignment(faction: Faction): TownAlignment {
   return alignment;
 }
 
-export function factionToColor(faction: Faction): string {
+export function factionToBackgroundColor(faction: Faction): string {
   let color = COLOR.BLACK;
 
   switch (faction) {
@@ -328,7 +404,27 @@ export function factionToColor(faction: Faction): string {
       break;
     case Faction.NeutralEvil:
     case Faction.NotTown:
-      color = COLOR.SUSPICIOUS; // ? or maybe something else? suspicious is too light if we know its NE
+      color = COLOR.NOTTOWN_BACKGROUND; // ? or maybe something else? suspicious is too light if we know its NE
+      break;
+  }
+
+  return color;
+}
+
+export function factionToTextColor(faction: Faction): string {
+  let color = COLOR.BLACK;
+
+  switch (faction) {
+    case Faction.Unknown:
+    case Faction.Town:
+      color = COLOR.UNKNOWN;
+      break;
+    case Faction.Mafia:
+      color = COLOR.MAFIA;
+      break;
+    case Faction.NeutralEvil:
+    case Faction.NotTown:
+      color = COLOR.BLACK;
       break;
   }
 

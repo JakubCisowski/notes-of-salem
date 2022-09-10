@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Role } from '../utils/enums';
-import { roleToColor } from '../utils/infoHelper';
+import { roleToTextColor } from '../utils/infoHelper';
 import { markPlayerAsDead, PlayersInfo } from '../utils/playerInfo';
 
 export const DeadForm = ({
@@ -67,12 +67,10 @@ export function RoleButton({
   setSelectedRole: (value: Role) => void;
 }) {
   let roleName = Role[role];
-  let roleColor = roleToColor(role);
-  let borderColor = 'lightgray';
+  let roleColor = roleToTextColor(role);
 
   function handleOnClick() {
     setSelectedRole(role);
-    borderColor = 'black';
   }
 
   return (
@@ -81,9 +79,8 @@ export function RoleButton({
         className="button-role"
         style={{
           color: roleColor,
-          borderColor: borderColor,
-          borderStyle: 'solid',
-          borderWidth: '2px',
+          backgroundColor: 'lightgray',
+          border: '1px solid black',
         }}
         onClick={handleOnClick}
       >
@@ -102,15 +99,6 @@ function RoleButtonsGrid({
     <>
       {/* Grid area: row start / column start / row end (+1) / column end (+1)  */}
       <div className="grid-container-start">
-        <div className="grid-item" style={{ gridArea: '1/1/2/3' }}>
-          TOWN
-        </div>
-        <div className="grid-item" style={{ gridArea: '1/3/2/5' }}>
-          MAFIA
-        </div>
-        <div className="grid-item" style={{ gridArea: '1/5/2/6' }}>
-          NEUTRAL
-        </div>
         <div className="grid-item" style={{ gridArea: '2/1/3/3' }}>
           <RoleButton role={Role.Jailor} setSelectedRole={setSelectedRole} />
         </div>

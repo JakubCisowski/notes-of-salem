@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { COLOR } from '../utils/color';
-import { Faction } from '../utils/enums';
+import { Faction, Role, TownAlignment } from '../utils/enums';
 import {
+  factionToBackgroundColor,
   getFactionDisplayString,
   getRoleDisplayString,
   getTownAlignmentDisplayString,
-  roleToColor,
+  roleToBackgroundColor,
+  townAlignmentToBackgroundColor,
 } from '../utils/infoHelper';
 import { checkAutoSuspicion, PlayersInfo } from '../utils/playerInfo';
 import { DeadForm } from './DeadForm';
@@ -96,7 +98,7 @@ function PlayerCard({
   );
 
   const [playerColor, setPlayerColor] = React.useState<string>(
-    player.displayColor
+    player.displayColorBackground
   );
 
   const [playerNote, setPlayerNote] = React.useState<string>(player.note);
@@ -111,7 +113,7 @@ function PlayerCard({
       player.isSuspicious = false;
       setIsSuspicious(false);
     }
-    player.displayColor = calculateDisplayColor();
+    player.displayColorBackground = calculateDisplayColor();
     setPlayerColor(calculateDisplayColor());
     //setPlayersInfo(playersInfo); // should we use this anywyas?
 
@@ -128,7 +130,7 @@ function PlayerCard({
       setIsConfirmed(false);
       checkAutoSuspicion(playersInfo, setPlayersInfo);
     }
-    player.displayColor = calculateDisplayColor();
+    player.displayColorBackground = calculateDisplayColor();
     setPlayerColor(calculateDisplayColor());
     //setPlayersInfo(playersInfo); // should we use this anywyas?
     setNotepadUpdater((prevState: number) => prevState + 1);
@@ -141,12 +143,16 @@ function PlayerCard({
   }
 
   function calculateDisplayColor() {
-    if (player.faction != Faction.Unknown && player.faction != Faction.Town) {
-      return roleToColor(player.role);
-    } else if (player.isConfirmedTown) {
-      return COLOR.CONFIRMED_TOWN;
+    if (player.isConfirmedTown) {
+      return COLOR.CONFIRMED_TOWN_BACKGROUND;
     } else if (player.isSuspicious) {
       return COLOR.SUSPICIOUS;
+    } else if (player.role != Role.Unknown) {
+      return roleToBackgroundColor(player.role);
+    } else if (player.townAlignment != TownAlignment.Unknown) {
+      return townAlignmentToBackgroundColor(player.townAlignment);
+    } else if (player.faction != Faction.Unknown) {
+      return factionToBackgroundColor(player.faction);
     } else {
       return COLOR.UNKNOWN;
     }
@@ -189,7 +195,7 @@ function PlayerCard({
       <div className="notepad-player-card-container">
         <div
           className="notepad-card-section-number"
-          style={{ backgroundColor: player.displayColor }}
+          style={{ backgroundColor: player.displayColorBackground }}
         >
           {player.number}
         </div>
@@ -228,19 +234,19 @@ function PlayerCard({
         </div>
         <div
           className="notepad-card-section-faction"
-          style={{ backgroundColor: player.displayColor }}
+          style={{ backgroundColor: player.displayColorBackground }}
         >
           {getFactionDisplayString(player.faction)}
         </div>
         <div
           className="notepad-card-section-alignment"
-          style={{ backgroundColor: player.displayColor }}
+          style={{ backgroundColor: player.displayColorBackground }}
         >
           {getTownAlignmentDisplayString(player.townAlignment)}
         </div>
         <div
           className="notepad-card-section-role"
-          style={{ backgroundColor: player.displayColor }}
+          style={{ backgroundColor: player.displayColorBackground }}
         >
           {getRoleDisplayString(player.role)}
         </div>
@@ -324,7 +330,7 @@ function HeaderAlive({
         <div className="header-suspicious">SUSPICIOUS?</div>
         <div className="header-majority">
           <p style={{ margin: 0 }}>
-            <span style={{ color: COLOR.CONFIRMED_TOWN }}>
+            <span style={{ color: COLOR.CONFIRMED_TOWN_TEXT }}>
               {majority.town}{' '}
             </span>
             town <span style={{ fontSize: '1.2rem' }}>vs</span>

@@ -1,14 +1,14 @@
 import { COLOR } from './color';
 import { Faction, Role, SuspicionSeverity, TownAlignment } from './enums';
 import {
-  factionToColor,
+  factionToBackgroundColor,
   factionToTownAlignment,
   getTownAlignmentSlots,
   isRoleUnique,
-  roleToColor,
+  roleToBackgroundColor,
   roleToFaction,
   roleToTownAlignment,
-  townAlignmentToColor,
+  townAlignmentToBackgroundColor,
   townAlignmentToFaction,
 } from './infoHelper';
 
@@ -21,7 +21,7 @@ export type PlayerInfo = {
   faction: Faction; // Player faction (unknown, town, mafia, neutral)
   townAlignment: TownAlignment; // Player town alignment (unknown, notTown, J, TI, TP, TK, TS)
   role: Role; // Player role (unknown, cleaned, notNeeded, jailor, mafioso..) - notNeeded is reserved for players that are not needed to be tracked (e.g. other members of user's mafia)
-  displayColor: string; // Player display color (lightgreen, lightred, green, red, y)
+  displayColorBackground: string; // Player display color (lightgreen, lightred, green, red, y)
   note: string; // User note about the player
   isConfirmedTown: boolean; // If the player is confirmed townie or not
   isConfirmationLocked: boolean; // If this player is either user or user mafia, confirmation checkbox is locked because unnecessary
@@ -65,9 +65,9 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       isSuspicionLocked = true;
 
       if (faction != Faction.Town) {
-        displayColor = roleToColor(role);
+        displayColor = roleToBackgroundColor(role);
       } else if (isConfirmedTown) {
-        displayColor = COLOR.CONFIRMED_TOWN;
+        displayColor = COLOR.CONFIRMED_TOWN_BACKGROUND;
       }
     }
 
@@ -77,7 +77,7 @@ export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
       townAlignment: townAlignment,
       role: role,
       note: note,
-      displayColor: displayColor,
+      displayColorBackground: displayColor,
       isConfirmedTown: isConfirmedTown,
       isConfirmationLocked: isConfirmationLocked,
       isSuspicious: isSuspicious,
@@ -105,7 +105,7 @@ export function setupExecutionerTarget(
   targetPlayerInfo.faction = Faction.Town;
   targetPlayerInfo.isConfirmedTown = true;
   targetPlayerInfo.isConfirmationLocked = true;
-  targetPlayerInfo.displayColor = COLOR.CONFIRMED_TOWN;
+  targetPlayerInfo.displayColorBackground = COLOR.CONFIRMED_TOWN_BACKGROUND;
   targetPlayerInfo.isSuspicionLocked = true;
 
   return playersInfo; // Does it need to return anything?
@@ -125,7 +125,7 @@ export function setupUserMafiaNumbers(
     targetPlayerInfo.faction = Faction.Mafia;
     targetPlayerInfo.townAlignment = TownAlignment.NotTown;
     targetPlayerInfo.role = Role.YourOtherMafia;
-    targetPlayerInfo.displayColor = COLOR.MAFIA;
+    targetPlayerInfo.displayColorBackground = COLOR.MAFIA;
     targetPlayerInfo.isConfirmationLocked = true;
     // .isSuspicionLocked already set to true in generateInitialPlayersInfo()
   }
@@ -176,22 +176,23 @@ export function editPlayerInfo(
     player.role = playerRole;
     player.townAlignment = roleToTownAlignment(playerRole);
     player.faction = roleToFaction(playerRole);
-    player.displayColor = roleToColor(playerRole);
+    player.displayColorBackground = roleToBackgroundColor(playerRole);
   } else if (playerTownAlignment != undefined) {
     player.role = Role.Unknown;
     player.townAlignment = playerTownAlignment;
     player.faction = townAlignmentToFaction(playerTownAlignment);
-    player.displayColor = townAlignmentToColor(playerTownAlignment);
+    player.displayColorBackground =
+      townAlignmentToBackgroundColor(playerTownAlignment);
   } else if (playerFaction != undefined) {
     player.role = Role.Unknown;
     player.townAlignment = factionToTownAlignment(playerFaction);
     player.faction = playerFaction;
-    player.displayColor = factionToColor(playerFaction);
+    player.displayColorBackground = factionToBackgroundColor(playerFaction);
   } else {
     player.role = Role.Unknown;
     player.townAlignment = TownAlignment.Unknown;
     player.faction = Faction.Unknown;
-    player.displayColor = COLOR.UNKNOWN;
+    player.displayColorBackground = COLOR.UNKNOWN;
   }
 
   // IS CONFIRMED TOWN
@@ -210,9 +211,9 @@ export function editPlayerInfo(
 
   // COLOR (AFTER TAKING CONFIRMATION/SUSPICION INTO ACCOUNT)
   if (player.isConfirmedTown) {
-    player.displayColor = COLOR.CONFIRMED_TOWN;
+    player.displayColorBackground = COLOR.CONFIRMED_TOWN_BACKGROUND;
   } else if (player.isSuspicious) {
-    player.displayColor = COLOR.SUSPICIOUS;
+    player.displayColorBackground = COLOR.SUSPICIOUS;
   }
 
   // DEAD PLAYER

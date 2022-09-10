@@ -42,7 +42,7 @@ export const EditForm = ({
 
   return (
     <>
-      <div className="startform-container">
+      <div className="editform-container">
         <h1>What is ({playerNumber})'s role? </h1>
 
         <ButtonsGrid
@@ -54,10 +54,16 @@ export const EditForm = ({
           setMajority={setMajority}
         />
 
-        <button className="button-action" onClick={handleClearOnClick}>
+        <button
+          className="button-action button-action-left"
+          onClick={handleClearOnClick}
+        >
           CLEAR ➖
         </button>
-        <button className="button-action" onClick={handleCancelOnClick}>
+        <button
+          className="button-action button-action-right"
+          onClick={handleCancelOnClick}
+        >
           CANCEL ❌
         </button>
       </div>
@@ -237,7 +243,7 @@ function ButtonsGrid({
     <>
       {/* Grid area: row start / column start / row end (+1) / column end (+1)  */}
       <div className="grid-container-edit">
-        <div className="grid-item" style={{ gridArea: '2/1/3/3' }}>
+        <div className="grid-item" style={{ gridArea: '1/1/2/3' }}>
           <RoleButton
             role={Role.Jailor}
             setIsEditFormShown={setIsEditFormShown}
@@ -248,7 +254,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/3/3/4' }}>
+        <div className="grid-item" style={{ gridArea: '1/3/2/4' }}>
           <RoleButton
             role={Role.Godfather}
             setIsEditFormShown={setIsEditFormShown}
@@ -259,7 +265,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/4/3/5' }}>
+        <div className="grid-item" style={{ gridArea: '1/4/2/5' }}>
           <RoleButton
             role={Role.Mafioso}
             setIsEditFormShown={setIsEditFormShown}
@@ -270,7 +276,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/5/3/6' }}>
+        <div className="grid-item" style={{ gridArea: '1/5/2/6' }}>
           <RoleButton
             role={Role.Witch}
             setIsEditFormShown={setIsEditFormShown}
@@ -281,7 +287,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/1/4/2' }}>
+        <div className="grid-item" style={{ gridArea: '2/1/3/2' }}>
           <RoleButton
             role={Role.Lookout}
             setIsEditFormShown={setIsEditFormShown}
@@ -292,7 +298,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/2/4/3' }}>
+        <div className="grid-item" style={{ gridArea: '2/2/3/3' }}>
           <RoleButton
             role={Role.Spy}
             setIsEditFormShown={setIsEditFormShown}
@@ -303,7 +309,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/3/4/4' }}>
+        <div className="grid-item" style={{ gridArea: '2/3/3/4' }}>
           <RoleButton
             role={Role.Consigliere}
             setIsEditFormShown={setIsEditFormShown}
@@ -314,7 +320,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/4/4/5' }}>
+        <div className="grid-item" style={{ gridArea: '2/4/3/5' }}>
           <RoleButton
             role={Role.Consort}
             setIsEditFormShown={setIsEditFormShown}
@@ -325,7 +331,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/5/4/6' }}>
+        <div className="grid-item" style={{ gridArea: '2/5/3/6' }}>
           <RoleButton
             role={Role.Executioner}
             setIsEditFormShown={setIsEditFormShown}
@@ -336,7 +342,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/1/5/2' }}>
+        <div className="grid-item" style={{ gridArea: '3/1/4/2' }}>
           <RoleButton
             role={Role.Investigator}
             setIsEditFormShown={setIsEditFormShown}
@@ -347,7 +353,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/2/5/3' }}>
+        <div className="grid-item" style={{ gridArea: '3/2/4/3' }}>
           <RoleButton
             role={Role.Sheriff}
             setIsEditFormShown={setIsEditFormShown}
@@ -358,7 +364,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/3/5/4' }}>
+        <div className="grid-item" style={{ gridArea: '3/3/4/4' }}>
           <RoleButton
             role={Role.Janitor}
             setIsEditFormShown={setIsEditFormShown}
@@ -369,7 +375,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/4/5/5' }}>
+        <div className="grid-item" style={{ gridArea: '3/4/4/5' }}>
           <RoleButton
             role={Role.Forger}
             setIsEditFormShown={setIsEditFormShown}
@@ -381,7 +387,7 @@ function ButtonsGrid({
           />
         </div>
 
-        <div className="grid-item" style={{ gridArea: '4/5/5/6' }}>
+        <div className="grid-item" style={{ gridArea: '3/5/4/6' }}>
           <RoleButton
             role={Role.Jester}
             setIsEditFormShown={setIsEditFormShown}
@@ -392,7 +398,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/1/6/2' }}>
+        <div className="grid-item" style={{ gridArea: '4/1/5/2' }}>
           <RoleButton
             role={Role.Bodyguard}
             setIsEditFormShown={setIsEditFormShown}
@@ -403,7 +409,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/2/6/3' }}>
+        <div className="grid-item" style={{ gridArea: '4/2/5/3' }}>
           <RoleButton
             role={Role.Doctor}
             setIsEditFormShown={setIsEditFormShown}
@@ -414,7 +420,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/3/6/4' }}>
+        <div className="grid-item" style={{ gridArea: '4/3/5/4' }}>
           <RoleButton
             role={Role.Framer}
             setIsEditFormShown={setIsEditFormShown}
@@ -425,7 +431,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/4/6/5' }}>
+        <div className="grid-item" style={{ gridArea: '4/4/5/5' }}>
           <RoleButton
             role={Role.Disguiser}
             setIsEditFormShown={setIsEditFormShown}
@@ -436,7 +442,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/1/7/2' }}>
+        <div className="grid-item" style={{ gridArea: '5/1/6/2' }}>
           <RoleButton
             role={Role.Veteran}
             setIsEditFormShown={setIsEditFormShown}
@@ -447,7 +453,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/2/7/3' }}>
+        <div className="grid-item" style={{ gridArea: '5/2/6/3' }}>
           <RoleButton
             role={Role.Vigilante}
             setIsEditFormShown={setIsEditFormShown}
@@ -458,7 +464,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/3/7/4' }}>
+        <div className="grid-item" style={{ gridArea: '5/3/6/4' }}>
           <RoleButton
             role={Role.Blackmailer}
             setIsEditFormShown={setIsEditFormShown}
@@ -469,7 +475,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/4/7/5' }}>
+        <div className="grid-item" style={{ gridArea: '5/4/6/5' }}>
           <RoleButton
             role={Role.Hypnotist}
             setIsEditFormShown={setIsEditFormShown}
@@ -480,7 +486,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '7/1/8/2' }}>
+        <div className="grid-item" style={{ gridArea: '6/1/7/2' }}>
           <RoleButton
             role={Role.Escort}
             setIsEditFormShown={setIsEditFormShown}
@@ -491,7 +497,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '7/2/8/3' }}>
+        <div className="grid-item" style={{ gridArea: '6/2/7/3' }}>
           <RoleButton
             role={Role.Transporter}
             setIsEditFormShown={setIsEditFormShown}
@@ -502,7 +508,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '7/3/8/5' }}>
+        <div className="grid-item" style={{ gridArea: '6/3/7/5' }}>
           <RoleButton
             role={Role.Ambusher}
             setIsEditFormShown={setIsEditFormShown}
@@ -513,7 +519,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '8/1/9/2' }}>
+        <div className="grid-item" style={{ gridArea: '7/1/8/2' }}>
           <RoleButton
             role={Role.Medium}
             setIsEditFormShown={setIsEditFormShown}
@@ -524,7 +530,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '8/2/9/3' }}>
+        <div className="grid-item" style={{ gridArea: '7/2/8/3' }}>
           <RoleButton
             role={Role.Retributionist}
             setIsEditFormShown={setIsEditFormShown}
@@ -535,7 +541,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '9/1/10/3' }}>
+        <div className="grid-item" style={{ gridArea: '8/1/9/3' }}>
           <RoleButton
             role={Role.Mayor}
             setIsEditFormShown={setIsEditFormShown}
@@ -546,7 +552,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '11/1/12/2' }}>
+        <div className="grid-item" style={{ gridArea: '10/1/11/2' }}>
           <AlignmentButton
             alignment={TownAlignment.TI}
             setIsEditFormShown={setIsEditFormShown}
@@ -557,7 +563,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '11/2/12/3' }}>
+        <div className="grid-item" style={{ gridArea: '10/2/11/3' }}>
           <AlignmentButton
             alignment={TownAlignment.TS}
             setIsEditFormShown={setIsEditFormShown}
@@ -568,7 +574,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '11/3/12/5' }}>
+        <div className="grid-item" style={{ gridArea: '10/3/11/5' }}>
           <FactionButton
             faction={Faction.Mafia}
             setIsEditFormShown={setIsEditFormShown}
@@ -579,7 +585,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '11/5/12/6' }}>
+        <div className="grid-item" style={{ gridArea: '10/5/11/6' }}>
           <FactionButton
             faction={Faction.NeutralEvil}
             setIsEditFormShown={setIsEditFormShown}
@@ -590,7 +596,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '12/1/13/2' }}>
+        <div className="grid-item" style={{ gridArea: '11/1/12/2' }}>
           <AlignmentButton
             alignment={TownAlignment.TK}
             setIsEditFormShown={setIsEditFormShown}
@@ -601,7 +607,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '12/2/13/3' }}>
+        <div className="grid-item" style={{ gridArea: '11/2/12/3' }}>
           <AlignmentButton
             alignment={TownAlignment.TP}
             setIsEditFormShown={setIsEditFormShown}
@@ -612,7 +618,7 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '12/3/13/6' }}>
+        <div className="grid-item" style={{ gridArea: '11/3/12/6' }}>
           <FactionButton
             faction={Faction.NotTown}
             setIsEditFormShown={setIsEditFormShown}

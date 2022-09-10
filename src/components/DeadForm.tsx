@@ -41,7 +41,7 @@ export const DeadForm = ({
   return (
     <>
       <div className="deadform-container">
-        <h1 className="form-text"> What was ({playerNumber})'s role? </h1>
+        <h1 className="form-text"> What was ({playerNumber})&#39s role? </h1>
 
         <RoleButtonsGrid
           selectedRole={selectedRole}
@@ -76,8 +76,8 @@ export function RoleButton({
   selectedRole: Role | undefined;
   setSelectedRole: (value: Role) => void;
 }) {
-  let roleName = getRoleDisplayString(role);
-  let roleColor = roleToTextColor(role);
+  const roleName = getRoleDisplayString(role);
+  const roleColor = roleToTextColor(role);
 
   function handleOnClick() {
     setSelectedRole(role);

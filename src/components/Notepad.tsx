@@ -38,7 +38,7 @@ export function Notepad({
   const deadPlayerCards: any[] = [];
 
   playersInfo.forEach((playerInfo) => {
-    let card = (
+    const card = (
       <PlayerCard
         playerNumber={playerInfo.number}
         playersInfo={playersInfo}
@@ -90,7 +90,7 @@ function PlayerCard({
   // Modifying player DOES modify playersInfo.
   // But shouldn't we use setPlayersInfo to modify playersInfo - rendering issues possible?
   // For example some components wont rerender when player is modified (not setPlayersInfo).
-  let player = playersInfo.find((player) => player.number == playerNumber)!;
+  const player = playersInfo.find((player) => player.number == playerNumber)!;
 
   // These states only exist for this compononent to rerender, they are not used anywhere else.
   // todo: How to avoid that?

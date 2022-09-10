@@ -1,6 +1,6 @@
 import type { AppType } from 'next/dist/shared/lib/utils';
 import Head from 'next/head';
-import Logo from '../components/Logo';
+// import Logo from '../components/Logo';
 import '../styles/globals.css';
 
 const MyApp: AppType = ({ Component, pageProps }) => {
@@ -11,7 +11,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
         <link rel="icon" href="/icon.png" />
       </Head>
       <div className="body-container">
-        <Logo />
+        {/* <Logo /> */}
         <Component {...pageProps} />
       </div>
     </>

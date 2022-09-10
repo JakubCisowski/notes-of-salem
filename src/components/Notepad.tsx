@@ -289,7 +289,14 @@ function PlayerCard({
             <div className="serverity-moderate">
               ?
               <div className="hover-content">
-                {player.autoSuspicionNotes.join('\n')}
+                {player.autoSuspicionNotes.map((note) => {
+                  return (
+                    <>
+                      {note}
+                      {'\n'}
+                    </>
+                  );
+                })}
               </div>
             </div>
           )}

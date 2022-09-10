@@ -238,7 +238,7 @@ h2 {
   justify-content: center;
 }
 .notepad-card-section-button {
-  border: 1px solid black;
+  border: 2px solid black;
   background-color: lightgray;
   display: inline;
   font-size: 1.1rem;
@@ -315,7 +315,7 @@ h2 {
   justify-content: center;
 }
 .notepad-card-section-dead-button {
-  border: 1px solid black;
+  border: 2px solid black;
   background-color: lightgray;
   font-size: 1.1rem;
   width: 12%;
@@ -330,18 +330,23 @@ h2 {
   background-color: #ffc2c2;
   width: 100%;
   height: 100%;
+  cursor: default;
 }
 
 .serverity-high {
   background-color: #ff4a4a;
   width: 100%;
   height: 100%;
+  cursor: default;
 }
 
 .hover-content {
   display: none;
-  border: 1px solid black;
+  border: 3px solid black;
   background-color: lightblue;
+  padding: 5px 10px;
+  font-size: 1.1rem;
+  white-space: pre-line;
 }
 .serverity-moderate:hover .hover-content {
   display: block;

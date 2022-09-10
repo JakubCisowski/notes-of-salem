@@ -212,6 +212,8 @@ export function isRoleUnique(role: Role): boolean {
     case Role.Retributionist:
     case Role.Mayor:
     case Role.Godfather:
+    case Role.Mafioso:
+    case Role.Ambusher:
     case Role.Executioner:
     case Role.Jester:
     case Role.Witch:

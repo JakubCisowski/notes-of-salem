@@ -318,7 +318,34 @@ export function checkRoleAutoChange(
     }
   }
 
+  let aliveMafioso = playersInfo.find(
+    (player) => player.role == Role.Mafioso && !player.isDead
+  );
+  let aliveGodfathers = playersInfo.filter(
+    (player) => player.role == Role.Godfather && !player.isDead
+  );
+  let deadGodfathers = playersInfo.filter(
+    (player) => player.role == Role.Godfather && player.isDead
+  );
+
   // MAFIOSO -> GODFATHER (if GODFATHER dead)
+  // ? it's not really clear what to do, for example if there is 2 mafia alive [consig] and [not set]
+  // ? and gf dies, its obvious that [not set] becomes gf, but it's too much work to implement it
+  if (
+    aliveGodfathers.length == 0 &&
+    aliveMafioso != undefined &&
+    deadGodfathers.length > 0
+  ) {
+    editPlayerInfo(
+      playersInfo,
+      setPlayersInfo,
+      aliveMafioso.number,
+      Role.Godfather,
+      undefined,
+      undefined,
+      setMajority
+    );
+  }
 
   // LAST MAFIA -> MAFIOSO (if 3x MAFIA dead)
 }

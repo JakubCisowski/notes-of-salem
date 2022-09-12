@@ -189,7 +189,6 @@ function PlayerCard({
 
   function resurrectPlayer() {
     player.isDead = false;
-    player.isConfirmedTown = false;
     editPlayerInfo(
       playersInfo,
       setPlayersInfo,
@@ -199,6 +198,12 @@ function PlayerCard({
       undefined,
       setMajority
     );
+
+    if (player.isUser || player.isExecutionTarget) {
+      player.isConfirmedTown = true;
+    } else {
+      player.isConfirmedTown = false;
+    }
   }
 
   return (

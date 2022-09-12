@@ -387,6 +387,7 @@ h2 {
   /* font-family: Comic Sans MS; */
   text-align: left;
   font-weight: bold;
+  padding: 0 5px;
 }
 
 input::placeholder {

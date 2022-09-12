@@ -12,6 +12,7 @@ import {
 import {
   checkAutoSuspicion,
   checkRoleAutoChange,
+  editPlayerInfo,
   markPlayerAsDead,
   PlayersInfo,
 } from '../utils/playerInfo';
@@ -186,6 +187,20 @@ function PlayerCard({
     setIsEditFormShown(true);
   }
 
+  function resurrectPlayer() {
+    player.isDead = false;
+    player.isConfirmedTown = false;
+    editPlayerInfo(
+      playersInfo,
+      setPlayersInfo,
+      playerNumber,
+      player.role,
+      undefined,
+      undefined,
+      setMajority
+    );
+  }
+
   return (
     <>
       {isDeadFormShown && (
@@ -333,8 +348,13 @@ function PlayerCard({
           ></input>
         </div>
         {player.isDead ? (
-          <div className="notepad-card-section-dead-button">
-            (<span style={{ fontWeight: 'bold' }}>{player.number}</span>)
+          <div
+            className="notepad-card-section-dead-button"
+            onClick={resurrectPlayer}
+          >
+            <span style={{ fontWeight: 'bold' }}>
+              💚 Revert {player.number}
+            </span>
           </div>
         ) : (
           <div

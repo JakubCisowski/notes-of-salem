@@ -384,7 +384,14 @@ h2 {
   height: 31px;
   font-size: 0.9rem;
   background-color: #fcf3d9;
-  font-family: Comic Sans MS;
+  /* font-family: Comic Sans MS; */
+  text-align: left;
+  font-weight: bold;
+}
+
+input::placeholder {
+  /* font-family: Comic Sans MS; */
+  font-weight: normal;
   text-align: center;
 }
 

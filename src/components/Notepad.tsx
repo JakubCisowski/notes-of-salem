@@ -69,7 +69,7 @@ export function Notepad({
         )}
       </div>
       <div className="sidenotes-container">
-        <Sidenotes gameNote={gameNote} setGameNote={setGameNote} />
+        <GameNotes gameNote={gameNote} setGameNote={setGameNote} />
       </div>
     </>
   );
@@ -92,6 +92,8 @@ function PlayerCard({
   // But shouldn't we use setPlayersInfo to modify playersInfo - rendering issues possible?
   // For example some components wont rerender when player is modified (not setPlayersInfo).
   let player = playersInfo.find((player) => player.number == playerNumber)!;
+
+  let notePlaceholder = 'Player ' + playerNumber + ' note...';
 
   // These states only exist for this compononent to rerender, they are not used anywhere else.
   // todo: How to avoid that?
@@ -327,7 +329,7 @@ function PlayerCard({
             type="text"
             value={player.note}
             onChange={onNoteChange}
-            placeholder="Player notes..."
+            placeholder={notePlaceholder}
           ></input>
         </div>
         {player.isDead ? (
@@ -392,7 +394,7 @@ function HeaderDead() {
   );
 }
 
-function Sidenotes({
+function GameNotes({
   gameNote,
   setGameNote,
 }: {

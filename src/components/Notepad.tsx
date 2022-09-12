@@ -12,6 +12,7 @@ import {
 import {
   checkAutoSuspicion,
   checkRoleAutoChange,
+  markPlayerAsDead,
   PlayersInfo,
 } from '../utils/playerInfo';
 import { DeadForm } from './DeadForm';
@@ -165,7 +166,18 @@ function PlayerCard({
   }
 
   function onDeadButtonClick() {
-    setIsDeadFormShown(true);
+    if (!player.isUser) {
+      setIsDeadFormShown(true);
+    } else {
+      markPlayerAsDead(
+        playersInfo,
+        setPlayersInfo,
+        playerNumber,
+        player.role,
+        setMajority
+      );
+      setNotepadUpdater((prevState: number) => prevState + 1);
+    }
   }
 
   function onSetRoleButtonClick() {

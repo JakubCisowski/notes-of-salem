@@ -357,9 +357,7 @@ function PlayerCard({
             className="notepad-card-section-dead-button"
             onClick={resurrectPlayer}
           >
-            <span style={{ fontWeight: 'bold' }}>
-              💚 Revert {player.number}
-            </span>
+            <span style={{ fontWeight: 'bold' }}>💚 {player.number}</span>
           </div>
         ) : (
           <div

@@ -179,6 +179,7 @@ export function editPlayerInfo(
   if (playerNumber < 1 || playerNumber > 15) return;
 
   let player = playersInfo.find((player) => player.number == playerNumber)!;
+  let user = playersInfo.find((player) => player.isUser == true)!;
 
   // ROLE, TOWN ALIGNMENT, FACTION, COLOR (INITIAL)
   if (playerRole != undefined) {
@@ -204,7 +205,7 @@ export function editPlayerInfo(
     player.displayColorBackground = COLOR.BACKGROUND_UNKNOWN;
   }
 
-  // CONFIRMATION / SUSPICION LOCK
+  // CONFIRMATION LOCK / SUSPICION LOCK
   if (
     player.faction == Faction.NotTown ||
     player.faction == Faction.NeutralEvil ||
@@ -214,7 +215,9 @@ export function editPlayerInfo(
     player.isSuspicionLocked = true;
   } else if (!player.isUser && !player.isExecutionTarget) {
     player.isConfirmationLocked = false;
-    player.isSuspicionLocked = false;
+
+    if (user.faction == Faction.Mafia) player.isSuspicionLocked = true;
+    else player.isSuspicionLocked = false;
   }
 
   // IS CONFIRMED TOWN

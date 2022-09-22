@@ -1,0 +1,91 @@
+.form-text {
+  margin-top: 20px;
+}
+
+.button-action {
+  margin-top: 2rem;
+  font-size: 2rem;
+  cursor: pointer;
+  margin: 0 20px;
+  position: absolute;
+  bottom: 10px;
+}
+
+.button-action-left {
+  left: 180px;
+}
+
+.button-action-right {
+  right: 180px;
+}
+
+.button-action-center {
+  left: 300px;
+}
+
+.button-selection {
+  font-size: 1.35rem;
+  font-weight: bold;
+  height: 37px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.number-selection {
+  font-size: 1.35rem;
+  font-weight: bold;
+  text-align: center;
+  height: 37px;
+  margin: 0 10px;
+  margin-top: 2px;
+}
+
+.container {
+  position: fixed;
+  border: 1px solid black;
+  border-radius: 20px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff8e3;
+}
+
+.container-newgame {
+  width: 850px;
+  height: 780px;
+}
+
+.container-deadplayer {
+  width: 850px;
+  height: 600px;
+}
+
+.container-editinfo {
+  width: 850px;
+  height: 670px;
+}
+
+.grid-container {
+  margin-top: 20px;
+  display: grid;
+  grid-row-gap: 10px;
+  grid-column-gap: 10px;
+  justify-content: center;
+}
+
+.grid-container-newgame {
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(8, 35px);
+}
+
+.grid-container-deadplayer {
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(9, 35px);
+}
+
+.grid-container-editinfo {
+  grid-template-columns: repeat(5, 150px);
+  grid-template-rows: repeat(11, 35px);
+}

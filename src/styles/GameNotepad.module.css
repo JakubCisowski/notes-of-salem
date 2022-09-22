@@ -1,0 +1,174 @@
+.container {
+  padding: 10px;
+  max-width: 1000px;
+  margin: 0 auto 5px auto;
+}
+
+.sidenotes-container {
+  padding: 10px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.header-flexbox {
+  display: flex;
+}
+.header-item {
+  font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+}
+.header-number {
+  width: 10%;
+  font-size: 1.3rem;
+  justify-content: left;
+}
+.header-confirmed {
+  font-size: 1.1rem;
+  width: 25%;
+  justify-content: center;
+}
+.header-suspicious {
+  font-size: 1.1rem;
+  width: 30%;
+  justify-content: right;
+}
+.header-majority {
+  font-size: 2rem;
+  width: 35%;
+  justify-content: right;
+}
+
+.horizontal-line {
+  height: 1px;
+  width: 50%;
+  text-align: center;
+  margin: 30px auto 0 auto;
+  border-top: 2px solid gray;
+}
+
+.row-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 0;
+  align-items: center;
+}
+.row-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 31px;
+}
+.row-number {
+  border: 1px solid black;
+  font-size: 1.3rem;
+  font-weight: bold;
+  width: 5%;
+}
+.row-edit-button {
+  border: 2px solid black;
+  background-color: lightgray;
+  display: inline-flex !important;
+  font-size: 1.1rem;
+  width: 15%;
+}
+.row-confirmed {
+  font-size: 1.1rem;
+  width: 5%;
+}
+.row-faction {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 6%;
+  font-weight: bold;
+}
+.row-alignment {
+  border: 1px solid black;
+  font-size: 1.1rem;
+  width: 4%;
+  font-weight: bold;
+}
+.row-role {
+  border: 1px solid black;
+  font-size: 1.3rem;
+  width: 18%;
+  font-weight: bold;
+}
+.row-suspicious {
+  font-size: 1.1rem;
+  width: 5%;
+}
+.row-autosuspicion {
+  border: 1px solid black;
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 4%;
+}
+.row-note {
+  font-size: 1.1rem;
+  width: 24%;
+}
+.row-dead-button {
+  border: 2px solid black;
+  background-color: lightgray;
+  font-size: 1.1rem;
+  width: 12%;
+  cursor: pointer;
+}
+
+.serverity-moderate {
+  background-color: #ffc2c2;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+.serverity-high {
+  background-color: #ff4a4a;
+  width: 100%;
+  height: 100%;
+  cursor: default;
+}
+
+.hover-content {
+  display: none;
+  border: 3px solid black;
+  background-color: lightblue;
+  padding: 5px 10px;
+  font-size: 1.1rem;
+  white-space: pre-line;
+}
+
+.serverity-moderate:hover .hover-content {
+  display: block;
+  position: absolute;
+}
+.serverity-high:hover .hover-content {
+  display: block;
+  position: absolute;
+}
+
+.checkbox {
+  width: 52px;
+  height: 31px;
+  margin: 0px;
+  cursor: pointer;
+}
+
+.input-note {
+  width: 100%;
+  height: 31px;
+  font-size: 0.9rem;
+  background-color: #fcf3d9;
+  text-align: left;
+  font-weight: bold;
+  padding: 0 5px;
+}
+
+.game-note {
+  font-size: 1.1rem;
+  width: 100%;
+  min-height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

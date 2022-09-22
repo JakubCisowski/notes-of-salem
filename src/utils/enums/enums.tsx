@@ -33,7 +33,7 @@ export enum Role {
   Witch,
 }
 
-export enum TownAlignment { // Stritcly for tracking RT's
+export enum TownAlignment { // For tracking RT's
   Unknown,
   NotTown,
   J,

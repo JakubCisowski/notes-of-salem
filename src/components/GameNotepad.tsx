@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { COLOR } from '../utils/color';
-import { Faction, Role, TownAlignment } from '../utils/enums';
+import styles from '../styles/GameNotepad.module.css';
+import { checkAutoSuspicion } from '../utils/autoSuspicion';
+import { COLOR } from '../utils/consts/Colors';
+import { Faction, Role, TownAlignment } from '../utils/enums/enums';
 import {
   factionToBackgroundColor,
   getFactionDisplayString,
@@ -8,18 +10,17 @@ import {
   getTownAlignmentDisplayString,
   roleToBackgroundColor,
   townAlignmentToBackgroundColor,
-} from '../utils/infoHelper';
+} from '../utils/infoEnumsHelper';
 import {
-  checkAutoSuspicion,
   checkRoleAutoChange,
   editPlayerInfo,
   markPlayerAsDead,
-  PlayersInfo,
-} from '../utils/playerInfo';
-import { DeadForm } from './DeadForm';
-import { EditForm } from './EditForm';
+} from '../utils/playerInfoChange';
+import { PlayersInfo } from '../utils/types/PlayersInfo';
+import { FormDeadPlayer } from './forms/FormDeadPlayer';
+import { FormEditInfo } from './forms/FormEditInfo';
 
-export function Notepad({
+export function GameNotepad({
   playersInfo,
   setPlayersInfo,
   gameNote,
@@ -30,18 +31,18 @@ export function Notepad({
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   gameNote: string;
-  setGameNote: any;
+  setGameNote: (value: string) => void;
   majority: { town: number; notTown: number };
-  setMajority: any;
+  setMajority: (value: { town: number; notTown: number }) => void;
 }) {
   const [notepadUpadter, setNotepadUpdater] = useState(0); // This is a hack to force a re-render of the notepad.
 
-  const alivePlayerCards: any[] = [];
-  const deadPlayerCards: any[] = [];
+  const alivePlayerCards: JSX.Element[] = [];
+  const deadPlayerCards: JSX.Element[] = [];
 
   playersInfo.forEach((playerInfo) => {
     const card = (
-      <PlayerCard
+      <PlayerRow
         playerNumber={playerInfo.number}
         playersInfo={playersInfo}
         setPlayersInfo={setPlayersInfo}
@@ -58,25 +59,29 @@ export function Notepad({
 
   return (
     <>
-      <div className="notepad-container">
-        <HeaderAlive majority={majority} />
-        <div className="notepad-alive-container">{alivePlayerCards}</div>
+      <div className={styles['container']}>
+        <TableHeaderAlive majority={majority} />
+        <div className={styles['notepad-alive-container']}>
+          {alivePlayerCards}
+        </div>
         {deadPlayerCards.length > 0 && (
           <>
-            <hr className="horizontal-line"></hr>
-            <HeaderDead />
-            <div className="notepad-dead-container">{deadPlayerCards}</div>
+            <hr className={styles['horizontal-line']}></hr>
+            <TableHeaderDead />
+            <div className={styles['notepad-dead-container']}>
+              {deadPlayerCards}
+            </div>
           </>
         )}
       </div>
-      <div className="sidenotes-container">
-        <GameNotes gameNote={gameNote} setGameNote={setGameNote} />
+      <div className={styles['sidenotes-container']}>
+        <GeneralNote gameNote={gameNote} setGameNote={setGameNote} />
       </div>
     </>
   );
 }
 
-function PlayerCard({
+function PlayerRow({
   playerNumber,
   playersInfo,
   setPlayersInfo,
@@ -87,7 +92,7 @@ function PlayerCard({
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   setNotepadUpdater: any;
-  setMajority: any;
+  setMajority: (value: { town: number; notTown: number }) => void;
 }) {
   // Modifying player DOES modify playersInfo.
   // But shouldn't we use setPlayersInfo to modify playersInfo - rendering issues possible?
@@ -97,7 +102,7 @@ function PlayerCard({
   let notePlaceholder = 'Player ' + playerNumber + ' note...';
 
   // These states only exist for this compononent to rerender, they are not used anywhere else.
-  // todo: How to avoid that?
+  // todo: How to avoid that? Probably use notepad counter instead of them.
   const [isConfirmed, setIsConfirmed] = React.useState<boolean>(
     player.isConfirmedTown
   );
@@ -114,7 +119,7 @@ function PlayerCard({
   const [isDeadFormShown, setIsDeadFormShown] = useState(false);
   const [isEditFormShown, setIsEditFormShown] = useState(false);
 
-  function onConfirmedCheckboxChange(e: any) {
+  function onConfirmedCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
     setIsConfirmed(e.target.checked);
     player.isConfirmedTown = e.target.checked;
     if (e.target.checked == true) {
@@ -123,15 +128,13 @@ function PlayerCard({
     }
     player.displayColorBackground = calculateDisplayColor();
     setPlayerColor(calculateDisplayColor());
-    //setPlayersInfo(playersInfo); // should we use this anywyas?
 
     checkAutoSuspicion(playersInfo, setPlayersInfo);
     checkRoleAutoChange(playersInfo, setPlayersInfo, setMajority);
     setNotepadUpdater((prevState: number) => prevState + 1);
-    console.log(playersInfo);
   }
 
-  function onSuspiciousCheckboxChange(e: any) {
+  function onSuspiciousCheckboxChange(e: React.ChangeEvent<HTMLInputElement>) {
     setIsSuspicious(e.target.checked);
     player.isSuspicious = e.target.checked;
     if (e.target.checked == true) {
@@ -142,12 +145,10 @@ function PlayerCard({
     }
     player.displayColorBackground = calculateDisplayColor();
     setPlayerColor(calculateDisplayColor());
-    //setPlayersInfo(playersInfo); // should we use this anywyas?
     setNotepadUpdater((prevState: number) => prevState + 1);
-    console.log(playersInfo);
   }
 
-  function onNoteChange(e: any) {
+  function onNoteChange(e: React.ChangeEvent<HTMLInputElement>) {
     player.note = e.target.value;
     setPlayerNote(e.target.value);
   }
@@ -210,7 +211,7 @@ function PlayerCard({
     <>
       {isDeadFormShown && (
         <div className="disable-outside-clicks">
-          <DeadForm
+          <FormDeadPlayer
             setIsDeadFormShown={setIsDeadFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
@@ -222,7 +223,7 @@ function PlayerCard({
       )}
       {isEditFormShown && (
         <div className="disable-outside-clicks">
-          <EditForm
+          <FormEditInfo
             setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
@@ -232,16 +233,16 @@ function PlayerCard({
           />
         </div>
       )}
-      <div className="notepad-player-card-container">
+      <div className={styles['row-container']}>
         <div
-          className="notepad-card-section-number"
+          className={`${styles['row-section']} ${styles['row-number']}`}
           style={{ backgroundColor: player.displayColorBackground }}
         >
           {player.number}
         </div>
         {player.isUser && (
           <div
-            className="notepad-card-section-button"
+            className={`${styles['row-section']} ${styles['row-edit-button']}`}
             style={{ backgroundColor: 'white' }}
           >
             (me)
@@ -249,7 +250,7 @@ function PlayerCard({
         )}
         {player.isDead && !player.isUser && (
           <div
-            className="notepad-card-section-button"
+            className={`${styles['row-section']} ${styles['row-edit-button']}`}
             onClick={onDeadButtonClick}
             style={{ cursor: 'pointer' }}
           >
@@ -258,71 +259,73 @@ function PlayerCard({
         )}
         {!player.isDead && !player.isUser && (
           <div
-            className="notepad-card-section-button"
+            className={`${styles['row-section']} ${styles['row-edit-button']}`}
             onClick={onSetRoleButtonClick}
             style={{ cursor: 'pointer' }}
           >
             SET ROLE
           </div>
         )}
-        <div className="notepad-card-section-confirmed">
+        <div className={`${styles['row-section']} ${styles['row-confirmed']}`}>
           {player.isConfirmationLocked ? (
             <input
               type="checkbox"
               checked={player.isConfirmedTown}
               disabled
-              className="checkbox"
+              className={styles['checkbox']}
             ></input>
           ) : (
             <input
               type="checkbox"
               checked={player.isConfirmedTown}
               onChange={onConfirmedCheckboxChange}
-              className="checkbox"
+              className={styles['checkbox']}
             ></input>
           )}
         </div>
         <div
-          className="notepad-card-section-faction"
+          className={`${styles['row-section']} ${styles['row-faction']}`}
           style={{ backgroundColor: player.displayColorBackground }}
         >
           {getFactionDisplayString(player.faction)}
         </div>
         <div
-          className="notepad-card-section-alignment"
+          className={`${styles['row-section']} ${styles['row-alignment']}`}
           style={{ backgroundColor: player.displayColorBackground }}
         >
           {getTownAlignmentDisplayString(player.townAlignment)}
         </div>
         <div
-          className="notepad-card-section-role"
+          className={`${styles['row-section']} ${styles['row-role']}`}
           style={{ backgroundColor: player.displayColorBackground }}
         >
           {getRoleDisplayString(player.role)}
         </div>
-        <div className="notepad-card-section-suspicious">
+        <div className={`${styles['row-section']} ${styles['row-suspicious']}`}>
           {player.isSuspicionLocked ? (
             <input
               type="checkbox"
               checked={player.isSuspicious}
               disabled
-              className="checkbox"
+              className={styles['checkbox']}
             ></input>
           ) : (
             <input
               type="checkbox"
               checked={player.isSuspicious}
               onChange={onSuspiciousCheckboxChange}
-              className="checkbox"
+              className={styles['checkbox']}
             ></input>
           )}
         </div>
-        <div className="notepad-card-section-autosuspicion">
+        <div
+          className={`${styles['row-section']} ${styles['row-autosuspicion']}`}
+        >
           {player.autoSuspicionSeverity == 0 && ''}
           {player.autoSuspicionSeverity == 1 && (
-            <div className="serverity-moderate">
+            <div className={styles['serverity-moderate']}>
               ?
-              <div className="hover-content">
+              <div className={styles['hover-content']}>
                 {player.autoSuspicionNotes.map((note) => {
                   return (
                     <>
@@ -335,17 +338,17 @@ function PlayerCard({
             </div>
           )}
           {player.autoSuspicionSeverity == 2 && (
-            <div className="serverity-high">
+            <div className={styles['serverity-high']}>
               !!!
-              <div className="hover-content">
+              <div className={styles['hover-content']}>
                 {player.autoSuspicionNotes.join('\n')}
               </div>
             </div>
           )}
         </div>
-        <div className="notepad-card-section-note">
+        <div className={`${styles['row-section']} ${styles['row-note']}`}>
           <input
-            className="input-note"
+            className={styles['input-note']}
             type="text"
             value={player.note}
             onChange={onNoteChange}
@@ -354,14 +357,14 @@ function PlayerCard({
         </div>
         {player.isDead ? (
           <div
-            className="notepad-card-section-dead-button"
+            className={`${styles['row-section']} ${styles['row-dead-button']}`}
             onClick={resurrectPlayer}
           >
             <span style={{ fontWeight: 'bold' }}>💚 {player.number}</span>
           </div>
         ) : (
           <div
-            className="notepad-card-section-dead-button"
+            className={`${styles['row-section']} ${styles['row-dead-button']}`}
             onClick={onDeadButtonClick}
           >
             💀<span style={{ fontWeight: 'bold' }}> {player.number}</span>
@@ -372,24 +375,34 @@ function PlayerCard({
   );
 }
 
-function HeaderAlive({
+function TableHeaderAlive({
   majority,
 }: {
   majority: { town: number; notTown: number };
 }) {
   return (
     <>
-      <div className="header-flexbox">
-        <div className="header-number">ALIVE</div>
-        <div className="header-confirmed">
+      <div className={styles['header-flexbox']}>
+        <div className={`${styles['header-item']} ${styles['header-number']}`}>
+          ALIVE
+        </div>
+        <div
+          className={`${styles['header-item']} ${styles['header-confirmed']}`}
+        >
           <p style={{ margin: 0 }}>
             CONFIRMED
             <br />
             TOWN?
           </p>
         </div>
-        <div className="header-suspicious">SUSPICIOUS?</div>
-        <div className="header-majority">
+        <div
+          className={`${styles['header-item']} ${styles['header-suspicious']}`}
+        >
+          SUSPICIOUS?
+        </div>
+        <div
+          className={`${styles['header-item']} ${styles['header-majority']}`}
+        >
           <p style={{ margin: 0 }}>
             <span style={{ color: COLOR.TEXT_CONFIRMED_TOWN }}>
               {majority.town}{' '}
@@ -407,33 +420,35 @@ function HeaderAlive({
   );
 }
 
-function HeaderDead() {
+function TableHeaderDead() {
   return (
     <>
-      <div className="header-flexbox">
-        <div className="header-number">DEAD</div>
+      <div className={styles['header-flexbox']}>
+        <div className={`${styles['header-item']} ${styles['header-number']}`}>
+          DEAD
+        </div>
       </div>
     </>
   );
 }
 
-function GameNotes({
+function GeneralNote({
   gameNote,
   setGameNote,
 }: {
   gameNote: string;
-  setGameNote: any;
+  setGameNote: (value: string) => void;
 }) {
-  function onNoteChange(e: any) {
+  function onNoteChange(e: React.ChangeEvent<HTMLInputElement>) {
     gameNote = e.target.value;
     setGameNote(e.target.value);
   }
 
   return (
     <>
-      <div className="game-note">
+      <div className={styles['game-note']}>
         <input
-          className="input-note"
+          className={styles['input-note']}
           type="text"
           value={gameNote}
           onChange={onNoteChange}

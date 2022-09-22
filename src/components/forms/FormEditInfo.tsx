@@ -1,34 +1,54 @@
-import { COLOR } from '../utils/color';
-import { Role } from '../utils/enums';
-import { getRoleDisplayString, roleToTextColor } from '../utils/infoHelper';
-import { markPlayerAsDead, PlayersInfo } from '../utils/playerInfo';
+import styles from '../../styles/Form.module.css';
+import { COLOR } from '../../utils/consts/Colors';
+import { Faction, Role, TownAlignment } from '../../utils/enums/enums';
+import {
+  factionToTextColor,
+  roleToTextColor,
+  townAlignmentToTextColor,
+} from '../../utils/infoEnumsHelper';
+import { editPlayerInfo } from '../../utils/playerInfoChange';
+import { PlayersInfo } from '../../utils/types/PlayersInfo';
 
-export const DeadForm = ({
-  setIsDeadFormShown,
+export const FormEditInfo = ({
+  setIsEditFormShown,
   playersInfo,
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
   setMajority,
 }: {
-  setIsDeadFormShown: (value: boolean) => void;
+  setIsEditFormShown: (value: boolean) => void;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
-  setMajority: any;
+  setMajority: (value: { town: number; notTown: number }) => void;
 }) => {
+  function handleClearOnClick() {
+    setIsEditFormShown(false);
+    editPlayerInfo(
+      playersInfo,
+      setPlayersInfo,
+      playerNumber,
+      undefined,
+      undefined,
+      undefined,
+      setMajority
+    );
+    setNotepadUpdater((prevState: number) => prevState + 1);
+  }
+
   function handleCancelOnClick() {
-    setIsDeadFormShown(false); // Close this form
+    setIsEditFormShown(false); // Close this form
   }
 
   return (
     <>
-      <div className="deadform-container">
-        <h1 className="form-text">💀 What was ({playerNumber}) role? 💀</h1>
+      <div className={`${styles['container-editinfo']} ${styles['container']}`}>
+        <h1>What is ({playerNumber}) role? </h1>
 
-        <RoleButtonsGrid
-          setIsDeadFormShown={setIsDeadFormShown}
+        <ButtonsGrid
+          setIsEditFormShown={setIsEditFormShown}
           playersInfo={playersInfo}
           setPlayersInfo={setPlayersInfo}
           playerNumber={playerNumber}
@@ -36,16 +56,14 @@ export const DeadForm = ({
           setMajority={setMajority}
         />
 
-        <br></br>
-
-        {/* <button
-          className="button-action button-action-left"
-          onClick={handleConfirmOnClick}
-        >
-          CONFIRM ✅
-        </button> */}
         <button
-          className="button-action button-action-center"
+          className={`${styles['button-action']} ${styles['button-action-left']}`}
+          onClick={handleClearOnClick}
+        >
+          CLEAR ➖
+        </button>
+        <button
+          className={`${styles['button-action']} ${styles['button-action-right']}`}
           onClick={handleCancelOnClick}
         >
           CANCEL ❌
@@ -57,7 +75,7 @@ export const DeadForm = ({
 
 export function RoleButton({
   role,
-  setIsDeadFormShown,
+  setIsEditFormShown,
   playersInfo,
   setPlayersInfo,
   playerNumber,
@@ -65,23 +83,25 @@ export function RoleButton({
   setMajority,
 }: {
   role: Role;
-  setIsDeadFormShown: (value: boolean) => void;
+  setIsEditFormShown: (value: boolean) => void;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
-  setMajority: any;
+  setMajority: (value: { town: number; notTown: number }) => void;
 }) {
-  const roleName = getRoleDisplayString(role);
-  const roleColor = roleToTextColor(role);
+  let roleName = Role[role];
+  let roleColor = roleToTextColor(role);
 
   function handleOnClick() {
-    setIsDeadFormShown(false);
-    markPlayerAsDead(
+    setIsEditFormShown(false);
+    editPlayerInfo(
       playersInfo,
       setPlayersInfo,
       playerNumber,
       role,
+      undefined,
+      undefined,
       setMajority
     );
     setNotepadUpdater((prevState: number) => prevState + 1);
@@ -90,7 +110,7 @@ export function RoleButton({
   return (
     <>
       <div
-        className="button-role"
+        className={styles['button-selection']}
         style={{
           color: roleColor,
           backgroundColor: COLOR.BACKGROUND_BUTTON,
@@ -104,29 +124,133 @@ export function RoleButton({
   );
 }
 
-function RoleButtonsGrid({
-  setIsDeadFormShown,
+export function AlignmentButton({
+  alignment,
+  setIsEditFormShown,
   playersInfo,
   setPlayersInfo,
   playerNumber,
   setNotepadUpdater,
   setMajority,
 }: {
-  setIsDeadFormShown: (value: boolean) => void;
+  alignment: TownAlignment;
+  setIsEditFormShown: (value: boolean) => void;
   playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   playerNumber: number;
   setNotepadUpdater: any;
-  setMajority: any;
+  setMajority: (value: { town: number; notTown: number }) => void;
+}) {
+  let alignmentName = TownAlignment[alignment];
+  let alignmentColor = townAlignmentToTextColor(alignment);
+
+  function handleOnClick() {
+    setIsEditFormShown(false);
+    editPlayerInfo(
+      playersInfo,
+      setPlayersInfo,
+      playerNumber,
+      undefined,
+      alignment,
+      undefined,
+      setMajority
+    );
+    setNotepadUpdater((prevState: number) => prevState + 1);
+  }
+
+  return (
+    <>
+      <div
+        className={styles['button-selection']}
+        style={{
+          color: alignmentColor,
+          backgroundColor: COLOR.BACKGROUND_BUTTON,
+          border: '1px solid black',
+        }}
+        onClick={handleOnClick}
+      >
+        {alignmentName}
+      </div>
+    </>
+  );
+}
+
+export function FactionButton({
+  faction,
+  setIsEditFormShown,
+  playersInfo,
+  setPlayersInfo,
+  playerNumber,
+  setNotepadUpdater,
+  setMajority,
+}: {
+  faction: Faction;
+  setIsEditFormShown: (value: boolean) => void;
+  playersInfo: PlayersInfo;
+  setPlayersInfo: (value: PlayersInfo) => void;
+  playerNumber: number;
+  setNotepadUpdater: any;
+  setMajority: (value: { town: number; notTown: number }) => void;
+}) {
+  let factionName = Faction[faction];
+  let factionColor = factionToTextColor(faction);
+
+  function handleOnClick() {
+    setIsEditFormShown(false);
+    editPlayerInfo(
+      playersInfo,
+      setPlayersInfo,
+      playerNumber,
+      undefined,
+      undefined,
+      faction,
+      setMajority
+    );
+    setNotepadUpdater((prevState: number) => prevState + 1);
+  }
+
+  return (
+    <>
+      <div
+        className={styles['button-selection']}
+        style={{
+          color: factionColor,
+          backgroundColor: COLOR.BACKGROUND_BUTTON,
+          border: '1px solid black',
+        }}
+        onClick={handleOnClick}
+      >
+        {factionName}
+      </div>
+    </>
+  );
+}
+
+function ButtonsGrid({
+  setIsEditFormShown,
+  playersInfo,
+  setPlayersInfo,
+  playerNumber,
+  setNotepadUpdater,
+  setMajority,
+}: {
+  setIsEditFormShown: (value: boolean) => void;
+  playersInfo: PlayersInfo;
+  setPlayersInfo: (value: PlayersInfo) => void;
+  playerNumber: number;
+  setNotepadUpdater: any;
+  setMajority: (value: { town: number; notTown: number }) => void;
 }) {
   return (
     <>
       {/* Grid area: row start / column start / row end (+1) / column end (+1)  */}
-      <div className="grid-container-start">
-        <div className="grid-item" style={{ gridArea: '1/1/2/3' }}>
+      <div
+        className={`${styles['grid-container-editinfo']} ${styles['grid-container']}`}
+      >
+        <div style={{ gridArea: '1/1/2/3' }}>
           <RoleButton
             role={Role.Jailor}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -134,10 +258,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '1/3/2/4' }}>
+        <div style={{ gridArea: '1/3/2/4' }}>
           <RoleButton
             role={Role.Godfather}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -145,10 +269,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '1/4/2/5' }}>
+        <div style={{ gridArea: '1/4/2/5' }}>
           <RoleButton
             role={Role.Mafioso}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -156,10 +280,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '1/5/2/6' }}>
+        <div style={{ gridArea: '1/5/2/6' }}>
           <RoleButton
             role={Role.Witch}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -167,10 +291,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/1/3/2' }}>
+        <div style={{ gridArea: '2/1/3/2' }}>
           <RoleButton
             role={Role.Lookout}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -178,10 +302,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/2/3/3' }}>
+        <div style={{ gridArea: '2/2/3/3' }}>
           <RoleButton
             role={Role.Spy}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -189,10 +313,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/3/3/4' }}>
+        <div style={{ gridArea: '2/3/3/4' }}>
           <RoleButton
             role={Role.Consigliere}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -200,10 +324,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/4/3/5' }}>
+        <div style={{ gridArea: '2/4/3/5' }}>
           <RoleButton
             role={Role.Consort}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -211,10 +335,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/5/3/6' }}>
+        <div style={{ gridArea: '2/5/3/6' }}>
           <RoleButton
             role={Role.Executioner}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -222,10 +346,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/1/4/2' }}>
+        <div style={{ gridArea: '3/1/4/2' }}>
           <RoleButton
             role={Role.Investigator}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -233,10 +357,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/2/4/3' }}>
+        <div style={{ gridArea: '3/2/4/3' }}>
           <RoleButton
             role={Role.Sheriff}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -244,10 +368,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/3/4/4' }}>
+        <div style={{ gridArea: '3/3/4/4' }}>
           <RoleButton
             role={Role.Janitor}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -255,10 +379,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/4/4/5' }}>
+        <div style={{ gridArea: '3/4/4/5' }}>
           <RoleButton
             role={Role.Forger}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -266,10 +390,11 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/5/4/6' }}>
+
+        <div style={{ gridArea: '3/5/4/6' }}>
           <RoleButton
             role={Role.Jester}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -277,10 +402,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/1/5/2' }}>
+        <div style={{ gridArea: '4/1/5/2' }}>
           <RoleButton
             role={Role.Bodyguard}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -288,10 +413,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/2/6/3' }}>
+        <div style={{ gridArea: '4/2/5/3' }}>
           <RoleButton
             role={Role.Doctor}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -299,10 +424,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/3/5/4' }}>
+        <div style={{ gridArea: '4/3/5/4' }}>
           <RoleButton
             role={Role.Framer}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -310,10 +435,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/4/5/5' }}>
+        <div style={{ gridArea: '4/4/5/5' }}>
           <RoleButton
             role={Role.Disguiser}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -321,10 +446,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/1/6/2' }}>
+        <div style={{ gridArea: '5/1/6/2' }}>
           <RoleButton
             role={Role.Veteran}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -332,10 +457,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/2/6/3' }}>
+        <div style={{ gridArea: '5/2/6/3' }}>
           <RoleButton
             role={Role.Vigilante}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -343,10 +468,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/3/6/4' }}>
+        <div style={{ gridArea: '5/3/6/4' }}>
           <RoleButton
             role={Role.Blackmailer}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -354,10 +479,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/4/6/5' }}>
+        <div style={{ gridArea: '5/4/6/5' }}>
           <RoleButton
             role={Role.Hypnotist}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -365,10 +490,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/1/7/2' }}>
+        <div style={{ gridArea: '6/1/7/2' }}>
           <RoleButton
             role={Role.Escort}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -376,10 +501,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/2/7/3' }}>
+        <div style={{ gridArea: '6/2/7/3' }}>
           <RoleButton
             role={Role.Transporter}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -387,10 +512,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/3/7/5' }}>
+        <div style={{ gridArea: '6/3/7/5' }}>
           <RoleButton
             role={Role.Ambusher}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -398,10 +523,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '7/1/8/2' }}>
+        <div style={{ gridArea: '7/1/8/2' }}>
           <RoleButton
             role={Role.Medium}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -409,10 +534,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '7/2/8/3' }}>
+        <div style={{ gridArea: '7/2/8/3' }}>
           <RoleButton
             role={Role.Retributionist}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -420,10 +545,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '8/1/9/3' }}>
+        <div style={{ gridArea: '8/1/9/3' }}>
           <RoleButton
             role={Role.Mayor}
-            setIsDeadFormShown={setIsDeadFormShown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -431,10 +556,10 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '9/1/10/3' }}>
-          <RoleButton
-            role={Role.Cleaned}
-            setIsDeadFormShown={setIsDeadFormShown}
+        <div style={{ gridArea: '10/1/11/2' }}>
+          <AlignmentButton
+            alignment={TownAlignment.TI}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}
@@ -442,10 +567,65 @@ function RoleButtonsGrid({
             setMajority={setMajority}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '9/3/10/5' }}>
-          <RoleButton
-            role={Role.ProbablyForged}
-            setIsDeadFormShown={setIsDeadFormShown}
+        <div style={{ gridArea: '10/2/11/3' }}>
+          <AlignmentButton
+            alignment={TownAlignment.TS}
+            setIsEditFormShown={setIsEditFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
+        <div style={{ gridArea: '10/3/11/5' }}>
+          <FactionButton
+            faction={Faction.Mafia}
+            setIsEditFormShown={setIsEditFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
+        <div style={{ gridArea: '10/5/11/6' }}>
+          <FactionButton
+            faction={Faction.NeutralEvil}
+            setIsEditFormShown={setIsEditFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
+        <div style={{ gridArea: '11/1/12/2' }}>
+          <AlignmentButton
+            alignment={TownAlignment.TK}
+            setIsEditFormShown={setIsEditFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
+        <div style={{ gridArea: '11/2/12/3' }}>
+          <AlignmentButton
+            alignment={TownAlignment.TP}
+            setIsEditFormShown={setIsEditFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
+        <div style={{ gridArea: '11/3/12/6' }}>
+          <FactionButton
+            faction={Faction.NotTown}
+            setIsEditFormShown={setIsEditFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}
             playerNumber={playerNumber}

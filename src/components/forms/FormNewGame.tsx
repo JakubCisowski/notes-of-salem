@@ -1,25 +1,29 @@
 import { useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { COLOR } from '../utils/color';
-import { Faction, Role } from '../utils/enums';
-import { roleToFaction, roleToTextColor } from '../utils/infoHelper';
+import styles from '../../styles/Form.module.css';
+import { COLOR } from '../../utils/consts/Colors';
+import { Faction, Role } from '../../utils/enums/enums';
+import { roleToFaction, roleToTextColor } from '../../utils/infoEnumsHelper';
+
 import {
   generateDefaultPlayersInfo,
-  PlayersInfo,
   setupExecutionerTarget,
   setupUserMafiaNumbers,
-} from '../utils/playerInfo';
+} from '../../utils/newGameSetup';
+import { PlayersInfo } from '../../utils/types/PlayersInfo';
 
-export const StartForm = ({
-  setIsStartFormShown,
+export const FormNewGame = ({
+  setIsNewGameFormShown,
   setIsNotepadShown,
-  setPlayersInfo: setPlayerInfo,
+  playersInfo,
+  setPlayersInfo,
   setGameNote,
   setGameMajority,
 }: {
-  setIsStartFormShown: (value: boolean) => void;
+  setIsNewGameFormShown: (value: boolean) => void;
   setIsNotepadShown: (value: boolean) => void;
+  playersInfo: PlayersInfo;
   setPlayersInfo: (value: PlayersInfo) => void;
   setGameNote: any;
   setGameMajority: (value: { town: number; notTown: number }) => void;
@@ -34,22 +38,25 @@ export const StartForm = ({
 
   function handleConfirmOnClick() {
     if (isSelectionValid()) {
-      setIsStartFormShown(false);
-      let newPlayerInfo = generateDefaultPlayersInfo(
+      setIsNewGameFormShown(false);
+      generateDefaultPlayersInfo(
         selectedUserNumber,
-        selectedRole!
+        selectedRole!,
+        setPlayersInfo
       );
       if (selectedRole == Role.Executioner) {
-        setupExecutionerTarget(newPlayerInfo, selectedExeTargetNumber);
+        setupExecutionerTarget(
+          playersInfo,
+          selectedExeTargetNumber,
+          setPlayersInfo
+        );
       } else if (roleToFaction(selectedRole!) == Faction.Mafia) {
-        setupUserMafiaNumbers(newPlayerInfo, [
-          selectedMafia1Number,
-          selectedMafia2Number,
-          selectedMafia3Number,
-        ]);
+        setupUserMafiaNumbers(
+          playersInfo,
+          [selectedMafia1Number, selectedMafia2Number, selectedMafia3Number],
+          setPlayersInfo
+        );
       }
-      console.log(newPlayerInfo);
-      setPlayerInfo(newPlayerInfo);
       setIsNotepadShown(true);
       setGameNote('');
       setGameMajority({ town: 9, notTown: 6 });
@@ -57,7 +64,7 @@ export const StartForm = ({
   }
 
   function handleCancelOnClick() {
-    setIsStartFormShown(false); // Close this form
+    setIsNewGameFormShown(false); // Close this form
   }
 
   function isSelectionValid() {
@@ -133,25 +140,25 @@ export const StartForm = ({
         pauseOnHover
       />
 
-      <div className="startform-container">
-        <h1 className="form-text"> New game </h1>
-        <h2 className="form-text"> 1. Select your role </h2>
+      <div className={`${styles['container-newgame']} ${styles['container']}`}>
+        <h1 className={styles['form-text']}> New game </h1>
+        <h2 className={styles['form-text']}> 1. Select your role </h2>
 
-        <RoleButtonsGrid
+        <ButtonsGrid
           selectedRole={selectedRole}
           setSelectedRole={setSelectedRole}
         />
 
         {selectedRole != undefined && (
           <>
-            <h2 className="form-text"> 2. Select YOUR number</h2>
+            <h2 className={styles['form-text']}> 2. Select YOUR number</h2>
             <NumberSelection setReference={setSelectedUserNumber} />
           </>
         )}
 
         {selectedRole == Role.Executioner && selectedUserNumber != -1 && (
           <>
-            <h2 className="form-text">
+            <h2 className={styles['form-text']}>
               3. Select your EXECUTION TARGET number
             </h2>
             <NumberSelection setReference={setSelectedExeTargetNumber} />
@@ -161,7 +168,9 @@ export const StartForm = ({
         {roleToFaction(selectedRole!) == Faction.Mafia &&
           selectedUserNumber != -1 && (
             <>
-              <h2 className="form-text">3. Select OTHER MAFIA numbers</h2>
+              <h2 className={styles['form-text']}>
+                3. Select OTHER MAFIA numbers
+              </h2>
               <NumberSelection setReference={setSelectedMafia1Number} />
               <NumberSelection setReference={setSelectedMafia2Number} />
               <NumberSelection setReference={setSelectedMafia3Number} />
@@ -172,13 +181,13 @@ export const StartForm = ({
 
         <div>
           <button
-            className="button-action button-action-left"
+            className={`${styles['button-action']} ${styles['button-action-left']}`}
             onClick={handleConfirmOnClick}
           >
             CONFIRM ✅
           </button>
           <button
-            className="button-action button-action-right"
+            className={`${styles['button-action']} ${styles['button-action-right']}`}
             onClick={handleCancelOnClick}
           >
             CANCEL ❌
@@ -209,7 +218,7 @@ export function RoleButton({
     <>
       {selectedRole == role && (
         <div
-          className="button-role"
+          className={styles['button-selection']}
           style={{
             color: roleColor,
             backgroundColor: COLOR.BACKGROUND_BUTTON_SELECTED,
@@ -222,7 +231,7 @@ export function RoleButton({
       )}
       {selectedRole != role && (
         <div
-          className="button-role"
+          className={styles['button-selection']}
           style={{
             color: roleColor,
             backgroundColor: COLOR.BACKGROUND_BUTTON,
@@ -254,7 +263,7 @@ function NumberSelection({
       <select
         id="numbers"
         name="numbers"
-        className="select-number"
+        className={styles['number-selection']}
         value={value}
         onChange={handleChange}
       >
@@ -279,7 +288,7 @@ function NumberSelection({
   );
 }
 
-function RoleButtonsGrid({
+function ButtonsGrid({
   selectedRole,
   setSelectedRole,
 }: {
@@ -289,190 +298,192 @@ function RoleButtonsGrid({
   return (
     <>
       {/* Grid area: row start / column start / row end (+1) / column end (+1)  */}
-      <div className="grid-container-start">
-        <div className="grid-item" style={{ gridArea: '1/1/2/3' }}>
+      <div
+        className={`${styles['grid-container-newgame']} ${styles['grid-container']}`}
+      >
+        <div style={{ gridArea: '1/1/2/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Jailor}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '1/3/2/4' }}>
+        <div style={{ gridArea: '1/3/2/4' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Godfather}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '1/4/2/5' }}>
+        <div style={{ gridArea: '1/4/2/5' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Mafioso}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '1/5/2/6' }}>
+        <div style={{ gridArea: '1/5/2/6' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Witch}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/1/3/2' }}>
+        <div style={{ gridArea: '2/1/3/2' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Lookout}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/2/3/3' }}>
+        <div style={{ gridArea: '2/2/3/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Spy}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/3/3/4' }}>
+        <div style={{ gridArea: '2/3/3/4' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Consigliere}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/4/3/5' }}>
+        <div style={{ gridArea: '2/4/3/5' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Consort}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '2/5/3/6' }}>
+        <div style={{ gridArea: '2/5/3/6' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Executioner}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/1/4/2' }}>
+        <div style={{ gridArea: '3/1/4/2' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Investigator}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/2/4/3' }}>
+        <div style={{ gridArea: '3/2/4/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Sheriff}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/3/4/4' }}>
+        <div style={{ gridArea: '3/3/4/4' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Janitor}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '3/4/4/5' }}>
+        <div style={{ gridArea: '3/4/4/5' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Forger}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/1/5/2' }}>
+        <div style={{ gridArea: '4/1/5/2' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Bodyguard}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/2/5/3' }}>
+        <div style={{ gridArea: '4/2/5/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Doctor}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/3/5/4' }}>
+        <div style={{ gridArea: '4/3/5/4' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Framer}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '4/4/5/5' }}>
+        <div style={{ gridArea: '4/4/5/5' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Disguiser}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/1/6/2' }}>
+        <div style={{ gridArea: '5/1/6/2' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Veteran}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/2/6/3' }}>
+        <div style={{ gridArea: '5/2/6/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Vigilante}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/3/6/4' }}>
+        <div style={{ gridArea: '5/3/6/4' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Blackmailer}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '5/4/6/5' }}>
+        <div style={{ gridArea: '5/4/6/5' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Hypnotist}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/1/7/2' }}>
+        <div style={{ gridArea: '6/1/7/2' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Escort}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/2/7/3' }}>
+        <div style={{ gridArea: '6/2/7/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Transporter}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '6/3/7/5' }}>
+        <div style={{ gridArea: '6/3/7/5' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Ambusher}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '7/1/8/2' }}>
+        <div style={{ gridArea: '7/1/8/2' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Medium}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '7/2/8/3' }}>
+        <div style={{ gridArea: '7/2/8/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Retributionist}
             setSelectedRole={setSelectedRole}
           />
         </div>
-        <div className="grid-item" style={{ gridArea: '8/1/9/3' }}>
+        <div style={{ gridArea: '8/1/9/3' }}>
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Mayor}

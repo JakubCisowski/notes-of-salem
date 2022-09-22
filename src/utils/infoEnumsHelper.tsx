@@ -1,5 +1,5 @@
-import { COLOR } from './color';
-import { Faction, Role, TownAlignment } from './enums';
+import { COLOR } from './consts/Colors';
+import { Faction, Role, TownAlignment } from './enums/enums';
 
 export function roleToFaction(role: Role): Faction {
   let faction = Faction.Unknown;
@@ -406,7 +406,7 @@ export function factionToBackgroundColor(faction: Faction): string {
       break;
     case Faction.NeutralEvil:
     case Faction.NotTown:
-      color = COLOR.BACKGROUND_EVIL; // ? or maybe something else? suspicious is too light if we know its NE
+      color = COLOR.BACKGROUND_EVIL;
       break;
   }
 

@@ -39,24 +39,24 @@ export const FormNewGame = ({
   function handleConfirmOnClick() {
     if (isSelectionValid()) {
       setIsNewGameFormShown(false);
-      generateDefaultPlayersInfo(
+      let newPlayersInfo = generateDefaultPlayersInfo(
         selectedUserNumber,
-        selectedRole!,
-        setPlayersInfo
+        selectedRole!
       );
       if (selectedRole == Role.Executioner) {
-        setupExecutionerTarget(
-          playersInfo,
-          selectedExeTargetNumber,
-          setPlayersInfo
-        );
+        newPlayersInfo = setupExecutionerTarget(
+          newPlayersInfo,
+          selectedExeTargetNumber
+        )!;
       } else if (roleToFaction(selectedRole!) == Faction.Mafia) {
-        setupUserMafiaNumbers(
-          playersInfo,
-          [selectedMafia1Number, selectedMafia2Number, selectedMafia3Number],
-          setPlayersInfo
-        );
+        newPlayersInfo = setupUserMafiaNumbers(newPlayersInfo, [
+          selectedMafia1Number,
+          selectedMafia2Number,
+          selectedMafia3Number,
+        ])!;
       }
+
+      setPlayersInfo(newPlayersInfo);
       setIsNotepadShown(true);
       setGameNote('');
       setGameMajority({ town: 9, notTown: 6 });

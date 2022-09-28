@@ -8,11 +8,7 @@ import {
 } from './infoEnumsHelper';
 import { PlayersInfo } from './types/PlayersInfo';
 
-export function generateDefaultPlayersInfo(
-  userNumber: number,
-  userRole: Role,
-  setPlayersInfo: (playersInfo: PlayersInfo) => void
-) {
+export function generateDefaultPlayersInfo(userNumber: number, userRole: Role) {
   let playersInfo = [] as PlayersInfo;
 
   for (
@@ -78,13 +74,12 @@ export function generateDefaultPlayersInfo(
     });
   }
 
-  setPlayersInfo(playersInfo);
+  return playersInfo;
 }
 
 export function setupExecutionerTarget(
   playersInfo: PlayersInfo,
-  targetNumber: number,
-  setPlayersInfo: (playersInfo: PlayersInfo) => void
+  targetNumber: number
 ) {
   if (targetNumber < 1 || targetNumber > TOTAL_PLAYER_COUNT) return;
 
@@ -100,13 +95,12 @@ export function setupExecutionerTarget(
   targetPlayerInfo.isSuspicionLocked = true;
   targetPlayerInfo.isExecutionTarget = true;
 
-  setPlayersInfo(playersInfo);
+  return playersInfo;
 }
 
 export function setupUserMafiaNumbers(
   playersInfo: PlayersInfo,
-  mafiaNumbers: number[],
-  setPlayersInfo: (playersInfo: PlayersInfo) => void
+  mafiaNumbers: number[]
 ) {
   for (let mafiaNumber of mafiaNumbers) {
     if (mafiaNumber < 1 || mafiaNumber > TOTAL_PLAYER_COUNT) return;
@@ -123,5 +117,5 @@ export function setupUserMafiaNumbers(
     // .isSuspicionLocked already set to true in generateDefaultPlayersInfo()
   }
 
-  setPlayersInfo(playersInfo);
+  return playersInfo;
 }

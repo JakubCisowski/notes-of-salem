@@ -14,30 +14,32 @@ This interactive ranked notepad includes:
 - Creating individual player notes and general game notes
 - Tracking majority (how many town players currently alive vs how many evils alive)
 - Automatic suspicion checking (multiple unique role claims, too many random town claims, etc.)
-- Highlighting other useful information (that Executioneer's target can't be Jailor/Mayor and is confirmed townie, etc.)
+- Highlighting useful information (that Executioner's target can't be Jailor/Mayor and is confirmed townie, etc.)
 - Improves visualization of your current game information
 
 ## How to use it
 
-Go to my website hosted by [Vercel](https://vercel.com/): [https://notes-of-salem.vercel.app/](https://notes-of-salem.vercel.app/)
+1. **Go to my website:** 
+[https://notes-of-salem.vercel.app/](https://notes-of-salem.vercel.app/)
 
-When new game starts:
+2. **When new game starts:**
 
-- Click 'New game' button. Select your role and all prompted player numbers. After filling new game form click 'Confirm'.
+- Click <code>New game</code> button. Select your role and all prompted player numbers. After filling new game form click <code>Confirm</code>.
 
-During the game:
+3. **During the game:**
 
-- Set player roles (based on claims and your information) by clicking 'Set role' button in corresponding player rows - you can also select player faction/alignment (TI/TS/TP/TK/Mafia/..) if exact role isn't known
-- If player is confirmed as townie, you can select 'Confirmed town' checkbox
-- If player is suspicious of being an evil, you can select 'Suspicious' checkbox
+- Set player roles (based on claims and your information) by clicking <code>Set role</code> button in corresponding player rows 
+- You can also select player faction/alignment (TI/TS/TP/TK/Mafia/..) if exact role isn't known
+- If player is confirmed as townie, you can select <code>Confirmed town</code> checkbox
+- If player is suspicious of being an evil, you can select <code>Suspicious</code> checkbox
 - If player died - mark him as dead by clicking corresponding dead button with skull emoji
 - You can write individual player notes (in player rows) and general game notes (bottom of the notepad)
 
-Use extra notepad features:
+**Use extra notepad features:**
 
-- Check autosuspicion remarks (between 'Suspicious' checkbox and player notes)
+- Check autosuspicion remarks (between <code>Suspicious</code> checkbox and player notes)
 - Track majority of your faction in top-right corner
-- You can clear role selection by clicking 'Set role' -> 'Clear'
+- You can clear role selection by clicking <code>Set role</code> -> <code>Clear</code>
 - You can bring player back alive by clicking green heart button if you accidentally marked him as dead
 
 ## How to install it for dev purposes

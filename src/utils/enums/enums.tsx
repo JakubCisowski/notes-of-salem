@@ -31,6 +31,9 @@ export enum Role {
   Executioner,
   Jester,
   Witch,
+  Arsonist,
+  SerialKiller,
+  Werewolf,
 }
 
 export enum TownAlignment { // For tracking RT's
@@ -45,9 +48,10 @@ export enum TownAlignment { // For tracking RT's
 
 export enum Faction {
   Unknown,
-  NotTown, // When we don't know if Mafia or Neutral Evil
+  NotTown, // When we know they're not town, but not sure which faction
   Mafia,
   NeutralEvil,
+  NeutralKilling,
   Town,
 }
 

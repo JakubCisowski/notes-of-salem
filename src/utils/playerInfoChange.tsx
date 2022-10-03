@@ -80,6 +80,7 @@ export function editPlayerInfo(
   if (
     player.faction == Faction.NotTown ||
     player.faction == Faction.NeutralEvil ||
+    player.faction == Faction.NeutralKilling ||
     player.faction == Faction.Mafia
   ) {
     player.isConfirmationLocked = true;

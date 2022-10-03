@@ -370,6 +370,17 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
+        <div style={{ gridArea: '5/5/6/6' }}>
+          <RoleButton
+            role={Role.Arsonist}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
         <div style={{ gridArea: '6/1/7/2' }}>
           <RoleButton
             role={Role.Escort}
@@ -403,6 +414,17 @@ function ButtonsGrid({
             setMajority={setMajority}
           />
         </div>
+        <div style={{ gridArea: '6/5/7/6' }}>
+          <RoleButton
+            role={Role.SerialKiller}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
         <div style={{ gridArea: '7/1/8/2' }}>
           <RoleButton
             role={Role.Medium}
@@ -417,6 +439,17 @@ function ButtonsGrid({
         <div style={{ gridArea: '7/2/8/3' }}>
           <RoleButton
             role={Role.Retributionist}
+            setIsDeadFormShown={setIsDeadFormShown}
+            playersInfo={playersInfo}
+            setPlayersInfo={setPlayersInfo}
+            playerNumber={playerNumber}
+            setNotepadUpdater={setNotepadUpdater}
+            setMajority={setMajority}
+          />
+        </div>
+        <div style={{ gridArea: '7/5/8/6' }}>
+          <RoleButton
+            role={Role.Werewolf}
             setIsDeadFormShown={setIsDeadFormShown}
             playersInfo={playersInfo}
             setPlayersInfo={setPlayersInfo}

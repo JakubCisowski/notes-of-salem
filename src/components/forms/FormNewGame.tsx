@@ -392,6 +392,13 @@ function ButtonsGrid({
             setSelectedRole={setSelectedRole}
           />
         </div>
+        <div style={{ gridArea: '3/5/4/6' }}>
+          <RoleButton
+            selectedRole={selectedRole}
+            role={Role.Jester}
+            setSelectedRole={setSelectedRole}
+          />
+        </div>
         <div style={{ gridArea: '4/1/5/2' }}>
           <RoleButton
             selectedRole={selectedRole}
@@ -420,6 +427,7 @@ function ButtonsGrid({
             setSelectedRole={setSelectedRole}
           />
         </div>
+
         <div style={{ gridArea: '5/1/6/2' }}>
           <RoleButton
             selectedRole={selectedRole}
@@ -448,6 +456,13 @@ function ButtonsGrid({
             setSelectedRole={setSelectedRole}
           />
         </div>
+        <div style={{ gridArea: '5/5/6/6' }}>
+          <RoleButton
+            selectedRole={selectedRole}
+            role={Role.Arsonist}
+            setSelectedRole={setSelectedRole}
+          />
+        </div>
         <div style={{ gridArea: '6/1/7/2' }}>
           <RoleButton
             selectedRole={selectedRole}
@@ -469,6 +484,13 @@ function ButtonsGrid({
             setSelectedRole={setSelectedRole}
           />
         </div>
+        <div style={{ gridArea: '6/5/7/6' }}>
+          <RoleButton
+            selectedRole={selectedRole}
+            role={Role.SerialKiller}
+            setSelectedRole={setSelectedRole}
+          />
+        </div>
         <div style={{ gridArea: '7/1/8/2' }}>
           <RoleButton
             selectedRole={selectedRole}
@@ -480,6 +502,13 @@ function ButtonsGrid({
           <RoleButton
             selectedRole={selectedRole}
             role={Role.Retributionist}
+            setSelectedRole={setSelectedRole}
+          />
+        </div>
+        <div style={{ gridArea: '7/5/8/6' }}>
+          <RoleButton
+            selectedRole={selectedRole}
+            role={Role.Werewolf}
             setSelectedRole={setSelectedRole}
           />
         </div>

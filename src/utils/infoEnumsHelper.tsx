@@ -45,6 +45,11 @@ export function roleToFaction(role: Role): Faction {
     case Role.Witch:
       faction = Faction.NeutralEvil;
       break;
+    case Role.Arsonist:
+    case Role.SerialKiller:
+    case Role.Werewolf:
+      faction = Faction.NeutralKilling;
+      break;
   }
 
   return faction;
@@ -141,6 +146,15 @@ export function roleToBackgroundColor(role: Role): string {
     case Role.Witch:
       colorString = COLOR.BACKGROUND_WITCH;
       break;
+    case Role.Arsonist:
+      colorString = COLOR.BACKGROUND_ARSONIST;
+      break;
+    case Role.SerialKiller:
+      colorString = COLOR.BACKGROUND_SERIALKILLER;
+      break;
+    case Role.Werewolf:
+      colorString = COLOR.BACKGROUND_WEREWOLF;
+      break;
   }
 
   return colorString;
@@ -196,6 +210,15 @@ export function roleToTextColor(role: Role): string {
     case Role.Witch:
       colorString = COLOR.TEXT_WITCH;
       break;
+    case Role.Arsonist:
+      colorString = COLOR.TEXT_ARSONIST;
+      break;
+    case Role.SerialKiller:
+      colorString = COLOR.TEXT_SERIALKILLER;
+      break;
+    case Role.Werewolf:
+      colorString = COLOR.TEXT_WEREWOLF;
+      break;
   }
 
   return colorString;
@@ -217,6 +240,7 @@ export function isRoleUnique(role: Role): boolean {
     case Role.Executioner:
     case Role.Jester:
     case Role.Witch:
+    case Role.Werewolf:
       isUnique = true;
       break;
     default:
@@ -256,9 +280,9 @@ export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
 
   switch (townAlignment) {
     case TownAlignment.J:
-    case TownAlignment.TK:
     case TownAlignment.TP:
-    case TownAlignment.TS:
+      // case TownAlignment.TS:
+      // case TownAlignment.TK:
       slots = 1;
       break;
     case TownAlignment.TI:
@@ -367,6 +391,9 @@ export function getFactionDisplayString(faction: Faction): string {
     case Faction.NeutralEvil:
       displayString = 'NE';
       break;
+    case Faction.NeutralKilling:
+      displayString = 'NK';
+      break;
     case Faction.NotTown:
       displayString = 'EVIL';
       break;
@@ -385,6 +412,7 @@ export function factionToTownAlignment(faction: Faction): TownAlignment {
       break;
     case Faction.Mafia:
     case Faction.NeutralEvil:
+    case Faction.NeutralKilling:
     case Faction.NotTown:
       alignment = TownAlignment.NotTown;
       break;
@@ -405,6 +433,7 @@ export function factionToBackgroundColor(faction: Faction): string {
       color = COLOR.BACKGROUND_MAFIA;
       break;
     case Faction.NeutralEvil:
+    case Faction.NeutralKilling:
     case Faction.NotTown:
       color = COLOR.BACKGROUND_EVIL;
       break;
@@ -425,6 +454,7 @@ export function factionToTextColor(faction: Faction): string {
       color = COLOR.BACKGROUND_MAFIA;
       break;
     case Faction.NeutralEvil:
+    case Faction.NeutralKilling:
     case Faction.NotTown:
       color = COLOR.BLACK;
       break;

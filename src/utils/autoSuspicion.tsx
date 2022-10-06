@@ -136,7 +136,7 @@ function howManyConfirmedRT(playersInfo: PlayersInfo) {
       alignment
     );
     let alignmentSlots = getTownAlignmentSlots(alignment);
-    if (alignmentConfirmed > alignmentSlots)
+    if (alignmentConfirmed > alignmentSlots && alignmentSlots > 0)
       confirmedRTCount += alignmentConfirmed - alignmentSlots;
   }
 

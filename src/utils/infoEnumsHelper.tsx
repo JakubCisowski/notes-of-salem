@@ -288,8 +288,7 @@ export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
     case TownAlignment.TI:
       slots = 2;
       break;
-    case TownAlignment.NotTown:
-    case TownAlignment.Unknown:
+    default:
       slots = -1;
       break;
   }

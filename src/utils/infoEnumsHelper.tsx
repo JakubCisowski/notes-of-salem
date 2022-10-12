@@ -281,15 +281,18 @@ export function getTownAlignmentSlots(townAlignment: TownAlignment): number {
   switch (townAlignment) {
     case TownAlignment.J:
     case TownAlignment.TP:
-      // case TownAlignment.TS:
-      // case TownAlignment.TK:
       slots = 1;
       break;
     case TownAlignment.TI:
       slots = 2;
       break;
-    default:
-      slots = -1;
+    case TownAlignment.TS:
+    case TownAlignment.TK:
+      slots = 0; // For RT calculation purposes, these roles are always considered as RT
+      break;
+    case TownAlignment.Unknown:
+    case TownAlignment.NotTown:
+      slots = -1; // To prevent RT calculation for these alignments
       break;
   }
   return slots;
